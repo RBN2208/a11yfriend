@@ -1,0 +1,36 @@
+import { type NextRequest, NextResponse } from 'next/server'
+import { updateSession } from '@/utils/supabase/middleware'
+
+export async function middleware(request: NextRequest) {
+  const response = await updateSession(request)
+  const requestUrl = new URL(request.url)
+  const protectedRoutes = ['/account']
+
+  const isProtectedRoute = protectedRoutes.some(route =>
+    requestUrl.pathname === route || requestUrl.pathname.startsWith(`${route}/`)
+  )
+
+  if (isProtectedRoute) {
+    // Get the session from the response headers
+    const sessionHeader = response.headers.get('x-supabase-session')
+    const session = sessionHeader ? JSON.parse(sessionHeader) : null
+
+    console.log("sessionHeader", sessionHeader);
+    console.log("session", session);
+    if (!session) {
+      const redirectUrl = new URL('/login', request.url)
+      redirectUrl.searchParams.set('redirectTo', requestUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
+  }
+
+  return response
+}
+
+
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/account/:path*'
+  ],
+}
