@@ -12,9 +12,9 @@ export default async function AccountLayout({children}: { children: React.ReactN
   }
 
   return (
-    <SidebarProvider className="w-auto">
+    <SidebarProvider>
       <AccountNav />
-      <main className="p-1">
+      <main className="p-1 pr-4 w-full">
         <SidebarTrigger />
         {children}
       </main>

@@ -10,19 +10,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
+import { SupaBaseAudit } from '@/types/audit/types';
 
-export type Audit = {
-  id: string
-  name: number
-  version: string,
-  conformance: string
-}
-
-export const columns: ColumnDef<Audit>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
+export const columns: ColumnDef<Pick<SupaBaseAudit, 'id' | 'name' | 'version' | 'conformance'>>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -37,10 +27,9 @@ export const columns: ColumnDef<Audit>[] = [
   },
   {
     id: "actions",
+    accessorKey: "actions",
+    header: "Actions",
     cell: ({ row }) => {
-      const payment = row.original
-
-      console.log(row)
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -55,11 +44,6 @@ export const columns: ColumnDef<Audit>[] = [
               <Link href={`/audits/${row.original.id}`}>
                 View audit
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Delete</DropdownMenuItem>

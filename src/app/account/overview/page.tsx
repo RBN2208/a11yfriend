@@ -1,8 +1,5 @@
-import { OverviewList } from '@/components/lists/OverviewList';
-import AuditOverviewList from '@/components/audit/parts/AuditOverviewList';
-import { Headline } from '@/components/ui-elements/text/Headline';
 import { getAudits } from '@/app/account/audits/actions';
-import { DataTable } from '@/components/lists/audit/DataTable';
+import { AuditTable } from '@/components/lists/audit/AuditTable';
 import { columns } from '@/components/lists/audit/column';
 
 export default async function OverviewPage() {
@@ -13,7 +10,8 @@ export default async function OverviewPage() {
 
   return (
     <div>
-      <DataTable columns={columns} data={audits} />
+      TODO: what else should be shown here?
+      <AuditTable columns={columns} data={audits} />
     </div>
   )
 }
