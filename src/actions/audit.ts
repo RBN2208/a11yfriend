@@ -3,31 +3,22 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
-
-const formSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  status: z.string(),
-  customer: z.string(),
-  project_name: z.string(),
-  module: z.string(),
-  version: z.string(),
-  conformance: z.string(),
-  miscellaneous: z.string()
-});
+import { createAuditSchema } from '@/utils/validations/zod-schema';
+import {ApiValidationResponse} from "@/types/auth/types";
+import {SupaBaseAudit} from "@/types/audit/types";
 
 type AuditResponse = {
   ok: boolean;
   errors?: {
-    field: 'email' | 'password' | 'root';
+    field: 'name' | 'description' | 'status' | 'customer' | 'project_name' | 'module' | 'version' | 'conformance' | 'miscellaneous' | 'root';
     errors: string[];
   }[];
   message?: string;
 };
 
-export async function createAudit(values: z.infer < typeof formSchema > ): Promise<AuditResponse> {
+export async function createAudit(values: z.infer < typeof createAuditSchema > ): Promise<AuditResponse> {
   try {
-    const validationResult = formSchema.safeParse(values);
+    const validationResult = createAuditSchema.safeParse(values);
 
     if (!validationResult.success) {
       const formattedErrors = validationResult.error.format();
@@ -35,12 +26,40 @@ export async function createAudit(values: z.infer < typeof formSchema > ): Promi
         ok: false,
         errors: [
           {
-            field: 'email',
-            errors: formattedErrors.email?._errors || []
+            field: 'name',
+            errors: formattedErrors.name?._errors || []
           },
           {
-            field: 'password',
-            errors: formattedErrors.password?._errors || []
+            field: 'description',
+            errors: formattedErrors.description?._errors || []
+          },
+          {
+            field: 'status',
+            errors: formattedErrors.status?._errors || []
+          },
+          {
+            field: 'customer',
+            errors: formattedErrors.customer?._errors || []
+          },
+          {
+            field: "project_name",
+            errors: formattedErrors.project_name?._errors || []
+          },
+          {
+            field: "module",
+            errors: formattedErrors.module?._errors || []
+          },
+          {
+            field: "version",
+            errors: formattedErrors.version?._errors || []
+          },
+          {
+            field: "conformance",
+            errors: formattedErrors.conformance?._errors || []
+          },
+          {
+            field: "miscellaneous",
+            errors: formattedErrors.miscellaneous?._errors || []
           }
         ],
         message: "Validation failed"
@@ -48,11 +67,11 @@ export async function createAudit(values: z.infer < typeof formSchema > ): Promi
     }
 
     const supabase = await createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+    const client = await supabase.auth.getUser();
 
+    const updatedFormData = {...values, user_id: client.data.user?.id || ""};
+
+    const { error } = await supabase.from('audits').insert([updatedFormData]);
     if (error) {
       return {
         ok: false,
@@ -79,5 +98,78 @@ export async function createAudit(values: z.infer < typeof formSchema > ): Promi
       ],
       message: "An unexpected error occurred"
     };
+  }
+}
+
+
+export async function getAudits(limit: number = 5): Promise<ApiValidationResponse<SupaBaseAudit[]>> {
+  const supabase = await createClient();
+  const { data: audits, error } = await supabase
+      .from('audits')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit)
+
+  if (error) {
+    return {
+      success: false,
+      error: {
+        field: 'root',
+        message: "We couldn't fetch your audits. Please try again.",
+      },
+      data: null
+    }
+  }
+
+  return {
+    success: true,
+    error: null,
+    data: audits as SupaBaseAudit[]
+  }
+}
+
+export async function getAudit(id: string): Promise<ApiValidationResponse<SupaBaseAudit>> {
+  const supabase = await createClient();
+  const { data: audit, error } = await supabase
+      .from('audits')
+      .select('*')
+      .eq('id', id)
+
+  if (error) {
+    return {
+      success: false,
+      error: {
+        field: 'root',
+        message: "We couldn't fetch your audit. Please try again.",
+      }
+    }
+  }
+
+  return {
+    success: true,
+    error: null,
+    data: audit[0] as SupaBaseAudit
+  }
+}
+
+export async function deleteAudit(auditId: string): Promise<ApiValidationResponse> {
+  const supabase = await createClient();
+  const { error } = await supabase.from('audits')
+      .delete()
+      .eq('id', auditId);
+
+  if (error) {
+    return {
+      success: false,
+      error: {
+        field: 'root',
+        message: "We couldn't delete your audit. Please try again.",
+      }
+    }
+  }
+
+  return {
+    success: true,
+    error: null
   }
 }

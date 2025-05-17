@@ -1,5 +1,5 @@
-import AuditDetailOverview from '@/components/audit/AuditDetailOverview';
-import { getAudit } from '@/app/account/audits/actions';
+import { getAudit } from '@/actions/audit';
+import AuditDetailOverviewPage from "@/components/audit/audit-detail-overview-page";
 
 export default async function AuditsDetailPage({params}: { params: Promise<{ id: string }> }) {
   const pageParams = await params;
@@ -14,5 +14,9 @@ export default async function AuditsDetailPage({params}: { params: Promise<{ id:
 
   const audit = response.data;
 
-  return <AuditDetailOverview audit={audit} />
+  return (
+      <>
+        <AuditDetailOverviewPage audit={audit} />
+      </>
+  )
 }

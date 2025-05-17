@@ -1,8 +1,4 @@
-import { createClient } from '@/utils/supabase/server';
-import { Headline } from '@/components/ui-elements/text/Headline';
-import AuditOverviewList from '@/components/audit/parts/AuditOverviewList';
-import CreateAuditModal from '@/components/audit/modals/CreateAuditModal';
-import { getAudits } from '@/app/account/audits/actions';
+import { getAudits } from '@/actions/audit';
 import { AuditTable } from '@/components/lists/audit/AuditTable';
 import { columns } from '@/components/lists/audit/column';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

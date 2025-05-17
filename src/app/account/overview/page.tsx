@@ -1,4 +1,4 @@
-import { getAudits } from '@/app/account/audits/actions';
+import { getAudits } from '@/actions/audit';
 import { AuditTable } from '@/components/lists/audit/AuditTable';
 import { columns } from '@/components/lists/audit/column';
 

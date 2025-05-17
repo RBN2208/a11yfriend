@@ -3,7 +3,6 @@
 import LoginForm from '@/components/form-components/login-form';
 import RegisterForm from '@/components/form-components/register-form';
 import { Card } from '@/components/ui/card';
-import { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 export function SignInAndUpForm() {

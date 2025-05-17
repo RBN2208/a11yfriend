@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import CreateAuditModal from '@/components/audit/modals/CreateAuditModal';
+import CreateAuditModal from '@/components/audit/modals/create-audit-modal';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
@@ -35,12 +35,12 @@ export function AuditTable<TData, TValue>({columns, data}: DataTableProps<TData,
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center gap-4">
-          <VisuallyHidden>
-            <Label htmlFor="searchAuditsInput">
-              Search audits
-            </Label>
-          </VisuallyHidden>
-          <Input id="searchAuditsInput" placeholder="Search audits" />
+        <VisuallyHidden>
+          <Label htmlFor="searchAuditsInput">
+            Search audits
+          </Label>
+        </VisuallyHidden>
+        <Input id="searchAuditsInput" placeholder="Search audits" />
         <CreateAuditModal />
       </div>
       <div className="rounded-md border">
