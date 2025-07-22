@@ -1,11 +1,13 @@
 'use client'
 
-import LoginForm from '@/components/form-components/login-form';
-import RegisterForm from '@/components/form-components/register-form';
+import LoginForm from '@/components/form-components/forms/login-form';
+import RegisterForm from '@/components/form-components/forms/register-form';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import {ForgotPasswordModal} from "@/components/modals/ForgotPasswordModal";
+import React from "react";
 
-export function SignInAndUpForm() {
+export function SignInAndUpModal() {
 
   return (
     <div className="">
@@ -23,7 +25,10 @@ export function SignInAndUpForm() {
 
           <TabsContent value="login">
             <LoginForm/>
+            <ForgotPasswordModal />
           </TabsContent>
+
+          <TabsContent value="forgot-password">Forgot</TabsContent>
         </Tabs>
 
       </Card>

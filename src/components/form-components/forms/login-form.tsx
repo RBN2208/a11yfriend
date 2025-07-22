@@ -19,6 +19,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { signIn } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {ForgotPasswordModal} from "@/components/modals/ForgotPasswordModal";
 
 const formSchema = z.object({
   email: emailSchema,

@@ -97,8 +97,8 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
       <>
         <Headline title="Audit Overview" level={2} />
 
-        <UIProgressbar partial={criteriaResult}
-                       base={WCAGCriterias}
+        <UIProgressbar partial={criteriaResults}
+                       baseSize={WCAGCriterias.length}
                        headline="Audit progress"
                        label="criterias finished"
         />

@@ -2,51 +2,6 @@ import { WCAGAuditFormType } from '@/types/audit/types';
 
 export type WCAGCriteriaType = Pick<WCAGAuditFormType, 'id' | 'category' | 'guideLine' | 'name' | 'level' | 'referenceLink'>;
 
-export const STATUS_OPTIONS = [
-  {
-    key: "draft",
-    value: "Entwurf",
-  },
-  {
-    key: "in_progress",
-    value: "In Bearbeitung",
-  },
-  {
-    key: "completed",
-    value: "Abgeschlossen",
-  }
-];
-
-export const VERSION_OPTIONS = [
-  {
-    key: "2.0",
-    value: "2.0"
-  },
-  {
-    key: "2.1",
-    value: "2.1"
-  },
-  {
-    key: "2.2",
-    value: "2.2"
-  }
-]
-
-export const CONFORMANCE_OPTIONS = [
-  {
-    key: "A",
-    value: "A"
-  },
-  {
-    key: "AA",
-    value: "AA"
-  },
-  {
-    key: "AAA",
-    value: "AAA"
-  }
-]
-
 export const WCAGCriterias: WCAGCriteriaType[] = [
   {
     id: '1-1-1-perceivable',

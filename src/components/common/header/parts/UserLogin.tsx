@@ -10,7 +10,7 @@ import Link from 'next/link';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { SignInAndUpForm } from '@/components/form-components/SignInAndUpForm';
+import { SignInAndUpModal } from '@/components/modals/SignInAndUpModal';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 type UserLoginProps = {
@@ -78,7 +78,7 @@ export default function UserLogin({ user, label }: UserLoginProps  ) {
               <DialogTitle>Login or Register</DialogTitle>
               <DialogDescription>Login to your account or register a new one</DialogDescription>
             </VisuallyHidden>
-            <SignInAndUpForm />
+            <SignInAndUpModal />
           </DialogContent>
         </Dialog>
       )}

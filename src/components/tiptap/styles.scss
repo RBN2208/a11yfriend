@@ -1,0 +1,26 @@
+.tiptap-custom {
+  .tiptap {
+    @apply min-h-[300px];
+  }
+  h2 {
+    @apply text-2xl font-bold;
+  }
+  h3 {
+    @apply text-xl font-bold;
+  }
+  h4 {
+    @apply text-lg font-bold;
+  }
+  ul {
+    @apply list-disc pl-4;
+  }
+  ol {
+    @apply list-decimal pl-4;
+  }
+  pre {
+    @apply bg-gray-100 p-4;
+  }
+  blockquote {
+    @apply border-l-4 border-gray-400 pl-4;
+  }
+}

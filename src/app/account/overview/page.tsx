@@ -10,8 +10,7 @@ export default async function OverviewPage() {
 
   return (
     <div>
-      TODO: what else should be shown here?
-      <AuditTable columns={columns} data={audits} />
+      TODO: DASHBOARD
     </div>
   )
 }

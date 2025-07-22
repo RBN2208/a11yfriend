@@ -7,9 +7,9 @@ import { createClient } from '@/utils/supabase/server'
 // user clicks on verify link, gets directed to here, validation runs and if valid gets redirect to auth/confirm
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
-  const token_hash = searchParams.get('token_hash');
+  const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null
-  const next = '/auth/confirm'
+  const next = '/account/settings/profile'
 
   const redirectTo = request.nextUrl.clone()
   redirectTo.pathname = next
@@ -33,8 +33,3 @@ export async function GET(request: NextRequest) {
   redirectTo.pathname = '/error'
   return NextResponse.redirect(redirectTo)
 }
-
-
-// by open url/auth/confirm this function gets called, checks token etc and directly redirects to /account.
-// or creating a page here and moving route to /api/verify/route.ts do show some informations that user is verified
-

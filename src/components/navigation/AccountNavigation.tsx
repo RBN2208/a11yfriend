@@ -1,21 +1,38 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import UILink from '@/components/ui-elements/UILink';
 import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
   SidebarGroup,
   SidebarFooter,
-  SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem, SidebarMenuSubButton
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 
 const navigation = [
-  { name: 'Overview', href: '/account/overview' },
-  { name: 'Audits', href: '/account/audits' },
-  { name: 'Settings', href: '/account/settings' },
+  {
+    name: 'Overview',
+    href: '/account/overview'
+  },
+  {
+    name: 'Audits',
+    href: '/account/audits'
+  },
+  {
+    name: 'Settings',
+    href: '/account/settings',
+    subs: [
+      { name: 'Profile', href: '/account/settings/profile' }
+    ]
+  },
 ]
 
 export default function AccountNav() {
@@ -40,6 +57,20 @@ export default function AccountNav() {
                         {item.name}
                       </Link>
                     </SidebarMenuButton>
+                    {item.subs && item.subs.map(sub => {
+                      const isActiveSub = pathname === sub.href;
+                      return (
+                        <SidebarMenuSub key={sub.name}>
+                          <SidebarMenuSubItem>
+                            <SidebarMenuSubButton asChild isActive={isActiveSub}>
+                              <Link href={sub.href}>
+                                {sub.name}
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        </SidebarMenuSub>
+                      )
+                    })}
                   </SidebarMenuItem>
                 )
               })}

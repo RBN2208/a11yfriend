@@ -15,7 +15,7 @@ export default async function AuditsPage() {
         <CardHeader>
           <CardTitle>
             <h1>
-              Audits
+              Audit Overview
             </h1>
           </CardTitle>
         </CardHeader>
@@ -30,10 +30,7 @@ export default async function AuditsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {audits && audits.length > 0 && (
-              <AuditTable columns={columns} data={audits} />
-            )
-          }
+          <AuditTable columns={columns} data={audits} />
         </CardContent>
       </Card>
     </div>

@@ -5,6 +5,7 @@ import { SelectItem } from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
 import UISelect from "@/components/common/ui-elements/UISelect";
 import {Label} from "@/components/ui/label";
+import Tiptap from "@/components/tiptap/Tiptap";
 
 interface CriteriaFindingProps {
   findings: string;
@@ -20,6 +21,7 @@ interface AuditFindingsFormProps {
 export default function AuditFindingsForm({referenceId, criteriaFinding, onChange}: AuditFindingsFormProps) {
   const [text, setText] = useState(criteriaFinding.findings);
 
+  console.log("text", text)
   useEffect(() => {
     setText(criteriaFinding.findings);
   }, [criteriaFinding.findings]);
@@ -49,14 +51,10 @@ export default function AuditFindingsForm({referenceId, criteriaFinding, onChang
           >
             Findings
           </Label>
-          <Textarea placeholder="Write down your findings..."
-                    value={text}
-                    id={`findings-${referenceId}`}
-                    rows={10}
-                    onChange={(e) => setText(e.target.value)}
-                    onBlur={(e) => {
-                      onChange(e.target.value, criteriaFinding.state as 'checked' | 'not_checked' | 'not_applicable')
-                    }}
+          <Tiptap data={text}
+                  onChange={(value) =>
+                    onChange(value, criteriaFinding.state as 'checked' | 'not_checked' | 'not_applicable')
+                  }
           />
         </div>
       </div>

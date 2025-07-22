@@ -11,7 +11,7 @@ type UISelectProps = {
 export default function UISelect({placeholder, value, id = "", onChange, children, ...props}: UISelectProps) {
   return (
       <Select onValueChange={(value) => onChange(value)} value={value}>
-        <SelectTrigger id={id}>
+        <SelectTrigger id={id} className="max-w-52">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

@@ -1,6 +1,6 @@
 'use client'
 
-import CreateAuditForm from '@/components/form-components/create-audit-form';
+import CreateAuditForm from '@/components/form-components/forms/create-audit-form';
 import {
   Dialog,
   DialogClose,
