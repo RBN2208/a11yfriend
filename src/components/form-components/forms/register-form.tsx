@@ -2,23 +2,14 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/shadcn-components/ui/button"
+import { Form } from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
 import { passwordSchemaRegister, emailSchema } from '@/utils/validations/zod-schema';
-import { PasswordInput } from '@/components/ui/password-input';
 import { signUp } from '@/actions/auth';
-import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
+import { InputElement } from "@/components/form-components/elements/form-elements";
 
 const formSchema = z.object({
   email: emailSchema,
@@ -30,7 +21,6 @@ const formSchema = z.object({
 });
 
 export default function RegisterForm() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -70,64 +60,24 @@ export default function RegisterForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4">
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                Email
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder=""
-                  className={form.formState.errors.email ? "border-destructive" : ""}
-                  type="email"
-                  {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
+        <InputElement label="E-Mail"
+                      required={true}
+                      name="email"
+                      type="email"
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                Password
-              </FormLabel>
-              <FormControl>
-                <PasswordInput className={form.formState.errors.password ? "border-destructive" : ""}
-                               {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
+        <InputElement label="Password"
+                      required={true}
+                      name="password"
+                      type="password"
         />
 
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                Confirm Password
-              </FormLabel>
-              <FormControl>
-                <PasswordInput className={form.formState.errors.confirmPassword ? "border-destructive" : ""}
-                               {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
+        <InputElement label="Confirm password"
+                      required={true}
+                      name="confirmPassword"
+                      type="password"
         />
+
 
         <Button disabled={loading} className="w-full mt-4">
           {loading && <Loader2 className="animate-spin" />}
@@ -135,22 +85,23 @@ export default function RegisterForm() {
         </Button>
 
         {form.formState.errors && form.formState.errors.root &&
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Sorry, we could not create your Account</AlertTitle>
-            <AlertDescription>
+            <AlertWrapper
+                title="Sorry, we could not create your Account"
+                variant="destructive"
+                icon={<AlertCircleIcon />}
+            >
               {form.formState.errors.root.message}
-            </AlertDescription>
-          </Alert>
+            </AlertWrapper>
         }
 
         {success &&
-          <Alert variant="default">
-            <AlertTitle>Congratulation!</AlertTitle>
-            <AlertDescription>
-              Your account has been created. Please check your email to verify your account and to proceed with login
-            </AlertDescription>
-          </Alert>
+            <AlertWrapper
+                title="Congratulation!"
+                variant="default"
+                icon={<BadgeCheckIcon />}
+            >
+                Your account has been created. Please check your email to verify your account and to proceed with login
+            </AlertWrapper>
         }
       </form>
     </Form>

@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation'
-import AccountNav from '@/components/navigation/AccountNavigation'
 import { createClient } from '@/utils/supabase/server';
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import {Breadcrumb} from "@/components/ui/breadcrumb";
+import { SidebarProvider, SidebarTrigger } from "@/components/shadcn-components/ui/sidebar"
 import UIBreadcrumb from "@/components/common/ui-elements/UIBreadcrumb";
+import AccountNavigationBase from "@/components/navigation/AccountNavigationBase";
 
 export default async function AccountLayout({children}: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -15,7 +14,7 @@ export default async function AccountLayout({children}: { children: React.ReactN
 
   return (
     <SidebarProvider>
-      <AccountNav />
+      <AccountNavigationBase />
       <main className="p-1 pr-4 w-full">
         <div className="flex justify-start items-center p-4 pl-0">
           <SidebarTrigger className="block md:hidden" />

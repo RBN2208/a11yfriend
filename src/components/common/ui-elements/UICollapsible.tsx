@@ -3,12 +3,12 @@
 import * as React from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/shadcn-components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/shadcn-components/ui/collapsible"
 
 type UICollapsibleProps = {
   title: string,

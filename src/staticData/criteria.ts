@@ -1,5 +1,14 @@
 import { WCAGAuditFormType } from '@/types/audit/types';
 
+export function getCriteriaLengths(conformance: 'A' | 'AA' | 'AAA'){
+  const map = {
+    A: 31,
+    AA: 55, // A + 24 for AA
+    AAA: 86 // AA + 31 for AAA
+  }
+  return map[conformance];
+}
+
 export type WCAGCriteriaType = Pick<WCAGAuditFormType, 'id' | 'category' | 'guideLine' | 'name' | 'level' | 'referenceLink'>;
 
 export const WCAGCriterias: WCAGCriteriaType[] = [

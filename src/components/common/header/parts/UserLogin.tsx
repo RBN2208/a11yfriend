@@ -3,22 +3,21 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+} from '@/components/shadcn-components/ui/dropdown-menu';
+import { Button } from '@/components/shadcn-components/ui/button';
 import { User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/shadcn-components/ui/dialog';
 import { SignInAndUpModal } from '@/components/modals/SignInAndUpModal';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 type UserLoginProps = {
-  user: User | null,
-  label?: string;
+  user: User | null
 }
 
-export default function UserLogin({ user, label }: UserLoginProps  ) {
+export default function UserLogin({ user }: UserLoginProps  ) {
   const [open, setOpen] = useState(false);
 
   const callLogout = async () => {
@@ -67,20 +66,7 @@ export default function UserLogin({ user, label }: UserLoginProps  ) {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size={label ? 'default' : 'icon'} title={"Login or Register"}>
-              <UserIcon className="h-6 w-6"/> {label}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="py-10 px-2 pb-2 sm:py-10 sm:px-6 sm:pb-3 md:p-10 md:pb-4">
-            <VisuallyHidden>
-              <DialogTitle>Login or Register</DialogTitle>
-              <DialogDescription>Login to your account or register a new one</DialogDescription>
-            </VisuallyHidden>
-            <SignInAndUpModal />
-          </DialogContent>
-        </Dialog>
+        <SignInAndUpModal />
       )}
     </>
   )

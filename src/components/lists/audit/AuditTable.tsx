@@ -14,10 +14,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import CreateAuditModal from '@/components/audit/modals/create-audit-modal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/shadcn-components/ui/table"
+import CreateAuditModal from '@/components/modals/create-audit-modal';
+import { Input } from '@/components/shadcn-components/ui/input';
+import { Label } from '@/components/shadcn-components/ui/label';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface DataTableProps<TData, TValue> {

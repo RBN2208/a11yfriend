@@ -1,10 +1,10 @@
 'use client'
 
 import {useFormContext} from "react-hook-form";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
+import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/shadcn-components/ui/form";
+import {Input} from "@/components/shadcn-components/ui/input";
 import React from "react";
-import {Textarea} from "@/components/ui/textarea";
+import {Textarea} from "@/components/shadcn-components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -13,9 +13,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/select";
+} from "@/components/shadcn-components/ui/select";
 import {Loader2} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import {Button} from "@/components/shadcn-components/ui/button";
+import {PasswordInput} from "@/components/shadcn-components/ui/password-input";
 
 
 /*******************************
@@ -56,11 +57,17 @@ export function InputElement({
               </FormLabel>
             }
             <FormControl>
-              <Input placeholder={placeholder}
-                     type={type}
-                     className={errors[name] ? "border-destructive" : ""}
-                     {...field}
-              />
+              {type === "password" ?
+                <PasswordInput className={errors[name] ? "border-destructive" : ""}
+                               placeholder={placeholder}
+                               {...field}
+                /> :
+                <Input placeholder={placeholder}
+                       type={type}
+                       className={errors[name] ? "border-destructive" : ""}
+                       {...field}
+                />
+              }
             </FormControl>
 
             {description &&

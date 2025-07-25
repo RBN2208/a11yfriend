@@ -1,10 +1,10 @@
 'use client'
 
 import ThemeToggle from '@/components/common/header/parts/theme-toggle';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn-components/ui/button';
 import { Menu } from 'lucide-react';
 import type { User } from '@supabase/supabase-js'
-import { SheetTrigger } from '@/components/ui/sheet';
+import { SheetTrigger } from '@/components/shadcn-components/ui/sheet';
 import UserLogin from '@/components/common/header/parts/UserLogin';
 
 type HeaderActionsMenuProps = {

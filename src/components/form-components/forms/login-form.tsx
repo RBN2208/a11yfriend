@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/shadcn-components/ui/button"
 import {
   Form,
   FormControl,
@@ -10,16 +10,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/shadcn-components/ui/form"
+import { Input } from "@/components/shadcn-components/ui/input"
 import React, { useState } from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import {AlertCircle, AlertCircleIcon, Loader2} from 'lucide-react';
 import { emailSchema, passwordSchemaLogin } from '@/utils/validations/zod-schema';
-import { PasswordInput } from '@/components/ui/password-input';
+import { PasswordInput } from '@/components/shadcn-components/ui/password-input';
 import { signIn } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/shadcn-components/ui/alert';
 import {ForgotPasswordModal} from "@/components/modals/ForgotPasswordModal";
+import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
+import {InputElement} from "@/components/form-components/elements/form-elements";
 
 const formSchema = z.object({
   email: emailSchema,
@@ -65,44 +67,16 @@ export default function LoginForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4">
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                Email
-              </FormLabel>
-              <FormControl>
-                <Input placeholder=""
-                       type="email"
-                       className={form.formState.errors.email ? "border-destructive" : ""}
-                       {...field}
-                />
-              </FormControl>
-
-              <FormMessage/>
-            </FormItem>
-          )}
+        <InputElement label="E-Mail"
+                      required={true}
+                      name="email"
+                      type="email"
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                Password
-              </FormLabel>
-              <FormControl>
-                <PasswordInput className={form.formState.errors.password ? "border-destructive" : ""}
-                               {...field}
-                />
-              </FormControl>
-
-              <FormMessage/>
-            </FormItem>
-          )}
+        <InputElement label="Password"
+                      required={true}
+                      name="password"
+                      type="password"
         />
 
         <Button disabled={loading} className="w-full mt-4">
@@ -111,13 +85,13 @@ export default function LoginForm() {
         </Button>
 
         {form.formState.errors && form.formState.errors.root &&
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Sorry, we could not log you in.</AlertTitle>
-            <AlertDescription>
+            <AlertWrapper
+                title="Sorry, we could not log you in."
+                variant="destructive"
+                icon={<AlertCircleIcon />}
+            >
               {form.formState.errors.root.message}
-            </AlertDescription>
-          </Alert>
+            </AlertWrapper>
         }
       </form>
     </Form>

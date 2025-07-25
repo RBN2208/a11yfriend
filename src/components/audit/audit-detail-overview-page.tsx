@@ -1,19 +1,15 @@
 'use client'
 import {SupaBaseAudit, WCAGAuditFormType} from "@/types/audit/types";
-import {Headline} from "@/components/ui-elements/text/Headline";
 import React, {useEffect, useState} from "react";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import UIProgressbar from "@/components/common/ui-elements/UIProgressbar";
 import {WCAGCriterias} from "@/staticData/criteria";
-import {SelectItem,} from "@/components/ui/select";
-import {Card, CardContent} from "@/components/ui/card";
+import {SelectItem,} from "@/components/shadcn-components/ui/select";
 import AuditFindingsForm from "@/components/audit/audit-findings-form";
 import {createClient} from "@/utils/supabase/client";
-import {Button} from "@/components/ui/button";
-import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/shadcn-components/ui/button";
 
 import UISelect from "@/components/common/ui-elements/UISelect";
-import UIAccordion from "@/components/common/ui-elements/UIAccordion";
+import {TypographyH2, TypographyH3, TypographyP} from "@/components/typography/typography-elements";
 
 interface AuditDetailOverviewPageProps {
   audit: SupaBaseAudit;
@@ -21,21 +17,31 @@ interface AuditDetailOverviewPageProps {
 
 export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPageProps) {
   const supabase = createClient();
+  const CONFORMANCE_FILTERED = WCAGCriterias.filter(criteria => {
+    if (audit.conformance === 'A') {
+      return criteria.level === 'A';
+    } else if (audit.conformance === 'AA') {
+      return criteria.level === 'A' || criteria.level === 'AA';
+    } else if (audit.conformance === 'AAA') {
+      return true;
+    }
+    return false;
+  })
 
   const [auditData, setAuditData] = useState<SupaBaseAudit>(audit);
   const [criteriaResults, setCriteriaResults] = useState<Record<string, Pick<WCAGAuditFormType, 'findings' | 'status'>>>({});
-  const [activeCriteriaId, setActiveCriteriaId] = useState<string>(WCAGCriterias[0]?.id || '');
+  const [activeCriteriaId, setActiveCriteriaId] = useState<string>(CONFORMANCE_FILTERED[0]?.id || '');
   const [savedStatus, setSavedStatus] = useState<'saved' | 'unsaved' | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const criteriaResult = criteriaResults[activeCriteriaId] || { findings: '', status: 'not_checked' as const };
 
-  const currentIndex = WCAGCriterias.findIndex(criteria => criteria.id === activeCriteriaId);
+  const currentIndex = CONFORMANCE_FILTERED.findIndex(criteria => criteria.id === activeCriteriaId);
   const isFirstCriteria = currentIndex === 0;
-  const isLastCriteria = currentIndex === WCAGCriterias.length - 1;
+  const isLastCriteria = currentIndex === CONFORMANCE_FILTERED.length - 1;
 
   const getActiveCriteria = () => {
-    return WCAGCriterias.find(criteria => criteria.id === activeCriteriaId) || WCAGCriterias[0];
+    return CONFORMANCE_FILTERED.find(criteria => criteria.id === activeCriteriaId) || CONFORMANCE_FILTERED[0];
   };
 
   const activeCriteria = getActiveCriteria();
@@ -49,22 +55,21 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
   };
 
   const handleNext = () => {
-    const currentIndex = WCAGCriterias.findIndex(criteria => criteria.id === activeCriteriaId);
-    if (currentIndex < WCAGCriterias.length - 1) {
-      setActiveCriteriaId(WCAGCriterias[currentIndex + 1].id);
+    const currentIndex = CONFORMANCE_FILTERED.findIndex(criteria => criteria.id === activeCriteriaId);
+    if (currentIndex < CONFORMANCE_FILTERED.length - 1) {
+      setActiveCriteriaId(CONFORMANCE_FILTERED[currentIndex + 1].id);
     }
   };
 
   const handlePrevious = () => {
-    const currentIndex = WCAGCriterias.findIndex(criteria => criteria.id === activeCriteriaId);
+    const currentIndex = CONFORMANCE_FILTERED.findIndex(criteria => criteria.id === activeCriteriaId);
     if (currentIndex > 0) {
-      setActiveCriteriaId(WCAGCriterias[currentIndex - 1].id);
+      setActiveCriteriaId(CONFORMANCE_FILTERED[currentIndex - 1].id);
     }
   };
 
   const saveToSupabase = async () => {
     setIsSaving(true);
-    console.log(criteriaResults);
     try {
       const { error } = await supabase
           .from('audits')
@@ -95,12 +100,12 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
 
   return (
       <>
-        <Headline title="Audit Overview" level={2} />
+        <TypographyH2>
+          Audit: {audit.name}
+        </TypographyH2>
 
         <UIProgressbar partial={criteriaResults}
-                       baseSize={WCAGCriterias.length}
-                       headline="Audit progress"
-                       label="criterias finished"
+                       baseSize={CONFORMANCE_FILTERED.length}
         />
 
         <div className="flex flex-wrap gap-4 justify-between mt-4">
@@ -116,8 +121,8 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
                       onChange={(value) => setActiveCriteriaId(value)}
                       value={activeCriteriaId}
             >
-              {WCAGCriterias.map((criteria, index) => (
-                  <SelectItem key={criteria.id} value={criteria.id}>{criteria.name} {criteria.level}</SelectItem>
+              {CONFORMANCE_FILTERED.map((criteria, index) => (
+                  <SelectItem key={criteria.id} value={criteria.id}>{criteria.name} ({criteria.level})</SelectItem>
               ))}
             </UISelect>
 
@@ -135,71 +140,21 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
           </Button>
         </div>
 
-        <Card className="my-4">
-          <CardContent className="px-4 py-3">
-            <UIAccordion triggerLabel="Audit details">
-              <Table className="flex flex-row border border-primary p-4 rounded-md">
-                <TableHeader>
-                  <TableRow className="flex flex-col">
-                    <TableHead className="h-full py-2">ID</TableHead>
-                    <TableHead className="h-full py-2">Name</TableHead>
-                    <TableHead className="h-full py-2">State</TableHead>
-                    <TableHead className="h-full py-2">Created</TableHead>
-                    <TableHead className="h-full py-2">Customer</TableHead>
-                    <TableHead className="h-full py-2">Project</TableHead>
-                    <TableHead className="h-full py-2">Module</TableHead>
-                    <TableHead className="h-full py-2">Version</TableHead>
-                    <TableHead className="h-full py-2">Conformance</TableHead>
-                    <TableHead className="h-full py-2">Miscellaneous</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow className="flex flex-col">
-                    <TableCell className="h-full py-2">{audit.id || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.name || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.status || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.created_at || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.customer || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.project_name || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.module || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.version || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.conformance || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{audit.miscellaneous || "-"}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </UIAccordion>
-            <UIAccordion triggerLabel="Reference for criteria">
-              <Table className="flex flex-row border border-primary p-4 rounded-md">
-                <TableHeader>
-                  <TableRow className="flex flex-col">
-                    <TableHead className="h-full py-2">Category:</TableHead>
-                    <TableHead className="h-full py-2">Guideline:</TableHead>
-                    <TableHead className="h-full py-2">Name:</TableHead>
-                    <TableHead className="h-full py-2">Level:</TableHead>
-                    <TableHead className="h-full py-2">Reference:</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow className="flex flex-col">
-                    <TableCell className="h-full py-2">{activeCriteria.category || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{activeCriteria.guideLine || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{activeCriteria.name || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{activeCriteria.level || "-"}</TableCell>
-                    <TableCell className="h-full py-2">{activeCriteria.referenceLink || "-"}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </UIAccordion>
-          </CardContent>
-        </Card>
+        <div className="mt-4">
+          <TypographyH3>
+            {activeCriteria.category}
+          </TypographyH3>
+          <a href={activeCriteria.referenceLink} className="underline text-blue-500 w-max inline-block">
+            <TypographyP>{activeCriteria.guideLine} --- {activeCriteria.name} ({activeCriteria.level})</TypographyP>
+          </a>
+        </div>
 
         <AuditFindingsForm referenceId={activeCriteria.id}
                            criteriaFinding={{
                              findings: criteriaResult.findings,
                              state: criteriaResult.status
                            }}
-                           onChange={(findings, status) => {
+                           updateAction={(findings, status) => {
                              updateCriteriaResult(activeCriteria.id, findings, status)
                            }}
         />

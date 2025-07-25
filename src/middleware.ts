@@ -15,8 +15,6 @@ export async function middleware(request: NextRequest) {
     const sessionHeader = response.headers.get('x-supabase-session')
     const session = sessionHeader ? JSON.parse(sessionHeader) : null
 
-    console.log("sessionHeader", sessionHeader);
-    console.log("session", session);
     if (!session) {
       const redirectUrl = new URL('/login', request.url)
       redirectUrl.searchParams.set('redirectTo', requestUrl.pathname)

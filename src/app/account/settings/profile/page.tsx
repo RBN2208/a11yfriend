@@ -1,5 +1,5 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/shadcn-components/ui/card';
+import { Button } from '@/components/shadcn-components/ui/button';
 import UIAccordion from "@/components/common/ui-elements/UIAccordion";
 import ChangePasswordForm from "@/components/form-components/forms/change-password-form";
 

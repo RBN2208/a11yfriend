@@ -1,5 +1,5 @@
 import React from "react";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/shadcn-components/ui/accordion";
 
 type UISelectProps = {
   triggerLabel: string;

@@ -3,11 +3,10 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { createAuditSchema } from "@/utils/validations/zod-schema";
-import {Form} from "@/components/ui/form"
+import {Form} from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircleIcon} from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { createAudit } from '@/actions/audit';
 import {
     FormButton,
@@ -15,8 +14,10 @@ import {
     SelectElement,
     TextAreaElement
 } from "@/components/form-components/elements/form-elements";
+import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
+import {SupaBaseAudit} from "@/types/audit/types";
 
-export default function CreateAuditForm() {
+export default function CreateAuditForm({auditData}: {auditData: SupaBaseAudit | undefined}) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
@@ -25,21 +26,20 @@ export default function CreateAuditForm() {
         reValidateMode: 'onBlur',
         mode: 'onBlur',
         defaultValues: {
-            name: '',
-            description: '',
-            status: 'draft',
-            customer: '',
-            project_name: '',
-            module: '',
-            version: undefined,
-            conformance: undefined,
-            miscellaneous: ''
+            name: auditData?.name || "",
+            description: auditData?.description || "",
+            status: auditData?.status || "draft",
+            customer: auditData?.customer || "",
+            project_name: auditData?.project_name || "",
+            module: auditData?.module || "",
+            version: auditData?.version || undefined,
+            conformance: auditData?.conformance || undefined,
+            miscellaneous: auditData?.miscellaneous || ''
         }
     })
 
     async function onSubmit(values: z.infer < typeof createAuditSchema > ) {
         setLoading(true);
-        console.log(form)
         try {
             const response = await createAudit(values);
 
@@ -137,17 +137,17 @@ export default function CreateAuditForm() {
 
                 <FormButton loading={loading}
                             loadingLabel="Creating audit"
-                            label="Create audit"
+                            label={auditData ? 'Update' : 'Create'}
                 />
 
                 {form.formState.errors && form.formState.errors.root &&
-                    <Alert variant="destructive">
-                        <AlertCircle className="h-4 w-4" />
-                        <AlertTitle>Sorry, we could not create your audit</AlertTitle>
-                        <AlertDescription>
-                            {form.formState.errors.root.message}
-                        </AlertDescription>
-                    </Alert>
+                    <AlertWrapper
+                        title="Sorry, we could not create your audit"
+                        variant="destructive"
+                        icon={<AlertCircleIcon />}
+                    >
+                        {form.formState.errors.root.message}
+                    </AlertWrapper>
                 }
             </form>
         </Form>

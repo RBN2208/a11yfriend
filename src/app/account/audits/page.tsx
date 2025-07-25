@@ -1,7 +1,7 @@
 import { getAudits } from '@/actions/audit';
 import { AuditTable } from '@/components/lists/audit/AuditTable';
 import { columns } from '@/components/lists/audit/column';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/shadcn-components/ui/card';
 
 export default async function AuditsPage() {
   const response = await getAudits(20);

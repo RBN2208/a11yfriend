@@ -1,45 +1,39 @@
 'use client'
 
 import './styles.scss'
-import { useEditor, EditorContent } from '@tiptap/react'
-import {Heading} from '@tiptap/extension-heading'
-import StarterKit from '@tiptap/starter-kit'
-import {MenuBar} from "@/components/tiptap/MenuBar";
-import {useEffect} from "react";
+import { useEffect } from "react";
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { TableKit } from '@tiptap/extension-table'
+
+import { MenuBar } from "@/components/tiptap/MenuBar";
 
 
 type TiptapProps = {
   data: string,
-  onChange: (value: string) => void,
+  updateAction: (value: any) => void,
 }
 
-export default function Tiptap({data, onChange}: TiptapProps) {
-  console.log("data", data)
+export default function Tiptap({data, updateAction}: TiptapProps) {
   const editor = useEditor({
-    extensions: [StarterKit, Heading],
-    content: data.content,
+    extensions: [StarterKit, TableKit],
+    content: data,
     immediatelyRender: false,
+    onUpdate: ({editor}) => {
+      const json = editor.getJSON();
+      updateAction(json);
+    }
   })
 
-  const handleEditorChange = () => {
-    const dataAsString = JSON.stringify(editor?.getJSON().content);
-    if (dataAsString) {
-      onChange(dataAsString)
-    }
-  }
-
   useEffect(() => {
-    console.log("data", data)
-    const parsed = JSON.parse(JSON.stringify(data));
-    editor?.commands.setContent(parsed);
+    editor?.commands.setContent(data);
   }, [data]);
 
   return (
       <>
-        <MenuBar editor={editor} />
+        {editor && <MenuBar editor={editor} /> }
         <EditorContent editor={editor}
                        className="tiptap-custom min-h-[300px] border p-2"
-                       onBlur={handleEditorChange}
         />
       </>
   )

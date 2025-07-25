@@ -4,9 +4,9 @@ import Header from '@/components/common/header/Header';
 import Footer from '@/components/common/Footer';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { MobileMenu } from '@/components/common/header/MobileMenu';
-import { Sheet } from '@/components/ui/sheet';
+import { Sheet } from '@/components/shadcn-components/ui/sheet';
 import { createClient } from '@/utils/supabase/server';
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '@/components/shadcn-components/ui/sonner';
 
 export const metadata: Metadata = {
   title: "A11y Friend",

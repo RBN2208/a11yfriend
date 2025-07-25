@@ -6,12 +6,12 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle
-} from '@/components/ui/sheet';
+} from '@/components/shadcn-components/ui/sheet';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import ThemeToggle from '@/components/common/header/parts/theme-toggle';
 import UserLogin from '@/components/common/header/parts/UserLogin';
 import type { User } from '@supabase/supabase-js';
-import { Card, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardDescription } from '@/components/shadcn-components/ui/card';
 
 type MobileMenuProps = {
   user: User | null;
@@ -19,11 +19,11 @@ type MobileMenuProps = {
 export function MobileMenu({ user }: MobileMenuProps) {
 
   const menuItems = [
-    { text: "TODOOOOOO", href: "#" },
-    { text: "Über uns", href: "#" },
-    { text: "Dienstleistungen", href: "#" },
-    { text: "Projekte", href: "#" },
-    { text: "Kontakt", href: "#" }
+    { text: "TBD 1", href: "#" },
+    { text: "TBD 2", href: "#" },
+    { text: "TBD 3", href: "#" },
+    { text: "TBD 4", href: "#" },
+    { text: "TBD 5", href: "#" }
   ];
 
   return (
@@ -31,7 +31,7 @@ export function MobileMenu({ user }: MobileMenuProps) {
       <VisuallyHidden>
         <SheetHeader>
           <SheetTitle>Navigation</SheetTitle>
-          <SheetDescription>ijwqojidqwijoq</SheetDescription>
+          <SheetDescription>tbd</SheetDescription>
         </SheetHeader>
       </VisuallyHidden>
       <div className="flex flex-col">
@@ -53,7 +53,7 @@ export function MobileMenu({ user }: MobileMenuProps) {
         </nav>
       </div>
       <SheetFooter className="flex flex-col gap-4">
-        <UserLogin user={user} label="Login or Register" />
+        <UserLogin user={user} />
         <ThemeToggle showLabel={true} />
       </SheetFooter>
     </SheetContent>

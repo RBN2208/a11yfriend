@@ -36,21 +36,13 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
+todo
+- audit table = edit button to edit general audit data in dialog
+- audit table = add progress indicator in row
+- restructure audit detail page
+-- accordion view for each criteria?
+-- keep and restructure?
 
 
-const { data: user } = await supabase.auth.getUser();
 
-const { data, error } = await supabase
-.from('audits')
-.insert({
-name: 'Audit für Projekt X',
-user_id: user?.id,
-status: 'draft',
-customer: 'Mein Kunde',
-project_name: 'Projekt X',
-module: 'Startseite',
-version: '2.1',
-conformance: 'AA',
-miscellaneous: '',
-audit: [] // Hier würdest du später audit_items einfügen, nicht direkt
-});
+

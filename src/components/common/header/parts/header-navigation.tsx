@@ -4,7 +4,7 @@ import {
   NavigationMenuItem, NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger, navigationMenuTriggerStyle
-} from '@/components/ui/navigation-menu';
+} from '@/components/shadcn-components/ui/navigation-menu';
 import { features, resources } from '@/components/common/header/data/static-navigation';
 import Link from 'next/link';
 import * as React from 'react';
@@ -15,7 +15,7 @@ export default function HeaderNavigation() {
       <NavigationMenuList>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Menu 1</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {features.map((feature) => (
@@ -41,7 +41,7 @@ export default function HeaderNavigation() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Menu 2</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {resources.map((resource) => (
@@ -67,14 +67,14 @@ export default function HeaderNavigation() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
-            Pricing
+          <NavigationMenuLink href="/tbd" className={navigationMenuTriggerStyle()}>
+            Link 1
           </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuLink href="/about" className={navigationMenuTriggerStyle()}>
-            About
+          <NavigationMenuLink href="/tbd" className={navigationMenuTriggerStyle()}>
+            Link 2
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>

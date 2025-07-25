@@ -6,7 +6,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator
-} from "@/components/ui/breadcrumb";
+} from "@/components/shadcn-components/ui/breadcrumb";
 import {usePathname} from "next/navigation";
 import {Fragment} from "react";
 

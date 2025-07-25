@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/shadcn-components/ui/button"
 import {
   Form,
   FormControl,
@@ -10,14 +10,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/shadcn-components/ui/form"
 import React, {useEffect, useState} from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import {AlertCircle, AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
 import { passwordSchemaLogin } from '@/utils/validations/zod-schema';
-import { PasswordInput } from '@/components/ui/password-input';
+import { PasswordInput } from '@/components/shadcn-components/ui/password-input';
 import { changePassword } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/shadcn-components/ui/alert';
+import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
+import {InputElement} from "@/components/form-components/elements/form-elements";
 
 const formSchemaBase = z.object({
   newPassword: passwordSchemaLogin,
@@ -76,12 +78,13 @@ export default function ChangePasswordForm() {
 
   if (success) {
     return (
-      <Alert variant="default">
-        <AlertTitle>Congratulation!</AlertTitle>
-        <AlertDescription>
+        <AlertWrapper
+            title="Congratulation!"
+            variant="default"
+            icon={<BadgeCheckIcon />}
+        >
           Your password has been changed.
-        </AlertDescription>
-      </Alert>
+        </AlertWrapper>
     )
   }
 
@@ -89,42 +92,16 @@ export default function ChangePasswordForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4">
 
-        <FormField
-          control={form.control}
-          name="newPassword"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                New password
-              </FormLabel>
-              <FormControl>
-                <PasswordInput className={form.formState.errors.confirmNewPassword ? "border-destructive" : ""}
-                               {...field}
-                />
-              </FormControl>
-
-              <FormMessage/>
-            </FormItem>
-          )}
+        <InputElement label="New Password"
+                      required={true}
+                      name="newPassword"
+                      type="password"
         />
 
-        <FormField
-          control={form.control}
-          name="confirmNewPassword"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel className="!text-current">
-                Confirm new password
-              </FormLabel>
-              <FormControl>
-                <PasswordInput className={form.formState.errors.confirmNewPassword ? "border-destructive" : ""}
-                               {...field}
-                />
-              </FormControl>
-
-              <FormMessage/>
-            </FormItem>
-          )}
+        <InputElement label="Confirm new password"
+                      required={true}
+                      name="confirmNewPassword"
+                      type="password"
         />
 
         <Button disabled={loading} className="w-max mt-4">
@@ -133,13 +110,13 @@ export default function ChangePasswordForm() {
         </Button>
 
         {form.formState.errors && form.formState.errors.root &&
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Sorry, we could not log you in.</AlertTitle>
-            <AlertDescription>
+            <AlertWrapper
+                title="Sorry, we could not log you in."
+                variant="destructive"
+                icon={<AlertCircleIcon />}
+            >
               {form.formState.errors.root.message}
-            </AlertDescription>
-          </Alert>
+            </AlertWrapper>
         }
       </form>
     </Form>
