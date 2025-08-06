@@ -111,7 +111,7 @@ export default function ChangePasswordForm() {
 
         {form.formState.errors && form.formState.errors.root &&
             <AlertWrapper
-                title="Sorry, we could not log you in."
+                title="Sorry, an error occurred!"
                 variant="destructive"
                 icon={<AlertCircleIcon />}
             >

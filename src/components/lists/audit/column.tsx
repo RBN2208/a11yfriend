@@ -10,8 +10,12 @@ import {Edit, View} from "lucide-react";
 import {getCriteriaLengths} from "@/staticData/criteria";
 import {TypographyP} from "@/components/typography/typography-elements";
 import CreateAuditModal from "@/components/modals/create-audit-modal";
+import ExportAuditModal from "@/components/modals/export-audit-modal";
 
 
+/**
+ * columns for the audit tables
+ */
 export const columns: ColumnDef<SupaBaseAudit>[] = [
   {
     accessorKey: "name",
@@ -40,6 +44,7 @@ export const columns: ColumnDef<SupaBaseAudit>[] = [
             <View />
           </Link>
           <CreateAuditModal triggerAsEditIcon auditData={row.original} />
+          <ExportAuditModal auditData={row.original} />
           <Separator orientation="vertical" />
           <DeleteAuditModal auditId={row.original.id} auditName={row.original.name} />
           <Separator orientation="vertical" />

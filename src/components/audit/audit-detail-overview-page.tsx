@@ -1,5 +1,5 @@
 'use client'
-import {SupaBaseAudit, WCAGAuditFormType} from "@/types/audit/types";
+import {AuditResult, SupaBaseAudit, WCAGAuditFormType} from "@/types/audit/types";
 import React, {useEffect, useState} from "react";
 import UIProgressbar from "@/components/common/ui-elements/UIProgressbar";
 import {WCAGCriterias} from "@/staticData/criteria";
@@ -30,6 +30,9 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
 
   const [auditData, setAuditData] = useState<SupaBaseAudit>(audit);
   const [criteriaResults, setCriteriaResults] = useState<Record<string, Pick<WCAGAuditFormType, 'findings' | 'status'>>>({});
+
+  const [auditResults, setAuditResults] = useState<AuditResult[] | []>([]);
+
   const [activeCriteriaId, setActiveCriteriaId] = useState<string>(CONFORMANCE_FILTERED[0]?.id || '');
   const [savedStatus, setSavedStatus] = useState<'saved' | 'unsaved' | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -46,11 +49,18 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
 
   const activeCriteria = getActiveCriteria();
 
-  const updateCriteriaResult = (criteriaId: string, findings: string, status: 'checked' | 'not_checked' | 'not_applicable') => {
+  const updateCriteriaResult = (criteriaId: string, findings: any, status: 'checked' | 'not_checked' | 'not_applicable') => {
     setCriteriaResults(prevResults => ({
       ...prevResults,
       [criteriaId]: { findings, status }
     }));
+
+    setAuditResults(prevResults => {
+      const exists = prevResults.some(result => result.id === criteriaId);
+      if (exists) return prevResults;
+      return [...prevResults, { id: criteriaId, findings, status }];
+    })
+    console.log("auditResults", auditResults)
     setSavedStatus('unsaved');
   };
 
@@ -73,7 +83,7 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
     try {
       const { error } = await supabase
           .from('audits')
-          .update({ criteria_results: criteriaResults })
+          .update({ criteria_results: criteriaResults, auditResults: auditResults })
           .eq('id', auditData.id);
 
       if (error) throw error;
