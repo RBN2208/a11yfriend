@@ -9,7 +9,7 @@ export function getCriteriaLengths(conformance: 'A' | 'AA' | 'AAA'){
   return map[conformance];
 }
 
-export type WCAGCriteriaType = Pick<WCAGAuditFormType, 'id' | 'category' | 'guideLine' | 'name' | 'level' | 'referenceLink'>;
+export type WCAGCriteriaType = Pick<WCAGAuditFormType, 'id' | 'category' | 'guideLine' | 'name' | 'conformance' | 'referenceLink'>;
 
 export const WCAGCriterias: WCAGCriteriaType[] = [
   {
@@ -17,7 +17,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.1 – Text Alternatives',
     name: '1.1.1 Non-text Content',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#non-text-content',
   },
   {
@@ -25,7 +25,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.1 Audio-only and Video-only (prerecorded)',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#audio-only-and-video-only-prerecorded'
   },
   {
@@ -33,7 +33,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.2 Captions (Prerecorded)',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#captions-prerecorded'
   },
   {
@@ -41,7 +41,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.3 Audio Description or Media Alternative (Prerecorded)',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#audio-description-or-media-alternative-prerecorded'
   },
   {
@@ -49,7 +49,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.4 Captions (live)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#captions-live'
   },
   {
@@ -57,7 +57,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.5 Audio Description (Prerecorded)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#audio-description-prerecorded'
   },
   {
@@ -65,7 +65,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.6 Sign Language (Prerecorded)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#sign-language-prerecorded'
   },
   {
@@ -73,7 +73,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.7 Extended Audio Description (Prerecorded)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#extended-audio-description-prerecorded'
   },
   {
@@ -81,7 +81,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.8 Media Alternative (Prerecorded)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#media-alternative-prerecorded'
   },
   {
@@ -89,7 +89,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.2 – Time-based media',
     name: '1.2.9 Audio-only (live)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#audio-only-live'
   },
   {
@@ -97,7 +97,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.1 Info and Relationship',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationshipsd'
   },
   {
@@ -105,7 +105,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.2 Meaningful sequence',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#meaningful-sequence'
   },
   {
@@ -113,7 +113,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.3 Sensory characteristics',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#sensory-characteristics'
   },
   {
@@ -121,7 +121,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.4 Orientation',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#orientation'
   },
   {
@@ -129,7 +129,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.5 Identify Input Purpose',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#identify-input-purpose'
   },
   {
@@ -137,7 +137,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.6 Identify Purpose',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#identify-purpose'
   },
   {
@@ -145,7 +145,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.1 Use of color',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#use-of-color'
   },
   {
@@ -153,7 +153,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.2 Audio Control',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#audio-control'
   },
   {
@@ -161,7 +161,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.3 Contrast (minimum)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#contrast-minimum'
   },
   {
@@ -169,7 +169,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.4 Resize text',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#resize-text'
   },
   {
@@ -177,7 +177,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.5 Images of Text',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#images-of-text'
   },
   {
@@ -185,7 +185,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.6 Contrast (Enhanced)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#contrast-enhanced'
   },
   {
@@ -193,7 +193,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.7 Low or No Background Audio',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#low-or-no-background-audio'
   },
   {
@@ -201,7 +201,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.8 Visual Presentation',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#visual-presentation'
   },
   {
@@ -209,7 +209,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.9 Images of Text (no exception)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#images-of-text-no-exception'
   },
   {
@@ -217,7 +217,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.10 Reflow',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#reflow'
   },
   {
@@ -225,7 +225,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.11 Non-text Contrast',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#non-text-contrast'
   },
   {
@@ -233,7 +233,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.12 Text Spacing',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#text-spacing'
   },
   {
@@ -241,7 +241,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Perceivable",
     guideLine: 'Guideline 1.4 – Distinguishable',
     name: '1.4.13 Content on Hover or Focus',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#content-on-hover-or-focus'
   },
   {
@@ -249,7 +249,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.1 – Keyboard Accessible',
     name: '2.1.1 Keyboard',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#keyboard'
   },
   {
@@ -257,7 +257,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.1 – Keyboard Accessible',
     name: '2.1.2 No Keyboard Trap',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#no-keyboard-trap'
   },
   {
@@ -265,7 +265,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.1 – Keyboard Accessible',
     name: '2.1.3 Keyboard (No Exception)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#keyboard-no-exception'
   },
   {
@@ -273,7 +273,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.1 – Keyboard Accessible',
     name: '2.1.4 Character Key Shortcuts',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#character-key-shortcuts'
   },
   {
@@ -281,7 +281,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.2 – Enough Time',
     name: '2.2.1 Timing Adjustable',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#timing-adjustable'
   },
   {
@@ -289,7 +289,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.2 – Enough Time',
     name: '2.2.2 Pause, Stop, Hide',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#pause-stop-hide'
   },
   {
@@ -297,7 +297,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.2 – Enough Time',
     name: '2.2.3 No Timing',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#no-timing'
   },
   {
@@ -305,7 +305,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.2 – Enough Time',
     name: '2.2.4 Interruptions',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#interruptions'
   },
   {
@@ -313,7 +313,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.2 – Enough Time',
     name: '2.2.5 Re-Authenticating',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#re-authenticating'
   },
   {
@@ -321,7 +321,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.2 – Enough Time',
     name: '2.2.6 Timeouts',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#timeouts'
   },
   {
@@ -329,7 +329,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.3 – Seizures and Physical Reactions',
     name: '2.3.1 Three Flashes or Below Treshold',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#three-flashes-or-below-threshold'
   },
   {
@@ -337,7 +337,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.3 – Seizures and Physical Reactions',
     name: '2.3.2 Three Flashes',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#three-flashes'
   },
   {
@@ -345,7 +345,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.3 – Seizures and Physical Reactions',
     name: '2.3.3 Animation from Interactions',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#animation-from-interactions'
   },
   {
@@ -353,7 +353,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.1 Bypass Blocks',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#bypass-blocks'
   },
   {
@@ -361,7 +361,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.2 Page Titled',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#page-titled'
   },
   {
@@ -369,7 +369,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.3 Focus Order',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#focus-order'
   },
   {
@@ -377,7 +377,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.4 Link Purpose (In Context)',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#link-purpose-in-context'
   },
   {
@@ -385,7 +385,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.5 Multiple Ways',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#multiple-ways'
   },
   {
@@ -393,7 +393,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.6 Headings and Labels',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#headings-and-labels'
   },
   {
@@ -401,7 +401,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.7 Focus Visbible',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#focus-visible'
   },
   {
@@ -409,7 +409,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.8 Location',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#location'
   },
   {
@@ -417,7 +417,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.9 Link Purpose (Link-only)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#link-purpose-link-only'
   },
   {
@@ -425,7 +425,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.10 Section Headings',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#section-headings'
   },
   {
@@ -433,7 +433,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.11 Focus not Obscured (Minium)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#focus-not-obscured-minimum'
   },
   {
@@ -441,7 +441,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.12 Focus not Obscured (Enhanced)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#focus-not-obscured-enhanced'
   },
   {
@@ -449,7 +449,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.4 – Navigable',
     name: '2.4.13 Focus Appearance',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#focus-appearance'
   },
   {
@@ -457,7 +457,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.1 Pointer Gestures',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#pointer-gestures'
   },
   {
@@ -465,7 +465,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.2 Pointer Cancellation',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#pointer-cancellation'
   },
   {
@@ -473,7 +473,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.3 Label in Name',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#label-in-name'
   },
   {
@@ -481,7 +481,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.4 Motion Actuation',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#motion-actuation'
   },
   {
@@ -489,7 +489,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.5 Target Site (Enhanced)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#target-size-enhanced'
   },
   {
@@ -497,7 +497,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.6 Concurrent Input Mechanisms',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#concurrent-input-mechanisms'
   },
   {
@@ -505,7 +505,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.7 Dragging Movements',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#dragging-movements'
   },
   {
@@ -513,7 +513,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Operable",
     guideLine: 'Guideline 2.5 – Input Modalities',
     name: '2.5.8 Target Size (Minimum)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#target-size-minimum'
   },
   {
@@ -521,7 +521,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.1 – Readable',
     name: '3.1.1 Language of Page',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#language-of-page'
   },
   {
@@ -529,7 +529,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.1 – Readable',
     name: '3.1.2 Language of Parts',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#language-of-parts'
   },
   {
@@ -537,7 +537,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.1 – Readable',
     name: '3.1.3 Unusual Words',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#unusual-words'
   },
   {
@@ -545,23 +545,23 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.1 – Readable',
     name: '3.1.4 Abbreviations',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#abbreviations'
   },
   {
     id: '3-1-5-understandable',
     category: "Understandable",
     guideLine: 'Guideline 3.1 – Readable',
-    name: '3.1.5 Reading Level',
-    level: 'AAA',
-    referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#reading-level'
+    name: '3.1.5 Reading conformance',
+    conformance: 'AAA',
+    referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#reading-conformance'
   },
   {
     id: '3-1-6-understandable',
     category: "Understandable",
     guideLine: 'Guideline 3.1 – Readable',
     name: '3.1.6 Pronunciation',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#pronunciation'
   },
   {
@@ -569,7 +569,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.2 – Predictable',
     name: '3.2.1 On Focus',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#on-focus'
   },
   {
@@ -577,7 +577,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.2 – Predictable',
     name: '3.2.2 On Input',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#on-input'
   },
   {
@@ -585,7 +585,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.2 – Predictable',
     name: '3.2.3 Consistent Navigation',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#consistent-navigation'
   },
   {
@@ -593,7 +593,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.2 – Predictable',
     name: '3.2.4 Consistent Identification',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#consistent-identification'
   },
   {
@@ -601,7 +601,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.2 – Predictable',
     name: '3.2.5 Change on Request',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#change-on-request'
   },
   {
@@ -609,7 +609,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.2 – Predictable',
     name: '3.2.6 Consistent Help',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#consistent-help'
   },
   {
@@ -617,7 +617,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.1 Error Identification',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#error-identification'
   },
   {
@@ -625,7 +625,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.2 Labels or Instructions',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#labels-or-instructions'
   },
   {
@@ -633,7 +633,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.3 Error Suggestion',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#error-suggestion'
   },
   {
@@ -641,7 +641,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.4 Error Prevention (Legal, Financial, Data)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#error-prevention-legal-financial-data'
   },
   {
@@ -649,7 +649,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.5 Help',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#help'
   },
   {
@@ -657,7 +657,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.6 Error Prevention (all)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#error-prevention-all'
   },
   {
@@ -665,7 +665,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.7 Redundant Entry',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#redundant-entry'
   },
   {
@@ -673,7 +673,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.8 Accessible Authentication (Minimum)',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#accessible-authentication-minimum'
   },
   {
@@ -681,7 +681,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Understandable",
     guideLine: 'Guideline 3.3 – Input Assistance',
     name: '3.3.9 Accessible Authentication (Enhanced)',
-    level: 'AAA',
+    conformance: 'AAA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#accessible-authentication-enhanced'
   },
   {
@@ -689,7 +689,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Robust",
     guideLine: 'Guideline 4.1 – Compatible',
     name: '4.1.2 Name, Role, Value',
-    level: 'A',
+    conformance: 'A',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#name-role-value'
   },
   {
@@ -697,7 +697,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     category: "Robust",
     guideLine: 'Guideline 4.1 – Compatible',
     name: '4.1.3 Status Messages',
-    level: 'AA',
+    conformance: 'AA',
     referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#status-messages'
   }
 ]

@@ -7,10 +7,11 @@ import StarterKit from '@tiptap/starter-kit';
 import { TableKit } from '@tiptap/extension-table'
 
 import { MenuBar } from "@/components/tiptap/MenuBar";
+import {AuditResult} from "@/types/audit/types";
 
 
 type TiptapProps = {
-  data: string,
+  data: AuditResult['findings'],
   updateAction: (value: any) => void,
 }
 

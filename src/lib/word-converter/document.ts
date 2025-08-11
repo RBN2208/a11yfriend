@@ -1,4 +1,4 @@
-import {Document, Packer, Paragraph, TextRun} from "docx";
+import {Document, Packer} from "docx";
 import {saveAs} from "file-saver";
 import {SupaBaseAudit} from "@/types/audit/types";
 import {createCriteriaSection, createIntroSection} from "@/lib/word-converter/sections";
@@ -13,7 +13,7 @@ export function createWordDocument(auditData: SupaBaseAudit | undefined) {
     styles: DEFAULT_STYLES_CONFIG,
     sections: [
         createIntroSection(auditData),
-        createCriteriaSection(auditData.criteria_results)
+        createCriteriaSection(auditData.auditResults)
     ]
   });
 

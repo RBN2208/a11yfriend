@@ -151,3 +151,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+.AccordionTrigger[data-state="open"] {
+  @apply bg-gray-200;
+}

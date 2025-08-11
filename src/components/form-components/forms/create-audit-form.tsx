@@ -7,7 +7,7 @@ import {Form} from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import { AlertCircleIcon} from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { createAudit } from '@/actions/audit';
+import {createOrUpdateAudit} from '@/actions/audit';
 import {
     FormButton,
     InputElement,
@@ -17,7 +17,12 @@ import {
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {SupaBaseAudit} from "@/types/audit/types";
 
-export default function CreateAuditForm({auditData}: {auditData: SupaBaseAudit | undefined}) {
+type CreateAuditFormProps = {
+    auditData: SupaBaseAudit | undefined,
+    isEditModal: boolean
+}
+
+export default function CreateAuditForm(props: CreateAuditFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
@@ -26,22 +31,22 @@ export default function CreateAuditForm({auditData}: {auditData: SupaBaseAudit |
         reValidateMode: 'onBlur',
         mode: 'onBlur',
         defaultValues: {
-            name: auditData?.name || "",
-            description: auditData?.description || "",
-            status: auditData?.status || "draft",
-            customer: auditData?.customer || "",
-            project_name: auditData?.project_name || "",
-            module: auditData?.module || "",
-            version: auditData?.version || undefined,
-            conformance: auditData?.conformance || undefined,
-            miscellaneous: auditData?.miscellaneous || ''
+            name: props.auditData?.name || "",
+            description: props.auditData?.description || "",
+            status: props.auditData?.status || "draft",
+            customer: props.auditData?.customer || "",
+            project_name: props.auditData?.project_name || "",
+            module: props.auditData?.module || "",
+            version: props.auditData?.version || undefined,
+            conformance: props.auditData?.conformance || undefined,
+            miscellaneous: props.auditData?.miscellaneous || ''
         }
     })
 
     async function onSubmit(values: z.infer < typeof createAuditSchema > ) {
         setLoading(true);
         try {
-            const response = await createAudit(values);
+            const response = await createOrUpdateAudit(values, props.isEditModal ? props.auditData?.id : null);
 
             if (response.errors) {
                 response.errors.forEach(error => {
@@ -137,7 +142,7 @@ export default function CreateAuditForm({auditData}: {auditData: SupaBaseAudit |
 
                 <FormButton loading={loading}
                             loadingLabel="Creating audit"
-                            label={auditData ? 'Update' : 'Create'}
+                            label={props.auditData ? 'Update' : 'Create'}
                 />
 
                 {form.formState.errors && form.formState.errors.root &&

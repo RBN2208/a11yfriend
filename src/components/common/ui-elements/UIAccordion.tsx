@@ -3,13 +3,14 @@ import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/co
 
 type UISelectProps = {
   triggerLabel: string;
+  triggerMarkerClass?: string;
   children: React.ReactNode;
 }
-export default function UIAccordion({triggerLabel, children}: UISelectProps) {
+export default function UIAccordion({triggerLabel, triggerMarkerClass, children}: UISelectProps) {
   return (
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger className="font-bold">
+          <AccordionTrigger className={`AccordionTrigger px-4 font-bold ${triggerMarkerClass || ""}`}>
             {triggerLabel}
           </AccordionTrigger>
           <AccordionContent>

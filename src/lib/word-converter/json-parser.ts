@@ -1,5 +1,6 @@
 import {Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, BorderStyle, WidthType} from "docx";
-import { WCAGAuditFormTypeWithFindings } from "@/types/audit/types";
+import {SupaBaseAudit} from "@/types/audit/types";
+import {WCAGCriterias} from "@/staticData/criteria";
 
 /**
  * Renders a TipTap node to a docx Paragraph
@@ -120,10 +121,10 @@ function renderTextRun(node: any): TextRun {
 /**
  * Converts a WCAGAuditFormTypeWithFindings object to docx Paragraphs
  */
-export function convertFindingsToTables(results: WCAGAuditFormTypeWithFindings): Table[] {
+export function convertFindingsToTables(results: SupaBaseAudit['auditResults']): Table[] {
   const tables: Table[] = [];
 
-  Object.entries(results).forEach(([key, value]) => {
+  results.forEach((result) => {
     // Create a new table for each entry
     const tableRows: TableRow[] = [];
 
@@ -150,7 +151,7 @@ export function convertFindingsToTables(results: WCAGAuditFormTypeWithFindings):
             new TableCell({
               children: [
                 new Paragraph({
-                  text: key,
+                  text: result.id,
                   indent: {
                     left: 100
                   },
@@ -184,7 +185,7 @@ export function convertFindingsToTables(results: WCAGAuditFormTypeWithFindings):
             new TableCell({
               children: [
                 new Paragraph({
-                  text: value.status,
+                  text: result.status,
                   indent: {
                     left: 100
                   }
@@ -216,9 +217,9 @@ export function convertFindingsToTables(results: WCAGAuditFormTypeWithFindings):
     // Process findings content
     const findingsParagraph: Paragraph[] = [];
     try {
-      if (value.findings && value.findings.content && Array.isArray(value.findings.content)) {
+      if (result.findings && result.findings.content) {
         // Convert each content item to paragraphs
-        const findingsParagraphs = value.findings.content
+        const findingsParagraphs = result.findings.content
           .filter((item: any) => item !== null && item !== undefined)
           .map((item: any) => {
             try {

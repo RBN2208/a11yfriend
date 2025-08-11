@@ -1,5 +1,5 @@
 import {Header, ISectionOptions, Paragraph, HeadingLevel, TextRun} from "docx";
-import {SupaBaseAudit, WCAGAuditFormTypeWithFindings} from "@/types/audit/types";
+import { SupaBaseAudit } from "@/types/audit/types";
 import {convertFindingsToTables} from "@/lib/word-converter/json-parser";
 
 export function createIntroSection(audit: SupaBaseAudit): ISectionOptions {
@@ -99,9 +99,8 @@ export function createIntroSection(audit: SupaBaseAudit): ISectionOptions {
 }
 
 
-export function createCriteriaSection(results: any): ISectionOptions {
-  const transformedResults = results as WCAGAuditFormTypeWithFindings;
-  const tables = convertFindingsToTables(transformedResults);
+export function createCriteriaSection(results: SupaBaseAudit['auditResults']): ISectionOptions {
+  const tables = convertFindingsToTables(results);
   return {
     children: tables,
   }

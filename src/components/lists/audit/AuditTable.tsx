@@ -41,7 +41,7 @@ export function AuditTable<TData, TValue>({columns, data}: DataTableProps<TData,
           </Label>
         </VisuallyHidden>
         <Input id="searchAuditsInput" placeholder="Search audits" />
-        <CreateAuditModal />
+        <CreateAuditModal isEditModal={false}/>
       </div>
       <div className="rounded-md border">
         <Table>

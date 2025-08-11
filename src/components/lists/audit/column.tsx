@@ -34,7 +34,6 @@ export const columns: ColumnDef<SupaBaseAudit>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      console.log(row)
       return (
         <div className="flex justify-start items-center gap-2 h-8">
           <Link className={buttonVariants({ variant: "outline", size: "icon" })}
@@ -43,13 +42,13 @@ export const columns: ColumnDef<SupaBaseAudit>[] = [
           >
             <View />
           </Link>
-          <CreateAuditModal triggerAsEditIcon auditData={row.original} />
+          <CreateAuditModal isEditModal={true} auditData={row.original} />
           <ExportAuditModal auditData={row.original} />
           <Separator orientation="vertical" />
           <DeleteAuditModal auditId={row.original.id} auditName={row.original.name} />
           <Separator orientation="vertical" />
           <TypographyP aria-label="Completed criteria:" className="m-0">
-            { Object.keys(row.original.criteria_results).length } / {getCriteriaLengths(row.original.conformance)}
+            { row.original.auditResults.filter(result => result.status === 'checked').length } / {getCriteriaLengths(row.original.conformance)}
           </TypographyP>
         </div>
       )

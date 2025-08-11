@@ -5,7 +5,9 @@ import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
 import { createAuditSchema } from '@/utils/validations/zod-schema';
 import {ApiValidationResponse} from "@/types/auth/types";
-import {SupaBaseAudit} from "@/types/audit/types";
+import {AuditResult, SupaBaseAudit} from "@/types/audit/types";
+import {getCriteriasForSelectedConformanceLevel} from "@/lib/utils";
+import {PostgrestError} from "@supabase/supabase-js";
 
 type AuditResponse = {
   ok: boolean;
@@ -16,7 +18,33 @@ type AuditResponse = {
   message?: string;
 };
 
-export async function createAudit(values: z.infer < typeof createAuditSchema > ): Promise<AuditResponse> {
+/**
+ * Creates a default set of audit results for all criteria corresponding to a specific conformance level.
+ * This method initializes each audit result with default values including an "id", "name", "conformance level",
+ * "status", and empty "findings". These results are intended to be filtered or adjusted on the client side
+ * to accommodate changes in audit settings.
+ *
+ * @return {AuditResult[] | any[]} An array of audit result objects with default values for all criteria.
+ */
+function createAuditResultsDefault(): AuditResult[] | any[] {
+  const criteriasForConformance = getCriteriasForSelectedConformanceLevel('AAA');
+  const auditResults: any[] = [];
+
+  criteriasForConformance.forEach(criteria => {
+    const baseResultEntry: AuditResult = {
+      id: criteria.id,
+      name: criteria.name,
+      conformance: criteria.conformance,
+      status: "not_checked",
+      findings: null,
+    };
+    auditResults.push(baseResultEntry);
+  })
+
+  return auditResults;
+}
+
+export async function createOrUpdateAudit(values: z.infer < typeof createAuditSchema >, auditId: string | null = null ): Promise<AuditResponse> {
   try {
     const validationResult = createAuditSchema.safeParse(values);
 
@@ -69,9 +97,25 @@ export async function createAudit(values: z.infer < typeof createAuditSchema > )
     const supabase = await createClient();
     const client = await supabase.auth.getUser();
 
-    const updatedFormData = {...values, user_id: client.data.user?.id || ""};
+    const updatedFormData = {
+      ...values,
+      user_id: client.data.user?.id || "",
+      auditResults: createAuditResultsDefault()
+    };
 
-    const { error } = await supabase.from('audits').insert([updatedFormData]);
+    let error: PostgrestError | null;
+
+    if (auditId === null) {
+      const response = await supabase.from('audits').insert([updatedFormData]);
+      error = response.error;
+    } else {
+      const response = await supabase
+          .from('audits')
+          .update(values)
+          .eq('id', auditId);
+      error = response.error;
+    }
+
     if (error) {
       return {
         ok: false,
@@ -125,6 +169,29 @@ export async function getAudits(limit: number = 5): Promise<ApiValidationRespons
     success: true,
     error: null,
     data: audits as SupaBaseAudit[]
+  }
+}
+
+export async function updateAuditResults(data: AuditResult[], auditId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase
+      .from('audits')
+      .update({ auditResults: data })
+      .eq('id', auditId);
+
+  if (error) {
+    return {
+      success: false,
+      error: {
+        field: 'root',
+        message: "Sorry, we couldn't update your audit. Please try again.",
+      }
+    }
+  }
+
+  return {
+    success: true,
+    error: null
   }
 }
 
