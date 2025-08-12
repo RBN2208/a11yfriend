@@ -13,6 +13,7 @@ export interface SupaBaseAudit {
   conformance: 'A' | 'AA' | 'AAA'
   miscellaneous: string
   auditResults: AuditResult[]
+  images: DragAndDropImageFile[] | []
 }
 
 export type AuditResult = {
@@ -20,7 +21,7 @@ export type AuditResult = {
   name: string
   conformance: 'A' | 'AA' | 'AAA'
   status: 'checked' | 'not_checked' | 'not_applicable' | 'failed'
-  findings: TipTapContentType | null
+  findings: TipTapContentType | null,
 }
 
 export type WCAGAuditFormType = {
@@ -45,3 +46,11 @@ type TipTapContentType = {
     level: number
   } | {}
 }
+
+
+export type DragAndDropImageFile = {
+  id: string;
+  name: string;
+  preview: string;
+  file?: File;
+};

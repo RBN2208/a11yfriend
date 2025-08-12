@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
 import { createAuditSchema } from '@/utils/validations/zod-schema';
 import {ApiValidationResponse} from "@/types/auth/types";
-import {AuditResult, SupaBaseAudit} from "@/types/audit/types";
+import {AuditResult, DragAndDropImageFile, SupaBaseAudit} from "@/types/audit/types";
 import {getCriteriasForSelectedConformanceLevel} from "@/lib/utils";
 import {PostgrestError} from "@supabase/supabase-js";
 
@@ -171,6 +171,82 @@ export async function getAudits(limit: number = 5): Promise<ApiValidationRespons
     data: audits as SupaBaseAudit[]
   }
 }
+
+export async function deleteImageFromStorage(auditId: string, name: string) {
+  const supabase = await createClient();
+  const filePath = `${auditId}/${name}`;
+  await supabase.storage.from('images').remove([filePath]);
+
+  const audit = await getAudit(auditId);
+  const updatedAudit = {
+    ...audit.data,
+    images: audit.data?.images.filter((image) => image.name !== name)
+  }
+  await supabase
+      .from('audits')
+      .update([updatedAudit])
+      .eq('id', auditId);
+
+}
+
+export async function uploadImagesToStorage(auditId: string, images: DragAndDropImageFile[]) {
+  const supabase = await createClient();
+
+  let uploadError;
+
+  // upload each image and replace preview key with public image url
+  const withPublicUrl = await Promise.all(images.map(async image => {
+    if (image.file) {
+      const { error, data } = await supabase
+          .storage
+          .from('images')
+          .upload(`${auditId}/${image.name}`, image.file);
+
+      if (data) {
+        const response = supabase.storage.from('images').getPublicUrl(data.path);
+        image.preview = response.data.publicUrl;
+      }
+      uploadError = error;
+      return image;
+    }
+  }))
+
+  if (uploadError) {
+    return {
+      success: false,
+      error: {
+        field: 'root',
+        message: "Sorry, we couldn't upload your images. Please try again.",
+      }
+    }
+  }
+
+  // save transformed images to audit
+  const audit = await getAudit(auditId);
+  const updatedAudit = {
+    ...audit.data,
+    images: withPublicUrl
+  }
+  const updateResponse = await supabase
+      .from('audits')
+      .update([updatedAudit])
+      .eq('id', auditId);
+
+  if (updateResponse) {
+    return {
+      success: false,
+      error: {
+        field: 'root',
+        message: "Sorry, we couldn't save the images to your audit. Please try again.",
+      }
+    }
+  }
+  return {
+    success: true,
+    error: null
+  }
+}
+
 
 export async function updateAuditResults(data: AuditResult[], auditId: string) {
   const supabase = await createClient();

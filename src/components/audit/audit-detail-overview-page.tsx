@@ -2,12 +2,13 @@
 import {AuditResult, SupaBaseAudit} from "@/types/audit/types";
 import React, {useState} from "react";
 import AuditFindingsForm from "@/components/audit/audit-findings-form";
+import AuditImageViewUploadForm from "@/components/audit/audit-image-view-upload-form";
 import UIAccordion from "@/components/common/ui-elements/UIAccordion";
 import {Loader2} from "lucide-react";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {updateAuditResults} from "@/actions/audit";
 import {getCriteriasForSelectedConformanceLevel} from "@/lib/utils";
-import {TypographyH2, TypographyH4, TypographyP} from "@/components/typography/typography-elements";
+import {TypographyH2, TypographyP} from "@/components/typography/typography-elements";
 
 interface AuditDetailOverviewPageProps {
   audit: SupaBaseAudit;
@@ -29,10 +30,9 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
     );
   };
 
-  async function handleSave() {
+  const handleSave = async () => {
     await saveToSupabase(auditResultFormData, audit.id)
   }
-
 
   const saveToSupabase = async (data: AuditResult[], auditId: string) => {
     setIsSaving(true);
@@ -49,10 +49,10 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
       }, 1000)
     }
   };
-
+console.log(audit)
   return (
       <>
-        <div className="mb-4">
+        <div>
           <TypographyH2>
             {audit.name}
           </TypographyH2>
@@ -89,7 +89,15 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
             </div>
           </UIAccordion>
         </div>
-        <div className="w-full flex justify-end mb-4">
+        <div className="mb-4">
+          <UIAccordion triggerLabel="Images">
+            <AuditImageViewUploadForm
+                images={audit.images}
+                auditId={audit.id}
+            />
+          </UIAccordion>
+        </div>
+        <div className="w-full flex justify-end gap-4 mb-4">
           <Button disabled={isSaving || !hasUpdated}
                   className="relative w-max"
                   variant="outline"
