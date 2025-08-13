@@ -53,4 +53,24 @@ export type DragAndDropImageFile = {
   name: string;
   preview: string;
   file?: File;
+  uploadStatus?: 'idle' | 'uploading' | 'success' | 'error';
 };
+
+export type AuditResponse = {
+  ok: boolean;
+  errors?: {
+    field: 'name' | 'description' | 'status' | 'customer' | 'project_name' | 'module' | 'version' | 'conformance' | 'miscellaneous' | 'root';
+    errors: string[];
+  }[];
+  message?: string;
+};
+
+export type AuditApiResponse<T = any> = {
+  success: boolean;
+  errors?: {
+    field: string;
+    errors: string[];
+  }[],
+  message?: string;
+  data?: T | null;
+}

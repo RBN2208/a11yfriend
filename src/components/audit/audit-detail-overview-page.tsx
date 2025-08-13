@@ -49,7 +49,7 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
       }, 1000)
     }
   };
-console.log(audit)
+//console.log(audit)
   return (
       <>
         <div>

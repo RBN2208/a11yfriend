@@ -189,43 +189,14 @@ export async function deleteImageFromStorage(auditId: string, name: string) {
 
 }
 
-export async function uploadImagesToStorage(auditId: string, images: DragAndDropImageFile[]) {
+export async function mergeImagesToAudit(auditId: string, images: DragAndDropImageFile[]) {
   const supabase = await createClient();
-
-  let uploadError;
-
-  // upload each image and replace preview key with public image url
-  const withPublicUrl = await Promise.all(images.map(async image => {
-    if (image.file) {
-      const { error, data } = await supabase
-          .storage
-          .from('images')
-          .upload(`${auditId}/${image.name}`, image.file);
-
-      if (data) {
-        const response = supabase.storage.from('images').getPublicUrl(data.path);
-        image.preview = response.data.publicUrl;
-      }
-      uploadError = error;
-      return image;
-    }
-  }))
-
-  if (uploadError) {
-    return {
-      success: false,
-      error: {
-        field: 'root',
-        message: "Sorry, we couldn't upload your images. Please try again.",
-      }
-    }
-  }
 
   // save transformed images to audit
   const audit = await getAudit(auditId);
   const updatedAudit = {
     ...audit.data,
-    images: withPublicUrl
+    images: [...images]
   }
   const updateResponse = await supabase
       .from('audits')
@@ -244,6 +215,66 @@ export async function uploadImagesToStorage(auditId: string, images: DragAndDrop
   return {
     success: true,
     error: null
+  }
+}
+
+export async function uploadImagesToStorage(auditId: string, image: DragAndDropImageFile) {
+  const supabase = await createClient();
+
+  const { data: imageExists } = await supabase.storage
+      .from("images")
+      .exists( `${auditId}/${image.name}`);
+
+  if (imageExists) {
+    return {
+      success: false,
+      data: image,
+      error: ["Image already exists, please try again later."],
+    }
+  }
+
+  if (image.file !== undefined) {
+    const { error, data } = await supabase
+        .storage
+        .from('images')
+        .upload(`${auditId}/${image.name}`, image.file);
+
+
+    if (data) {
+      const { data: { publicUrl }} = supabase.storage.from('images').getPublicUrl(data.path);
+      image.preview = publicUrl;
+      image.uploadStatus = 'success';
+    }
+
+    if (error) {
+      image.uploadStatus = 'error';
+    }
+
+    console.log("TRANSFORMED IMAGE: ", image,)
+    return {
+      success: error === null,
+      data: {
+        id: image.id,
+        name: image.name,
+        preview: image.preview,
+        uploadStatus: image.uploadStatus
+      },
+      error: error ? [error.message] : null,
+    }
+  }
+
+  if (image.file === undefined) {
+    return {
+      success: false,
+      data: image,
+      error: ["Could not read image file, please try again later."],
+    }
+  }
+
+  return {
+    success: false,
+    data: image,
+    error: ["An unexpected error occurred, please try again later."],
   }
 }
 
