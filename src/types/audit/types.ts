@@ -64,13 +64,3 @@ export type AuditResponse = {
   }[];
   message?: string;
 };
-
-export type AuditApiResponse<T = any> = {
-  success: boolean;
-  errors?: {
-    field: string;
-    errors: string[];
-  }[],
-  message?: string;
-  data?: T | null;
-}

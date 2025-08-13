@@ -1,11 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, {useState} from 'react'
 import {Button} from "@/components/shadcn-components/ui/button";
 import { Trash2} from "lucide-react";
-import {deleteAudit} from "@/actions/audit";
 import {useRouter} from "next/navigation";
 import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
+import {deleteAudit} from "@/actions/audit/actions";
+import {toast} from "sonner";
 
 interface AuditMenuProps {
   auditId: string
@@ -13,17 +14,25 @@ interface AuditMenuProps {
 }
 
 export default function DeleteAuditModal({ auditId, auditName }: AuditMenuProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const handleDelete = async () => {
-    const response = await deleteAudit(auditId);
-    router.refresh();
-    // TODO handle response (loading state, error state, success state)
+    const { success, globalError, message } = await deleteAudit(auditId);
+    if (success) {
+      toast.success(message);
+      router.refresh();
+      setIsOpen(false);
+    } else {
+      toast.error(globalError);
+    }
   }
 
   return (
       <DialogWrapper
           title="Delete audit?"
+          open={isOpen}
+          onOpenChange={setIsOpen}
           description={"This action cannot be undone."}
           dialogAction={<Button onClick={handleDelete}>Delete Audit</Button>}
           dialogTrigger={

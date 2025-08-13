@@ -1,13 +1,14 @@
 'use client'
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {DragAndDropField} from "@/components/form-components/drag-and-drop/drag-and-drop-field";
 import {DragAndDropImageFile, SupaBaseAudit} from "@/types/audit/types";
 import {Ban, CircleCheck, Loader2, ScanSearch, TriangleAlert, UploadCloud, X} from "lucide-react";
-import {deleteImageFromStorage, mergeImagesToAudit, uploadImagesToStorage} from "@/actions/audit";
 import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {useRouter} from "next/navigation";
+import {deleteImage, mergeImagesToAudit, uploadImage} from "@/actions/images/actions";
+import {toast} from "sonner";
 
 interface AuditImageViewUploadFormProps {
   auditId: string,
@@ -54,8 +55,12 @@ export default function AuditImageViewUploadForm(props: AuditImageViewUploadForm
       }
       return prev.filter(img => img.id !== id);
     });
-    const response = await deleteImageFromStorage(props.auditId, name)
-    console.log(response, props.auditId, id);
+    const response = await deleteImage(props.auditId, name);
+    if (response.success) {
+      toast.success(response.message);
+    } else {
+      toast.error(response.globalError);
+    }
   };
 
   const uploadImages = async () => {
@@ -75,7 +80,7 @@ export default function AuditImageViewUploadForm(props: AuditImageViewUploadForm
 
         if (image.file && image.uploadStatus !== 'success') {
           try {
-            const transformedImage = await uploadImagesToStorage(props.auditId, image);
+            const transformedImage = await uploadImage(props.auditId, image);
 
             currentImages = currentImages.map(img =>
                 img.id === image.id ?
@@ -106,14 +111,17 @@ export default function AuditImageViewUploadForm(props: AuditImageViewUploadForm
         uploadStatus: img.uploadStatus
       }));
 
-      await mergeImagesToAudit(props.auditId, updatedImages);
+      const { success, message, globalError } = await mergeImagesToAudit(props.auditId, updatedImages);
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(globalError);
+      }
     } catch (error) {
-      console.error("Error in upload process:", error);
-
+      toast.error("Error in upload process. Please try again later.");
       currentImages = currentImages.map(img =>
           img.uploadStatus === 'uploading' ? { ...img, uploadStatus: 'error' } : img
       );
-
       setImages(currentImages);
     } finally {
       setTimeout(() => {
@@ -128,7 +136,7 @@ export default function AuditImageViewUploadForm(props: AuditImageViewUploadForm
 
   return (
     <>
-      <div className="grid grid-cols-12 gap-4 mt-4 mx-auto w-[90%]">
+      <div className="grid grid-cols-12 gap-4 mt-4 mx-auto w-full">
         <div className="col-span-10 space-y-4">
           <DragAndDropField
               action={handleNewDataDrop}

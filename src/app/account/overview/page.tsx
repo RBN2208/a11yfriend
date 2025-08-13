@@ -1,12 +1,7 @@
-import { getAudits } from '@/actions/audit';
-import { AuditTable } from '@/components/lists/audit/AuditTable';
-import { columns } from '@/components/lists/audit/column';
-import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
-import {AlertCircleIcon, CheckCircle2Icon} from "lucide-react";
-import {TypographyList} from "@/components/typography/typography-elements";
+import {getAudit} from "@/actions/audit/actions";
 
 export default async function OverviewPage() {
-  const response = await getAudits(5);
+  const response = await getAudit(null,5);
   if (!response.data) return null;
 
   const audits = response.data;

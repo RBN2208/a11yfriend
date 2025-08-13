@@ -1,129 +1,116 @@
-import {DragAndDropImageFile} from "@/types/audit/types";
+'use server'
+import {DragAndDropImageFile, SupaBaseAudit} from "@/types/audit/types";
 import {createClient} from "@/utils/supabase/server";
-import {getAudit} from "@/actions/audit";
+import {ApiResponse} from "@/types/api/types";
+import {createApiResponse, getAudit} from "@/actions/audit/actions";
 
 const STORAGE_BUCKET_NAME = "images";
 
-export async function uploadImage(auditId: string, images: DragAndDropImageFile[]) {
+export async function mergeImagesToAudit(auditId: string, images: DragAndDropImageFile[]): Promise<ApiResponse> {
   const supabase = await createClient();
 
-  // Process each image individually to handle errors properly
-  const processedImages: DragAndDropImageFile[] = [];
-  const errors: Error[] = [];
-
-  // Process images sequentially to better handle errors
-  for (const image of images) {
-    try {
-      // Skip images without a file
-      if (!image.file) {
-        continue;
-      }
-
-      const IMAGE_PATH = `${auditId}/${image.name}`;
-
-      // Check if image already exists
-      const { data: imageExists } = await supabase.storage
-        .from(STORAGE_BUCKET_NAME)
-        .exists(IMAGE_PATH);
-
-      // If image exists, get its public URL
-      if (imageExists) {
-        const { data } = supabase.storage
-          .from(STORAGE_BUCKET_NAME)
-          .getPublicUrl(IMAGE_PATH);
-
-        // Create a new image object instead of mutating the original
-        processedImages.push({
-          ...image,
-          preview: data.publicUrl
-        });
-        continue;
-      }
-
-      // Upload new image
-      const { error: storageError, data: imageData } = await supabase.storage
-        .from(STORAGE_BUCKET_NAME)
-        .upload(IMAGE_PATH, image.file);
-
-      if (storageError) {
-        errors.push(storageError);
-        continue;
-      }
-
-      if (imageData) {
-        const { data } = supabase.storage
-          .from(STORAGE_BUCKET_NAME)
-          .getPublicUrl(imageData.path);
-
-        // Create a new image object instead of mutating the original
-        processedImages.push({
-          ...image,
-          preview: data.publicUrl
-        });
-      }
-    } catch (error) {
-      errors.push(error instanceof Error ? error : new Error('Unknown error during image processing'));
-    }
+  // save transformed images to audit
+  const audit = await getAudit(auditId);
+  const updatedAudit = {
+    ...audit.data,
+    images: [...images]
   }
+  const { data: updateData, error: updateError} = await supabase
+    .from('audits')
+    .update([updatedAudit])
+    .eq('id', auditId);
 
-  // Return error if any uploads failed
-  if (errors.length > 0) {
-    return {
+  if (updateError) {
+    return createApiResponse({
       success: false,
-      error: {
-        field: 'root',
-        message: "Sorry, we couldn't upload some of your images. Please try again.",
-      }
-    };
+      globalError: "Sorry, we couldn't save the images to your audit. Please try again."
+    })
   }
 
-  try {
-    // Get current audit data
-    const audit = await getAudit(auditId);
+  return createApiResponse({
+    success: true,
+    message: "Images uploaded successfully",
+  })
+}
 
-    if (!audit.data) {
-      return {
-        success: false,
-        error: {
-          field: 'root',
-          message: "Could not find the audit to update with images.",
-        }
-      };
-    }
+export async function uploadImage(auditId: string, image: DragAndDropImageFile): Promise<ApiResponse> {
+  const supabase = await createClient();
 
-    // Update audit with processed images
-    const updatedAudit = {
-      ...audit.data,
-      images: processedImages
-    };
+  const FILE_PATH = `${auditId}/${image.name}`;
+  const {data: imageExists} = await supabase.storage
+    .from(STORAGE_BUCKET_NAME)
+    .exists(FILE_PATH);
 
-    // Save to database
-    const { error: updateError } = await supabase
-      .from('audits')
-      .update([updatedAudit])
-      .eq('id', auditId);
-
-    if (updateError) {
-      return {
-        success: false,
-        error: {
-          field: 'root',
-          message: "Sorry, we couldn't save the images to your audit. Please try again.",
-        }
-      };
-    }
-
-    return {
-      success: true,
-      error: null
-    };
-  } catch (error) {
-    return {
+  if (imageExists) {
+    return createApiResponse({
       success: false,
-      error: {
-        field: 'root',
-        message: "An error occurred while updating the audit with images.",
-      }
-    };
+      data: image,
+      globalError: "Image already exists, please try again later."
+    })
   }
+
+  if (image.file !== undefined) {
+    const {error, data} = await supabase
+      .storage
+      .from('images')
+      .upload(`${auditId}/${image.name}`, image.file);
+
+
+    if (data) {
+      const {data: {publicUrl}} = supabase.storage.from('images').getPublicUrl(data.path);
+      image.preview = publicUrl;
+      image.uploadStatus = 'success';
+    }
+
+    if (error) {
+      image.uploadStatus = 'error';
+    }
+
+    return createApiResponse({
+      success: error === null,
+      data: {
+        id: image.id,
+        name: image.name,
+        preview: image.preview,
+        uploadStatus: image.uploadStatus
+      },
+      globalError: error?.message || "Sorry, we couldn't upload your image. Please try again."
+    })
+  }
+
+  return createApiResponse({
+    success: false,
+    data: image,
+    globalError: "An unexpected error occurred, please try again later."
+  })
+}
+
+export async function deleteImage(auditId: string, name: string): Promise<ApiResponse> {
+  const supabase = await createClient();
+  const filePath = `${auditId}/${name}`;
+  await supabase.storage.from('images').remove([filePath]);
+
+  const response = await getAudit(auditId);
+  const audit = response.data as SupaBaseAudit;
+
+  const updatedAudit = {
+    ...audit,
+    images: audit?.images.filter((image) => image.name !== name)
+  }
+  const {data: deleteData, error: deleteError} = await supabase
+    .from('audits')
+    .update([updatedAudit])
+    .eq('id', auditId);
+
+  if (deleteError) {
+    return createApiResponse({
+      success: false,
+      globalError: "Sorry, we couldn't delete your image. Please try again."
+    })
+  }
+
+  return createApiResponse({
+    success: true,
+    message: "Image deleted successfully",
+  })
 }

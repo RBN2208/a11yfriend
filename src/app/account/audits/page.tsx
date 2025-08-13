@@ -1,13 +1,14 @@
-import { getAudits } from '@/actions/audit';
 import { AuditTable } from '@/components/lists/audit/AuditTable';
 import { columns } from '@/components/lists/audit/column';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/shadcn-components/ui/card';
+import {getAudit} from "@/actions/audit/actions";
+import {SupaBaseAudit} from "@/types/audit/types";
 
 export default async function AuditsPage() {
-  const response = await getAudits(20);
+  const response = await getAudit(null, 20);
   if (!response.data) return null;
 
-  const audits = response.data;
+  const audits = response.data as SupaBaseAudit[];
 
   return (
     <div>

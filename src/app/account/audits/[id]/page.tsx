@@ -1,5 +1,6 @@
-import { getAudit } from '@/actions/audit';
+import {getAudit} from "@/actions/audit/actions";
 import AuditDetailOverviewPage from "@/components/audit/audit-detail-overview-page";
+import {SupaBaseAudit} from "@/types/audit/types";
 
 export default async function AuditsDetailPage({params}: { params: Promise<{ id: string }> }) {
   const pageParams = await params;
@@ -12,7 +13,7 @@ export default async function AuditsDetailPage({params}: { params: Promise<{ id:
     </div>
   )
 
-  const audit = response.data;
+  const audit = response.data as SupaBaseAudit;
 
   return (
       <>

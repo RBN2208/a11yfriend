@@ -6,9 +6,10 @@ import AuditImageViewUploadForm from "@/components/audit/audit-image-view-upload
 import UIAccordion from "@/components/common/ui-elements/UIAccordion";
 import {Loader2} from "lucide-react";
 import {Button} from "@/components/shadcn-components/ui/button";
-import {updateAuditResults} from "@/actions/audit";
+import {updateAuditResults} from "@/actions/audit/actions";
 import {getCriteriasForSelectedConformanceLevel} from "@/lib/utils";
 import {TypographyH2, TypographyP} from "@/components/typography/typography-elements";
+import {toast} from "sonner";
 
 interface AuditDetailOverviewPageProps {
   audit: SupaBaseAudit;
@@ -38,9 +39,13 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
     setIsSaving(true);
     try {
       const response = await updateAuditResults(data, auditId);
-      if (response.error) throw response.error;
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.globalError);
+      }
     } catch (error) {
-      // TODO: how to display errors here?
+      toast.error("Error saving audit. Please try again later.");
       console.error(error);
     } finally {
       setTimeout(() => {
@@ -49,7 +54,7 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
       }, 1000)
     }
   };
-//console.log(audit)
+
   return (
       <>
         <div>

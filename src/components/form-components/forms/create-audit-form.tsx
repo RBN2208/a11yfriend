@@ -1,13 +1,12 @@
 "use client"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import {useForm} from "react-hook-form"
+import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { createAuditSchema } from "@/utils/validations/zod-schema";
+import {createAuditSchema} from "@/utils/validations/zod-schema";
 import {Form} from "@/components/shadcn-components/ui/form"
-import React, { useState } from 'react';
-import { AlertCircleIcon} from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import {createOrUpdateAudit} from '@/actions/audit';
+import React, {useState} from 'react';
+import {AlertCircleIcon} from 'lucide-react';
+import {useRouter} from 'next/navigation';
 import {
     FormButton,
     InputElement,
@@ -16,17 +15,31 @@ import {
 } from "@/components/form-components/elements/form-elements";
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {SupaBaseAudit} from "@/types/audit/types";
+import {createAudit, updateAudit} from "@/actions/audit/actions";
+import {toast} from "sonner";
 
 type CreateAuditFormProps = {
     auditData: SupaBaseAudit | undefined,
-    isEditModal: boolean
+    isEditModal: boolean,
+    callbackAction?: () => void,
 }
 
+const VERSION_OPTIONS = [
+    {label: 'v2.0', value: '2.0'},
+    {label: 'v2.1', value: '2.1'},
+    {label: 'v2.2', value: '2.2'},
+]
+
+const CONFORMANCE_OPTIONS = [
+    {label: 'A', value: 'A'},
+    {label: 'AA', value: 'AA'},
+    {label: 'AAA', value: 'AAA'},
+]
+
 export default function CreateAuditForm(props: CreateAuditFormProps) {
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const form = useForm < z.infer < typeof createAuditSchema >> ({
+    const form = useForm<z.infer<typeof createAuditSchema>>({
         resolver: zodResolver(createAuditSchema),
         reValidateMode: 'onBlur',
         mode: 'onBlur',
@@ -43,38 +56,36 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
         }
     })
 
-    async function onSubmit(values: z.infer < typeof createAuditSchema > ) {
+    async function onSubmit(values: z.infer<typeof createAuditSchema>) {
         setLoading(true);
         try {
-            const response = await createOrUpdateAudit(values, props.isEditModal ? props.auditData?.id : null);
+            const response = props.isEditModal ?
+                await updateAudit(values, props.auditData?.id || "") :
+                await createAudit(values);
 
             if (response.errors) {
                 response.errors.forEach(error => {
-                    form.setError(error.field, { message: error.errors[0] })
+                    form.setError(
+                        error.field as keyof z.infer<typeof createAuditSchema>,
+                        {message: error.error}
+                    )
                 })
+                toast.error(response.globalError, {
+                    description: response.message
+                });
             }
 
-            if (response.ok) {
-                router.push('/account/audits');
+            if (response.success) {
+                toast.success(response.message);
+                props.callbackAction && props.callbackAction();
             }
         } catch (error) {
-            form.setError('root', error || "")
+            form.setError('root', error || "");
+            toast.error("Sorry, something went wrong. Please try again later.")
         } finally {
             setLoading(false);
         }
     }
-
-    const VERSION_OPTIONS = [
-        {label: 'v2.0', value: '2.0'},
-        {label: 'v2.1', value: '2.1'},
-        {label: 'v2.2', value: '2.2'},
-    ]
-
-    const CONFORMANCE_OPTIONS = [
-        {label: 'A', value: 'A'},
-        {label: 'AA', value: 'AA'},
-        {label: 'AAA', value: 'AAA'},
-    ]
 
     return (
         <Form {...form}>
@@ -149,7 +160,7 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
                     <AlertWrapper
                         title="Sorry, we could not create your audit"
                         variant="destructive"
-                        icon={<AlertCircleIcon />}
+                        icon={<AlertCircleIcon/>}
                     >
                         {form.formState.errors.root.message}
                     </AlertWrapper>

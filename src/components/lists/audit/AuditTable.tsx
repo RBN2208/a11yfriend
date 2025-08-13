@@ -16,9 +16,9 @@ import {
   TableRow,
 } from "@/components/shadcn-components/ui/table"
 import CreateAuditModal from '@/components/modals/create-audit-modal';
-import { Input } from '@/components/shadcn-components/ui/input';
-import { Label } from '@/components/shadcn-components/ui/label';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import {Input} from '@/components/shadcn-components/ui/input';
+import {Label} from '@/components/shadcn-components/ui/label';
+import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -40,7 +40,7 @@ export function AuditTable<TData, TValue>({columns, data}: DataTableProps<TData,
             Search audits
           </Label>
         </VisuallyHidden>
-        <Input id="searchAuditsInput" placeholder="Search audits" />
+        <Input id="searchAuditsInput" placeholder="Search audits"/>
         <CreateAuditModal isEditModal={false}/>
       </div>
       <div className="rounded-md border">

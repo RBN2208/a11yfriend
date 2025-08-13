@@ -25,13 +25,15 @@ type DialogWrapperProps = {
   dialogTrigger?: React.ReactNode;
   dialogAction?: React.ReactNode;
   dialogClose?: React.ReactNode;
-  dialogSize?: string
+  dialogSize?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export default function DialogWrapper(props: DialogWrapperProps) {
 
   return (
-    <Dialog>
+    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       {
         props.dialogTrigger &&
           <DialogTrigger asChild>
