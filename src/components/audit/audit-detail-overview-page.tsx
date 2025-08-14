@@ -10,6 +10,7 @@ import {updateAuditResults} from "@/actions/audit/actions";
 import {getCriteriasForSelectedConformanceLevel} from "@/lib/utils";
 import {TypographyH2, TypographyP} from "@/components/typography/typography-elements";
 import {toast} from "sonner";
+import {MessageCodes} from "@/utils/message-codes";
 
 interface AuditDetailOverviewPageProps {
   audit: SupaBaseAudit;
@@ -38,14 +39,14 @@ export default function AuditDetailOverviewPage({ audit }: AuditDetailOverviewPa
   const saveToSupabase = async (data: AuditResult[], auditId: string) => {
     setIsSaving(true);
     try {
-      const response = await updateAuditResults(data, auditId);
-      if (response.success) {
-        toast.success(response.message);
+      const { success, message, globalError} = await updateAuditResults(data, auditId);
+      if (success) {
+        toast.success(message);
       } else {
-        toast.error(response.globalError);
+        toast.error(message, { description: globalError });
       }
     } catch (error) {
-      toast.error("Error saving audit. Please try again later.");
+      toast.error(MessageCodes.GENERIC_UNEXPECTED_ERROR);
       console.error(error);
     } finally {
       setTimeout(() => {

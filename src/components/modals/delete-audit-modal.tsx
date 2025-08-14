@@ -24,7 +24,7 @@ export default function DeleteAuditModal({ auditId, auditName }: AuditMenuProps)
       router.refresh();
       setIsOpen(false);
     } else {
-      toast.error(globalError);
+      toast.error(message, { description: globalError });
     }
   }
 

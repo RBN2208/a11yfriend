@@ -9,6 +9,7 @@ import {Button} from "@/components/shadcn-components/ui/button";
 import {useRouter} from "next/navigation";
 import {deleteImage, mergeImagesToAudit, uploadImage} from "@/actions/images/actions";
 import {toast} from "sonner";
+import {MessageCodes} from "@/utils/message-codes";
 
 interface AuditImageViewUploadFormProps {
   auditId: string,
@@ -55,11 +56,11 @@ export default function AuditImageViewUploadForm(props: AuditImageViewUploadForm
       }
       return prev.filter(img => img.id !== id);
     });
-    const response = await deleteImage(props.auditId, name);
-    if (response.success) {
-      toast.success(response.message);
+    const { success, message, globalError } = await deleteImage(props.auditId, name);
+    if (success) {
+      toast.success(message);
     } else {
-      toast.error(response.globalError);
+      toast.error(message, { description: globalError });
     }
   };
 
@@ -115,10 +116,10 @@ export default function AuditImageViewUploadForm(props: AuditImageViewUploadForm
       if (success) {
         toast.success(message);
       } else {
-        toast.error(globalError);
+        toast.error(message, { description: globalError });
       }
     } catch (error) {
-      toast.error("Error in upload process. Please try again later.");
+      toast.error(MessageCodes.GENERIC_UNEXPECTED_ERROR);
       currentImages = currentImages.map(img =>
           img.uploadStatus === 'uploading' ? { ...img, uploadStatus: 'error' } : img
       );

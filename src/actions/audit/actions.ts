@@ -3,9 +3,10 @@ import {z} from "zod";
 import {createAuditSchema} from "@/utils/validations/zod-schema";
 import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
-import {getCriteriasForSelectedConformanceLevel} from "@/lib/utils";
+import {getCriteriasForSelectedConformanceLevel, getErrorOfUnknownError} from "@/lib/utils";
 import {AuditResult, SupaBaseAudit} from "@/types/audit/types";
 import {ApiResponse} from "@/types/api/types";
+import {MessageCodes} from "@/utils/message-codes";
 
 /**
  * Creates a default set of audit results for all criteria corresponding to a specific conformance level.
@@ -44,7 +45,7 @@ function createAuditValidationResponse(formattedErrors: z.ZodFormattedError<z.in
         error: (formattedErrors as any)[name]?._errors[0] || []
       }
     }),
-    message: "Validation failed"
+    message: MessageCodes.FORM_DATA_VALIDATION_ERROR
   };
 }
 
@@ -53,6 +54,7 @@ export async function createApiResponse(config: ApiResponse): Promise<ApiRespons
     success: config.success,
     errors: config.errors,
     message: config.message,
+    globalError: config.globalError,
     data: config.data,
   }
 }
@@ -62,30 +64,33 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     const validationResult = createAuditSchema.safeParse(values);
 
     if (!validationResult.success) {
+      // return the field validations before everything else
       return createAuditValidationResponse(validationResult.error.format());
     }
 
     const supabase = await createClient();
-    const client = await supabase.auth.getUser();
+
+    const { error: userError, data: userData } = await supabase.auth.getUser();
+    if (userError) {
+      return {
+        success: false,
+        globalError: userError.message,
+        message: MessageCodes.AUTH_USER_VERIFY_ERROR
+      };
+    }
 
     const updatedFormData = {
       ...values,
-      user_id: client.data.user?.id || "",
+      user_id: userData.user?.id || "",
       auditResults: createAuditResultsDefault()
     };
 
-    const {error} = await supabase.from('audits').insert([updatedFormData]);
-
-    if (error) {
+    const { error: insertError } = await supabase.from('audits').insert([updatedFormData]);
+    if (insertError) {
       return {
         success: false,
-        errors: [
-          {
-            field: 'root',
-            error: error.message
-          }
-        ],
-        globalError: error.message
+        globalError: insertError.message,
+        message: MessageCodes.AUDIT_CREATE_ERROR
       };
     }
 
@@ -93,39 +98,45 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
 
     return createApiResponse({
       success: true,
-      message: "Audit created successfully",
+      message: MessageCodes.AUDIT_CREATE_SUCCESS,
     })
-  } catch (error) {
+  } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: "We couldn't create your audit. Please try again.",
-      errors: [
-        {
-          field: 'root',
-          error: "An unexpected error occurred"
-        }
-      ]
-    })
+      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
+      errors: [{ field: 'root', error: MessageCodes.GENERIC_UNEXPECTED_ERROR }],
+      message: MessageCodes.AUDIT_CREATE_ERROR_UNEXPECTED
+    });
   }
 }
 
 export async function deleteAudit(auditId: string): Promise<ApiResponse> {
-  const supabase = await createClient();
-  const {error} = await supabase.from('audits')
-    .delete()
-    .eq('id', auditId);
+  try {
+    const supabase = await createClient();
+    const {error: deleteError} = await supabase.from('audits')
+      .delete()
+      .eq('id', auditId);
 
-  if (error) {
+    if (deleteError) {
+      return createApiResponse({
+        success: false,
+        globalError: deleteError.message,
+        message: MessageCodes.AUDIT_DELETE_ERROR
+      })
+    }
+
+    return createApiResponse({
+      success: true,
+      message: MessageCodes.AUDIT_DELETE_SUCCESS,
+    })
+  } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: "We couldn't delete your audit. Please try again.",
-    })
+      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
+      errors: [{ field: 'root', error: MessageCodes.GENERIC_UNEXPECTED_ERROR }],
+      message: MessageCodes.AUDIT_DELETE_ERROR_UNEXPECTED
+    });
   }
-
-  return createApiResponse({
-    success: true,
-    message: "Audit deleted successfully",
-  })
 }
 
 export async function updateAudit(values: z.infer<typeof createAuditSchema>, auditId: string): Promise<ApiResponse> {
@@ -146,7 +157,8 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
     if (error) {
       return {
         success: false,
-        globalError: error.message
+        globalError: error.message,
+        message: MessageCodes.AUDIT_UPDATE_ERROR
       };
     }
 
@@ -154,29 +166,47 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
 
     return createApiResponse({
       success: true,
-      message: "Audit updated successfully",
+      message: MessageCodes.AUDIT_UPDATE_SUCCESS
     })
   } catch (error) {
     return createApiResponse({
       success: false,
-      globalError: "An unexpected error occurred",
+      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
+      message: MessageCodes.AUDIT_UPDATE_ERROR_UNEXPECTED,
     })
   }
 }
 
 export async function updateAuditResults(data: AuditResult[], auditId: string): Promise<ApiResponse> {
-  const supabase = await createClient();
-  const {error} = await supabase
-    .from('audits')
-    .update({auditResults: data})
-    .eq('id', auditId);
+  try {
+    const supabase = await createClient();
 
-  if (error) {
+    const { error } = await supabase
+        .from('audits')
+        .update({auditResults: data})
+        .eq('id', auditId);
+
+    if (error) {
+      return createApiResponse({
+        success: false,
+        globalError: error.message,
+        message: MessageCodes.AUDIT_RESULTS_UPDATE_ERROR
+      })
+    }
+
+    return createApiResponse({
+      success: true,
+      message: MessageCodes.AUDIT_RESULTS_UPDATE_SUCCESS
+    })
+
+  } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: "Sorry, we couldn't update your audit results. Please try again."
+      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_RESULTS_UPDATE_ERROR),
+      message: MessageCodes.AUDIT_RESULTS_UPDATE_ERROR_UNEXPECTED,
     })
   }
+
 
   return createApiResponse({
     success: true,
@@ -191,53 +221,74 @@ export async function getAudit(id: string | null = null, limit: number = 5): Pro
     } else {
       return getMultipleAudits(limit);
     }
-  } catch (error) {
+  } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: "An unexpected error occurred while collection the data"
+      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
+      message: MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED,
     })
   }
 }
 
 async function getMultipleAudits(limit: number): Promise<ApiResponse<SupaBaseAudit[]>> {
-  const supabase = await createClient();
-  const {data: audits, error} = await supabase
-    .from('audits')
-    .select('*')
-    .order('created_at', {ascending: false})
-    .limit(limit)
+  try {
+    const supabase = await createClient();
 
-  if (error) {
+    const {data: audits, error} = await supabase
+        .from('audits')
+        .select('*')
+        .order('created_at', {ascending: false})
+        .limit(limit)
+
+    if (error) {
+      return createApiResponse({
+        success: false,
+        message: MessageCodes.AUDIT_GET_GENERIC_ERROR,
+        globalError: error.message
+      })
+    }
+
+    return createApiResponse({
+      success: true,
+      message: MessageCodes.AUDITS_GET_SUCCESS,
+      data: audits as SupaBaseAudit[]
+    })
+  } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: "We couldn't fetch your audits. Please try again."
+      message: MessageCodes.AUDIT_GET_GENERIC_ERROR,
+      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED)
     })
   }
-
-  return createApiResponse({
-    success: true,
-    message: "Audits fetched successfully",
-    data: audits as SupaBaseAudit[]
-  })
 }
 
 async function getSingleAudit(id: string): Promise<ApiResponse<SupaBaseAudit>> {
-  const supabase = await createClient();
-  const {data: audit, error} = await supabase
-    .from('audits')
-    .select('*')
-    .eq('id', id);
+  try {
+    const supabase = await createClient();
 
-  if (error) {
+    const {data: audit, error} = await supabase
+        .from('audits')
+        .select('*')
+        .eq('id', id);
+
+    if (error) {
+      return createApiResponse({
+        success: false,
+        message: MessageCodes.AUDIT_GET_GENERIC_ERROR,
+        globalError: error.message
+      })
+    }
+
+    return createApiResponse({
+      success: true,
+      message: MessageCodes.AUDIT_GET_SUCCESS,
+      data: audit[0] as SupaBaseAudit
+    })
+  } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: "We couldn't fetch your audit. Please try again."
+      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_GET_GENERIC_ERROR),
+      message: MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED,
     })
   }
-
-  return createApiResponse({
-    success: true,
-    message: "Audit fetched successfully",
-    data: audit[0] as SupaBaseAudit
-  })
 }

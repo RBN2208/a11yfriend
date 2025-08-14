@@ -17,6 +17,7 @@ import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {SupaBaseAudit} from "@/types/audit/types";
 import {createAudit, updateAudit} from "@/actions/audit/actions";
 import {toast} from "sonner";
+import {MessageCodes} from "@/utils/message-codes";
 
 type CreateAuditFormProps = {
     auditData: SupaBaseAudit | undefined,
@@ -59,29 +60,28 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
     async function onSubmit(values: z.infer<typeof createAuditSchema>) {
         setLoading(true);
         try {
-            const response = props.isEditModal ?
+            const { success, data, message, globalError, errors } = props.isEditModal ?
                 await updateAudit(values, props.auditData?.id || "") :
                 await createAudit(values);
 
-            if (response.errors) {
-                response.errors.forEach(error => {
+            if (success) {
+                toast.success(message);
+                props.callbackAction && props.callbackAction();
+                return;
+            }
+
+            if (errors) {
+                errors.forEach(error => {
                     form.setError(
                         error.field as keyof z.infer<typeof createAuditSchema>,
                         {message: error.error}
                     )
                 })
-                toast.error(response.globalError, {
-                    description: response.message
-                });
-            }
-
-            if (response.success) {
-                toast.success(response.message);
-                props.callbackAction && props.callbackAction();
+                toast.error(message, { description: globalError });
             }
         } catch (error) {
-            form.setError('root', error || "");
-            toast.error("Sorry, something went wrong. Please try again later.")
+            form.setError('root', error || MessageCodes.GENERIC_UNEXPECTED_ERROR);
+            toast.error(MessageCodes.GENERIC_UNEXPECTED_ERROR)
         } finally {
             setLoading(false);
         }
