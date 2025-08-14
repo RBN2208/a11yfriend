@@ -3,25 +3,17 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/shadcn-components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/shadcn-components/ui/form"
-import { Input } from "@/components/shadcn-components/ui/input"
+import {Form,} from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
-import {AlertCircle, AlertCircleIcon, Loader2} from 'lucide-react';
-import { emailSchema, passwordSchemaLogin } from '@/utils/validations/zod-schema';
-import { PasswordInput } from '@/components/shadcn-components/ui/password-input';
-import { signIn } from '@/actions/auth';
+import {AlertCircleIcon, Loader2} from 'lucide-react';
+import {createAuditSchema, emailSchema, passwordSchemaLogin} from '@/utils/validations/zod-schema';
+import { signIn } from '@/actions/auth/auth';
 import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/shadcn-components/ui/alert';
-import {ForgotPasswordModal} from "@/components/modals/ForgotPasswordModal";
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {InputElement} from "@/components/form-components/elements/form-elements";
+import {loginSchema} from "@/actions/auth/schemas";
+import {toast} from "sonner";
+import {MessageCodes} from "@/utils/message-codes";
 
 const formSchema = z.object({
   email: emailSchema,
@@ -49,15 +41,20 @@ export default function LoginForm() {
 
       if (response.errors) {
         response.errors.forEach(error => {
-          form.setError(error.field, { message: error.errors[0] })
+          form.setError(
+              error.field as keyof z.infer<typeof loginSchema>,
+              {message: error.error}
+          )
         })
       }
 
-      if (response.ok) {
+      if (response.success) {
+        toast.success(response.message);
         router.push('/account');
       }
     } catch (error) {
-      form.setError('root', error || "")
+      form.setError('root', error || "");
+      toast.error(MessageCodes.AUTH_LOGIN_ERROR);
     } finally {
       setLoading(false);
     }

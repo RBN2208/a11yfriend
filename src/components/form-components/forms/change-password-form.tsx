@@ -3,23 +3,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/shadcn-components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/shadcn-components/ui/form"
+import {Form} from "@/components/shadcn-components/ui/form"
 import React, {useEffect, useState} from 'react';
-import {AlertCircle, AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
+import {AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
 import { passwordSchemaLogin } from '@/utils/validations/zod-schema';
-import { PasswordInput } from '@/components/shadcn-components/ui/password-input';
-import { changePassword } from '@/actions/auth';
-import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/shadcn-components/ui/alert';
+import { changePassword } from '@/actions/auth/auth';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {InputElement} from "@/components/form-components/elements/form-elements";
+import {loginSchema} from "@/actions/auth/schemas";
 
 const formSchemaBase = z.object({
   newPassword: passwordSchemaLogin,
@@ -53,12 +44,15 @@ export default function ChangePasswordForm() {
 
       if (response.errors) {
         response.errors.forEach(error => {
-          form.setError(error.field, { message: error.errors[0] });
+          form.setError(
+              error.field as keyof z.infer<typeof formSchemaBase>,
+              {message: error.error}
+          )
         })
         setLoading(false);
       }
 
-      if (response.ok) {
+      if (response.success) {
         setSuccess(true);
         setLoading(false);
       }

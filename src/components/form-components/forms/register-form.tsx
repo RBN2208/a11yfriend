@@ -7,9 +7,11 @@ import { Form } from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import { AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
 import { passwordSchemaRegister, emailSchema } from '@/utils/validations/zod-schema';
-import { signUp } from '@/actions/auth';
+import { signUp } from '@/actions/auth/auth';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import { InputElement } from "@/components/form-components/elements/form-elements";
+import {loginSchema} from "@/actions/auth/schemas";
+import {toast} from "sonner";
 
 const formSchema = z.object({
   email: emailSchema,
@@ -42,15 +44,19 @@ export default function RegisterForm() {
 
       if (response.errors) {
         response.errors.forEach(error => {
-          form.setError(error.field, { message: error.errors[0] })
+          form.setError(
+              error.field as keyof z.infer<typeof loginSchema>,
+              {message: error.error}
+          )
         })
       }
 
-      if (response.ok) {
-        setSuccess(true)
+      if (response.success) {
+        setSuccess(true);
+        toast.success(response.message);
       }
     } catch (error) {
-      form.setError('root', error || "")
+      form.setError('root', error || "");
     } finally {
       setLoading(false);
     }

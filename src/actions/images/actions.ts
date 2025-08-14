@@ -3,6 +3,7 @@ import {DragAndDropImageFile, SupaBaseAudit} from "@/types/audit/types";
 import {createClient} from "@/utils/supabase/server";
 import {ApiResponse} from "@/types/api/types";
 import {createApiResponse, getAudit} from "@/actions/audit/actions";
+import {MessageCodes} from "@/utils/message-codes";
 
 const STORAGE_BUCKET_NAME = "images";
 
@@ -23,21 +24,22 @@ export async function mergeImagesToAudit(auditId: string, images: DragAndDropIma
   if (updateError) {
     return createApiResponse({
       success: false,
-      globalError: "Sorry, we couldn't save the images to your audit. Please try again."
+      globalError: updateError.message,
+      message: MessageCodes.AUDIT_IMAGE_SAVE_ERROR
     })
   }
 
   return createApiResponse({
     success: true,
-    message: "Images uploaded successfully",
+    message: MessageCodes.AUDIT_IMAGE_UPLOAD_SUCCESS
   })
 }
 
 export async function uploadImage(auditId: string, image: DragAndDropImageFile): Promise<ApiResponse> {
   const supabase = await createClient();
-
   const FILE_PATH = `${auditId}/${image.name}`;
-  const {data: imageExists} = await supabase.storage
+
+  const {data: imageExists, error: imageExistsError } = await supabase.storage
     .from(STORAGE_BUCKET_NAME)
     .exists(FILE_PATH);
 
@@ -45,7 +47,8 @@ export async function uploadImage(auditId: string, image: DragAndDropImageFile):
     return createApiResponse({
       success: false,
       data: image,
-      globalError: "Image already exists, please try again later."
+      message: MessageCodes.AUDIT_IMAGE_EXISTS_ERROR,
+      globalError: imageExistsError?.message
     })
   }
 
@@ -74,14 +77,15 @@ export async function uploadImage(auditId: string, image: DragAndDropImageFile):
         preview: image.preview,
         uploadStatus: image.uploadStatus
       },
-      globalError: error?.message || "Sorry, we couldn't upload your image. Please try again."
+      message: MessageCodes.AUDIT_IMAGE_UPLOAD_ERROR,
+      globalError: error?.message
     })
   }
 
   return createApiResponse({
     success: false,
     data: image,
-    globalError: "An unexpected error occurred, please try again later."
+    globalError: MessageCodes.GENERIC_UNEXPECTED_ERROR
   })
 }
 
@@ -105,12 +109,13 @@ export async function deleteImage(auditId: string, name: string): Promise<ApiRes
   if (deleteError) {
     return createApiResponse({
       success: false,
-      globalError: "Sorry, we couldn't delete your image. Please try again."
+      globalError: deleteError.message,
+      message: MessageCodes.AUDIT_IMAGE_DELETE_ERROR
     })
   }
 
   return createApiResponse({
     success: true,
-    message: "Image deleted successfully",
+    message: MessageCodes.AUDIT_IMAGE_DELETE_SUCCESS
   })
 }

@@ -3,22 +3,15 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/shadcn-components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/shadcn-components/ui/form"
-import { Input } from "@/components/shadcn-components/ui/input"
+import {Form} from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import { AlertCircleIcon, Loader2 } from 'lucide-react';
 import { emailSchema  } from '@/utils/validations/zod-schema';
-import { oneTimeLoginWithOTP } from '@/actions/auth';
+import { oneTimeLoginWithOTP } from '@/actions/auth/auth';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import { TypographyP } from "@/components/typography/typography-elements";
 import {InputElement} from "@/components/form-components/elements/form-elements";
+import { oneTimeLoginSchema} from "@/actions/auth/schemas";
 
 const formSchema = z.object({
   email: emailSchema
@@ -43,11 +36,14 @@ export default function RequestOneTimeLoginForm() {
       const response = await oneTimeLoginWithOTP(values.email);
       if (response.errors) {
         response.errors.forEach(error => {
-          form.setError(error.field, { message: error.errors[0] })
+          form.setError(
+              error.field as keyof z.infer<typeof oneTimeLoginSchema>,
+              {message: error.error}
+          )
         })
       }
 
-      if (response.ok) {
+      if (response.success) {
         setValid(true);
         setLoading(false)
       }
