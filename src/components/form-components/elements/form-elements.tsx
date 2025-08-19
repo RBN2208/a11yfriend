@@ -17,6 +17,7 @@ import {
 import {Loader2} from "lucide-react";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {PasswordInput} from "@/components/shadcn-components/ui/password-input";
+import {TypographyP} from "@/components/typography/typography-elements";
 
 
 /*******************************
@@ -91,21 +92,26 @@ export function InputElement({
 type TextAreaElementProps = {
   name: string;
   label: string;
+  hint?: string;
   required?: boolean;
   placeholder?: string;
   description?: string;
+  rows?: number;
   className?: string;
 }
 
-export function TextAreaElement({
-                               name,
-                               label,
-                               required = false,
-                               placeholder,
-                               description,
-                               className,
-                               ...props
-                             }: TextAreaElementProps) {
+export function TextAreaElement(
+    {
+        name,
+        label,
+        hint,
+        required = false,
+        placeholder = "",
+        description,
+        className,
+        rows = 5,
+        ...props
+    }: TextAreaElementProps) {
   const {control, formState: {errors}} = useFormContext();
 
   return (
@@ -120,10 +126,16 @@ export function TextAreaElement({
                 {label} {required && <span className="text-primary">*</span>}
               </FormLabel>
             }
+            {hint &&
+                <TypographyP className="text-sm text-gray-500 !mt-0">
+                    {hint}
+                </TypographyP>
+            }
             <FormControl>
-              <Textarea placeholder=""
+              <Textarea placeholder={placeholder}
                         className={errors[name] ? "border-destructive" : ""}
                         {...field}
+                        rows={rows}
               />
             </FormControl>
 

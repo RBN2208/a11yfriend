@@ -20,6 +20,7 @@ export type AuditResult = {
   id: string
   name: string
   conformance: 'A' | 'AA' | 'AAA'
+  referenceLink: string
   status: 'checked' | 'not_checked' | 'not_applicable' | 'failed'
   findings: TipTapContentType | null,
 }

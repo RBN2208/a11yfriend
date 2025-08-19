@@ -16,6 +16,7 @@ interface AuditImageViewUploadFormProps {
   images: SupaBaseAudit['images'],
 }
 
+// TODO: Images need to be included in exported word document
 export default function AuditImageViewUploadForm(props: AuditImageViewUploadFormProps) {
   const [images, setImages] = useState<SupaBaseAudit['images'] | []>(props.images);
   const [isUploading, setIsUploading] = useState(false);

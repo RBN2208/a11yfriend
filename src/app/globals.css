@@ -154,5 +154,5 @@ body {
 
 
 .AccordionTrigger[data-state="open"] {
-  @apply bg-gray-200;
+  @apply bg-gray-200 dark:text-black;
 }

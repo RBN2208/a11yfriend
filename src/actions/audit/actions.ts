@@ -1,6 +1,6 @@
 "use server"
 import {z} from "zod";
-import {createAuditSchema} from "@/utils/validations/zod-schema";
+import {aiReviewSchema, createAuditSchema} from "@/utils/validations/zod-schema";
 import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 import {getCriteriasForSelectedConformanceLevel, getErrorOfUnknownError} from "@/lib/utils";
@@ -25,6 +25,7 @@ function createAuditResultsDefault(): AuditResult[] | any[] {
       id: criteria.id,
       name: criteria.name,
       conformance: criteria.conformance,
+      referenceLink: criteria.referenceLink,
       status: "not_checked",
       findings: null,
     };
@@ -36,6 +37,21 @@ function createAuditResultsDefault(): AuditResult[] | any[] {
 
 function createAuditValidationResponse(formattedErrors: z.ZodFormattedError<z.infer<typeof createAuditSchema>, {}>): ApiResponse {
   const fieldKeys = ['name', 'description', 'status', 'customer', 'project_name', 'module', 'version', 'conformance', 'miscellaneous'];
+
+  return {
+    success: false,
+    errors: fieldKeys.map(name => {
+      return {
+        field: name,
+        error: (formattedErrors as any)[name]?._errors[0] || []
+      }
+    }),
+    message: MessageCodes.FORM_DATA_VALIDATION_ERROR
+  };
+}
+
+function createAiReviewValidationResponse(formattedErrors: z.ZodFormattedError<z.infer<typeof aiReviewSchema>, {}>): ApiResponse {
+  const fieldKeys = ['code'];
 
   return {
     success: false,
@@ -82,6 +98,7 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     const updatedFormData = {
       ...values,
       user_id: userData.user?.id || "",
+      images: [],
       auditResults: createAuditResultsDefault()
     };
 
@@ -291,4 +308,46 @@ async function getSingleAudit(id: string): Promise<ApiResponse<SupaBaseAudit>> {
       message: MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED,
     })
   }
+}
+
+export async function startAiReview(values: z.infer<typeof aiReviewSchema>): Promise<ApiResponse> {
+  try {
+    const validationResult = aiReviewSchema.safeParse(values);
+
+    if (!validationResult.success) {
+      return createAiReviewValidationResponse(validationResult.error.format());
+    }
+
+    const response = await mock(false, "Error Review");
+    if (!response.data) {
+      return createApiResponse({
+        success: false,
+        globalError: response.error,
+        message: MessageCodes.AUDIT_AI_REVIEW_ERROR
+      })
+    }
+    revalidatePath('/', 'layout');
+
+    return createApiResponse({
+      success: true,
+      message: MessageCodes.AUDIT_AI_REVIEW_SUCCESS
+    })
+  } catch (error) {
+    return createApiResponse({
+      success: false,
+      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
+      message: MessageCodes.AUDIT_AI_REVIEW_ERROR_UNEXPECTED,
+    })
+  }
+}
+
+function mock(data: any, error: any): Promise<{data: any, error: any}> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: data,
+        error: error
+      });
+    }, 1000);
+  });
 }

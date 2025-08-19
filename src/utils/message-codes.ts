@@ -16,6 +16,10 @@ export enum MessageCodes {
     AUDIT_UPDATE_ERROR = "An error occurred while updating the audit data in the database. Please try again.",
     AUDIT_UPDATE_ERROR_UNEXPECTED = "An unexpected error occurred while updating the audit data in the database. Please try again.",
 
+    AUDIT_AI_REVIEW_SUCCESS = "Audit AI review completed successfully",
+    AUDIT_AI_REVIEW_ERROR = "An error occurred while completing the AI review of the audit. Please try again.",
+    AUDIT_AI_REVIEW_ERROR_UNEXPECTED = "An unexpected error occurred while completing the AI review of the audit. Please try again.",
+
     AUDIT_RESULTS_UPDATE_SUCCESS = "Audit results updated successfully",
     AUDIT_RESULTS_UPDATE_ERROR = "An error occurred while updating the audit results in the database. Please try again.",
     AUDIT_RESULTS_UPDATE_ERROR_UNEXPECTED = "An unexpected error occurred while updating the audit results in the database. Please try again.",

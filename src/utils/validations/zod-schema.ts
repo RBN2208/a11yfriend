@@ -38,3 +38,8 @@ export const createAuditSchema = z.object({
   conformance: z.enum(['A', 'AA', 'AAA'], { message: 'Please select a conformance level'}),
   miscellaneous: z.string().min(1, { message: "Please add any other information you want to add" })
 });
+
+export const aiReviewSchema = z.object({
+  code: z.string().min(1).max(10),
+  description: z.string().min(10)
+})
