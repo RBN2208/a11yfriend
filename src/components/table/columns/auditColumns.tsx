@@ -16,7 +16,7 @@ import ExportAuditModal from "@/components/modals/export-audit-modal";
 /**
  * columns for the audit tables
  */
-export const columns: ColumnDef<SupaBaseAudit>[] = [
+export const auditColumns: ColumnDef<SupaBaseAudit>[] = [
   {
     accessorKey: "name",
     header: "Name",

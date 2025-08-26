@@ -1,8 +1,12 @@
-import { AuditTable } from '@/components/lists/audit/AuditTable';
-import { columns } from '@/components/lists/audit/column';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/shadcn-components/ui/card';
 import {getAudit} from "@/actions/audit/actions";
 import {SupaBaseAudit} from "@/types/audit/types";
+import {UITable} from "@/components/table/UITable";
+import {auditColumns} from "@/components/table/columns/auditColumns";
+import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
+import {Label} from "@/components/shadcn-components/ui/label";
+import {Input} from "@/components/shadcn-components/ui/input";
+import CreateAuditModal from "@/components/modals/create-audit-modal";
 
 export default async function AuditsPage() {
   const response = await getAudit(null, 20);
@@ -31,7 +35,15 @@ export default async function AuditsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <AuditTable columns={columns} data={audits} />
+          <UITable columns={auditColumns} data={audits}>
+            <VisuallyHidden>
+              <Label htmlFor="searchAuditsInput">
+                Search audits
+              </Label>
+            </VisuallyHidden>
+            <Input id="searchAuditsInput" placeholder="Search audits"/>
+            <CreateAuditModal isEditModal={false}/>
+          </UITable>
         </CardContent>
       </Card>
     </div>

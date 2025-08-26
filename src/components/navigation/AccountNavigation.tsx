@@ -15,8 +15,8 @@ const navigation = [
     href: '/account/overview'
   },
   {
-    name: 'Automate',
-    href: '/account/automate'
+    name: 'Reports',
+    href: '/account/reports'
   },
   {
     name: 'Audits',

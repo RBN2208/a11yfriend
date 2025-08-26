@@ -46,4 +46,21 @@ export enum MessageCodes {
 
 
     FORM_DATA_VALIDATION_ERROR = "Form data validation error",
+
+
+    REPORT_CREATE_SUCCESS = "Report created, running AXE...",
+    REPORT_CREATE_ERROR = "An error occurred while creating the report. Please try again.",
+    REPORT_CREATE_ERROR_UNEXPECTED = "An unexpected error occurred while creating the report. Please try again.",
+
+    REPORT_DELETE_SUCCESS = "Report deleted successfully",
+    REPORT_DELETE_ERROR = "An error occurred while deleting the report. Please try again.",
+    REPORT_DELETE_ERROR_UNEXPECTED = "An unexpected error occurred while deleting the report. Please try again.",
+
+    REPORT_UPDATE_SUCCESS = "Report updated successfully",
+    REPORT_UPDATE_ERROR = "An error occurred while updating the report. Please try again.",
+    REPORT_UPDATE_ERROR_UNEXPECTED = "An unexpected error occurred while updating the report. Please try again.",
+
+    REPORT_GET_SUCCESS = "Report retrieved successfully",
+    REPORT_GET_GENERIC_ERROR = "An error occurred while retrieving the report. Please try again.",
+    REPORT_GET_GENERIC_ERROR_UNEXPECTED = "An unexpected error occurred while retrieving the report. Please try again.",
 }

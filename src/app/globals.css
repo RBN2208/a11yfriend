@@ -156,3 +156,8 @@ body {
 .AccordionTrigger[data-state="open"] {
   @apply bg-gray-200 dark:text-black;
 }
+
+.SyntaxHighlighterWrapper pre,
+.SyntaxHighlighterWrapper pre code {
+  white-space: pre-wrap!important;
+}
