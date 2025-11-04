@@ -151,7 +151,7 @@ export function convertFindingsToTables(results: SupaBaseAudit['auditResults']):
             new TableCell({
               children: [
                 new Paragraph({
-                  text: result.id,
+                  text: result.name,
                   indent: {
                     left: 100
                   },

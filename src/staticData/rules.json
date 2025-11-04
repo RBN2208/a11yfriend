@@ -1,0 +1,26 @@
+{
+  "1.1.1-WCAG": [
+    {
+      "ruleId": "AF111-1",
+      "name": "image-has-alt-attribute",
+      "content": "Bilder haben ein Alt-Attribut",
+      "description": "Bilder benötigen einen zugänglichen Namen, damit Bildinhalte auch für Screenreader erfassbar sind.",
+      "tip": "Fügen Sie einen sinnvollen Alternativtext für das Bild hinzu. Für rein dekorative Bilder sollte ein leeres Alt-Attribut genutzt werden.",
+      "rule": {
+        "name": "1.1.1 Non-text content",
+        "link": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-content"
+      },
+      "a11yFriendUrl": "https://www.a11yfriend.com/testrules/af111-1",
+      "responsibility": [
+        "Developer", "Editor"
+      ],
+      "impact": 4,
+      "complexity": 0,
+      "test": {
+        "element": "img",
+        "rule": "/(?i)<img\\b[^>]*\\balt(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s>]+))[^>]*>/",
+        "attribute": "alt"
+      }
+    }
+  ]
+}

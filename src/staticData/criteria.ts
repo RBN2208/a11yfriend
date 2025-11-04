@@ -98,7 +98,7 @@ export const WCAGCriterias: WCAGCriteriaType[] = [
     guideLine: 'Guideline 1.3 – Adaptable',
     name: '1.3.1 Info and Relationship',
     conformance: 'A',
-    referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationshipsd'
+    referenceLink: 'https://www.w3.org/WAI/WCAG22/quickref/#info-and-relationships'
   },
   {
     id: '1-3-2-perceivable',

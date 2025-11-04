@@ -1,0 +1,114 @@
+{
+  "1.1.1-WCAG": [
+    {
+      "ruleId": "AF111-1",
+      "name": "image-has-no-alt-attribute",
+      "content": "Bilder haben ein Alt-Attribut",
+      "description": "Bilder benötigen einen zugänglichen Namen, damit Bildinhalte auch für Screenreader erfassbar sind.",
+      "tip": "Fügen Sie einen sinnvollen Alternativtext für das Bild hinzu. Für rein dekorative Bilder sollte ein leeres Alt-Attribut genutzt werden.",
+      "rule": {
+        "name": "1.1.1 Non-text content",
+        "link": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-content"
+      },
+      "a11yFriendUrl": "https://www.a11yfriend.com/testrules/af111-1",
+      "responsibility": [
+        "Developer", "Editor"
+      ],
+      "impact": 4,
+      "complexity": 0,
+      "test": {
+        "element": "img",
+        "rule": "/(?i)<img\\b(?![^>]*\\balt\\b)[^>]*>/",
+        "attribute": "alt"
+      }
+    },
+    {
+      "ruleId": "AF111-2",
+      "name": "image-has-empty-alt-attribute",
+      "content": "Bild hat ein leeres Alt-Attribut",
+      "description": "Bilder benötigen einen zugänglichen Namen, damit Bildinhalte auch für Screenreader erfassbar sind. ",
+      "tip": "Wenn dies ein dekoratives Bild ist, kann diese Meldung ignoriert werden",
+      "rule": {
+        "name": "1.1.1 Non-text content",
+        "link": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-content"
+      },
+      "a11yFriendUrl": "https://www.a11yfriend.com/testrules/af111-2",
+      "responsibility": [
+        "Developer", "Editor"
+      ],
+      "impact": 4,
+      "complexity": 0,
+      "test": {
+        "element": "img",
+        "rule": "/(?i)<img\\b[^>]*\\balt\\s*=\\s*(?:\"\"|''|\\s)(?=[^>]*>)/",
+        "attribute": "alt"
+      }
+    },
+    {
+      "ruleId": "AF111-3",
+      "name": "image-has-short-alt-attribute",
+      "content": "Bild hat ein kurzes Alt-Attribut (< 5 Zeichen)",
+      "description": "Alt-Texte sollten das Bild beschreiben. Der Alt-Text ist hier möglichweise zu kurz",
+      "tip": "Überprüfen ob der Alt-Text aussagekräftig genug ist",
+      "rule": {
+        "name": "1.1.1 Non-text content",
+        "link": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-content"
+      },
+      "a11yFriendUrl": "https://www.a11yfriend.com/testrules/af111-3",
+      "responsibility": [
+        "Editor"
+      ],
+      "impact": 4,
+      "complexity": 0,
+      "test": {
+        "element": "img",
+        "rule": "(?i)<img\\b[^>]*\\balt\\s*=\\s*(?:\"(.{0,5})\"|'(.{0,5})')",
+        "attribute": "alt"
+      }
+    },
+    {
+      "ruleId": "AF111-4",
+      "name": "image-has-long-alt-attribute",
+      "content": "Bild hat ein langes Alt-Attribut (> 50 Zeichen)",
+      "description": "Alt-Texte sollten das Bild beschreiben. Der Alt-Text ist hier möglichweise zu lang",
+      "tip": "Überprüfen ob der Alt-Text aussagekräftig genug ist",
+      "rule": {
+        "name": "1.1.1 Non-text content",
+        "link": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-content"
+      },
+      "a11yFriendUrl": "https://www.a11yfriend.com/testrules/af111-4",
+      "responsibility": [
+        "Editor"
+      ],
+      "impact": 4,
+      "complexity": 0,
+      "test": {
+        "element": "img",
+        "rule": "(?i)<img\\b[^>]*\\balt\\s*=\\s*(?:\"(.{68,})\"|'(.{68,})')",
+        "attribute": "alt"
+      }
+    },
+    {
+      "ruleId": "AF111-5",
+      "name": "role-image-no-label",
+      "content": "Ein Element mit der Image-Role hat kein Label",
+      "description": "Ein Element mit einer Image-Role hat kein aria-label und bietet somit keine Alternative Textform",
+      "tip": "Dem Element sollte ein aria-label hinzugefügt werden",
+      "rule": {
+        "name": "1.1.1 Non-text content",
+        "link": "https://www.w3.org/WAI/WCAG22/quickref/#non-text-content"
+      },
+      "a11yFriendUrl": "https://www.a11yfriend.com/testrules/af111-5",
+      "responsibility": [
+        "Developer", "Editor"
+      ],
+      "impact": 4,
+      "complexity": 0,
+      "test": {
+        "element": "img",
+        "rule": "(?i)<\\w+[^>]*\\brole\\s*=\\s*[\"']img[\"'][^>]*(?!\\s+(?:aria-label|aria-labelledby)\\s*=)[^>]*>",
+        "attribute": "alt"
+      }
+    }
+  ]
+}
