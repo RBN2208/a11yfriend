@@ -6,14 +6,13 @@ import { Button } from "@/components/shadcn-components/ui/button"
 import {Form,} from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import {AlertCircleIcon, Loader2} from 'lucide-react';
-import {createAuditSchema, emailSchema, passwordSchemaLogin} from '@/utils/validations/zod-schema';
-import { signIn } from '@/actions/auth/auth';
+import { signIn } from '@/features/auth/auth';
 import { useRouter } from 'next/navigation';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {InputElement} from "@/components/form-components/elements/form-elements";
-import {loginSchema} from "@/actions/auth/schemas";
+import {loginSchema, emailSchema, passwordSchemaLogin} from "@/features/auth/zod-schema";
 import {toast} from "sonner";
-import {MessageCodes} from "@/utils/message-codes";
+import {MessageCodes} from "@/shared/message-codes";
 
 const formSchema = z.object({
   email: emailSchema,

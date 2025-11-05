@@ -5,7 +5,7 @@ import Footer from '@/components/common/Footer';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { MobileMenu } from '@/components/common/header/MobileMenu';
 import { Sheet } from '@/components/shadcn-components/ui/sheet';
-import { createClient } from '@/utils/supabase/server';
+import { createServerSupabase } from '@/shared/supabase/server';
 import { Toaster } from '@/components/shadcn-components/ui/sonner';
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const supabase = await createClient();
+  const supabase = await createServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
 
   return (

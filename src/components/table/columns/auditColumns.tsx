@@ -2,7 +2,7 @@
 
 import {ColumnDef} from "@tanstack/react-table"
 import Link from 'next/link';
-import {SupaBaseAudit} from '@/types/audit/types';
+import {SupabaseAudit} from '@/features/audit/types/types';
 import DeleteAuditModal from "@/components/modals/delete-audit-modal";
 import {buttonVariants} from "@/components/shadcn-components/ui/button"
 import {Separator} from "@/components/shadcn-components/ui/separator";
@@ -16,7 +16,7 @@ import ExportAuditModal from "@/components/modals/export-audit-modal";
 /**
  * columns for the audit tables
  */
-export const auditColumns: ColumnDef<SupaBaseAudit>[] = [
+export const auditColumns: ColumnDef<SupabaseAudit>[] = [
   {
     accessorKey: "name",
     header: "Name",

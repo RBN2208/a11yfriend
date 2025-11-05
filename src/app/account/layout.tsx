@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server';
+import { createServerSupabase } from '@/shared/supabase/server';
 import { SidebarProvider, SidebarTrigger } from "@/components/shadcn-components/ui/sidebar"
 import UIBreadcrumb from "@/components/common/ui-elements/UIBreadcrumb";
 import AccountNavigationBase from "@/components/navigation/AccountNavigationBase";
 
 export default async function AccountLayout({children}: { children: React.ReactNode }) {
-  const supabase = await createClient();
+  const supabase = await createServerSupabase();
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {

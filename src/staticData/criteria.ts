@@ -1,4 +1,4 @@
-import { WCAGAuditFormType } from '@/types/audit/types';
+import { WCAGAuditFormType } from '@/features/audit/types/types';
 
 export function getCriteriaLengths(conformance: 'A' | 'AA' | 'AAA'){
   const map = {

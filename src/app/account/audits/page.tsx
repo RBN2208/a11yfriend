@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/shadcn-components/ui/card';
-import {getAudit} from "@/actions/audit/actions";
-import {SupaBaseAudit} from "@/types/audit/types";
+import {getAudit} from "@/features/audit/actions/actions";
+import {SupabaseAudit} from "@/features/audit/types/types";
 import {UITable} from "@/components/table/UITable";
 import {auditColumns} from "@/components/table/columns/auditColumns";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
@@ -12,7 +12,7 @@ export default async function AuditsPage() {
   const response = await getAudit(null, 20);
   if (!response.data) return null;
 
-  const audits = response.data as SupaBaseAudit[];
+  const audits = response.data as SupabaseAudit[];
 
   return (
     <div>

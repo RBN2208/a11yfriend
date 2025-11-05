@@ -8,9 +8,9 @@ import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "sonner";
-import {MessageCodes} from "@/utils/message-codes";
-import {aiReviewSchema} from "@/utils/validations/zod-schema";
-import {startAiReview} from "@/actions/audit/actions";
+import {MessageCodes} from "@/shared/message-codes";
+import {aiReviewSchema} from "@/features/aiReview/zod-schema";
+import {startAiReview} from "@/features/audit/actions/actions";
 
 export function AIReviewModule() {
     const [loading, setLoading] = useState(false);

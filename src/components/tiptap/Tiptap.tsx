@@ -7,7 +7,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { TableKit } from '@tiptap/extension-table'
 
 import { MenuBar } from "@/components/tiptap/MenuBar";
-import {AuditResult} from "@/types/audit/types";
+import {AuditResult} from "@/features/audit/types/types";
 
 // Custom extension to fix cursor position issues when editing formatted text
 // before: while editing the focus was always set on next line

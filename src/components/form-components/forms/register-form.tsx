@@ -6,11 +6,10 @@ import { Button } from "@/components/shadcn-components/ui/button"
 import { Form } from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import { AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
-import { passwordSchemaRegister, emailSchema } from '@/utils/validations/zod-schema';
-import { signUp } from '@/actions/auth/auth';
+import { passwordSchemaRegister, emailSchema, loginSchema } from '@/features/auth/zod-schema';
+import { signUp } from '@/features/auth/auth';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import { InputElement } from "@/components/form-components/elements/form-elements";
-import {loginSchema} from "@/actions/auth/schemas";
 import {toast} from "sonner";
 
 const formSchema = z.object({

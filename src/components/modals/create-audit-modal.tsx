@@ -4,12 +4,12 @@ import CreateAuditForm from '@/components/form-components/forms/create-audit-for
 import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {Edit} from "lucide-react";
-import {SupaBaseAudit} from "@/types/audit/types";
+import {SupabaseAudit} from "@/features/audit/types/types";
 import {useState} from "react";
 
 type CreateAuditModalProps = {
   isEditModal: boolean; // reuse component to create or update the audit data
-  auditData?: SupaBaseAudit
+  auditData?: SupabaseAudit
 }
 
 export default function CreateAuditModal(props: CreateAuditModalProps) {

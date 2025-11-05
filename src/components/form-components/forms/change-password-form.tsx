@@ -6,11 +6,10 @@ import { Button } from "@/components/shadcn-components/ui/button"
 import {Form} from "@/components/shadcn-components/ui/form"
 import React, {useEffect, useState} from 'react';
 import {AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
-import { passwordSchemaLogin } from '@/utils/validations/zod-schema';
-import { changePassword } from '@/actions/auth/auth';
+import { passwordSchemaLogin } from '@/features/auth/zod-schema';
+import { changePassword } from '@/features/auth/auth';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {InputElement} from "@/components/form-components/elements/form-elements";
-import {loginSchema} from "@/actions/auth/schemas";
 
 const formSchemaBase = z.object({
   newPassword: passwordSchemaLogin,

@@ -4,11 +4,11 @@ import CreateAuditForm from '@/components/form-components/forms/create-audit-for
 import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {Edit, FileText} from "lucide-react";
-import {SupaBaseAudit} from "@/types/audit/types";
+import {SupabaseAudit} from "@/features/audit/types/types";
 import ExportAuditForm from "@/components/form-components/forms/export-audit-form";
 
 type CreateAuditModalProps = {
-  auditData?: SupaBaseAudit
+  auditData?: SupabaseAudit
 }
 
 export default function ExportAuditModal(props: CreateAuditModalProps) {

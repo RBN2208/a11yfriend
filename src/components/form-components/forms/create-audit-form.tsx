@@ -2,7 +2,7 @@
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
-import {createAuditSchema} from "@/utils/validations/zod-schema";
+import {createAuditSchema} from "@/features/audit/zod-schema";
 import {Form} from "@/components/shadcn-components/ui/form"
 import React, {useState} from 'react';
 import {AlertCircleIcon} from 'lucide-react';
@@ -13,13 +13,13 @@ import {
     TextAreaElement
 } from "@/components/form-components/elements/form-elements";
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
-import {SupaBaseAudit} from "@/types/audit/types";
-import {createAudit, updateAudit} from "@/actions/audit/actions";
+import {SupabaseAudit} from "@/features/audit/types/types";
+import {createAudit, updateAudit} from "@/features/audit/actions/actions";
 import {toast} from "sonner";
-import {MessageCodes} from "@/utils/message-codes";
+import {MessageCodes} from "@/shared/message-codes";
 
 type CreateAuditFormProps = {
-    auditData: SupaBaseAudit | undefined,
+    auditData: SupabaseAudit | undefined,
     isEditModal: boolean,
     callbackAction?: () => void,
 }

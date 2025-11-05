@@ -1,6 +1,6 @@
 'use client'
-import {getReport} from "@/actions/report/actions";
-import {SupabaseReport} from "@/types/report/types";
+import {getReport} from "@/features/report/actions/actions";
+import {SupabaseReport} from "@/features/report/types/types";
 import {TypographyH1, TypographyH2, TypographyP} from "@/components/typography/typography-elements";
 import {
     Accordion,
@@ -10,7 +10,7 @@ import {
 } from "@/components/shadcn-components/ui/accordion";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/shadcn-components/ui/card";
 import {UIDivider} from "@/components/common/ui-elements/UIDivider";
-import {AxeReportDetails} from "@/components/report/axe-report-details";
+import {AxeReportDetails} from "@/features/report/components/axe-report-details";
 import LazyAccordionItem from "@/components/shadn-wrappers/LazyAccordionItem";
 import {useEffect, useState} from "react";
 import {Loader2} from "lucide-react";

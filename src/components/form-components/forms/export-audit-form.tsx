@@ -1,12 +1,12 @@
 "use client"
 import React, { useState } from 'react';
-import { SupaBaseAudit } from "@/types/audit/types";
+import { SupabaseAudit } from "@/features/audit/types/types";
 import {TypographyP} from "@/components/typography/typography-elements";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {Loader2} from "lucide-react";
-import {createWordDocument} from "@/lib/word-converter/document";
+import {createWordDocument} from "@/shared/word-converter/document";
 
-export default function ExportAuditForm({auditData}: {auditData: SupaBaseAudit | undefined}) {
+export default function ExportAuditForm({auditData}: {auditData: SupabaseAudit | undefined}) {
   const [loading, setLoading] = useState(false);
 
   async function exportDocument(format: 'word' | 'pdf') {

@@ -6,12 +6,11 @@ import { Button } from "@/components/shadcn-components/ui/button"
 import {Form} from "@/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import { AlertCircleIcon, Loader2 } from 'lucide-react';
-import { emailSchema  } from '@/utils/validations/zod-schema';
-import { oneTimeLoginWithOTP } from '@/actions/auth/auth';
+import { emailSchema, oneTimeLoginSchema } from '@/features/auth/zod-schema';
+import { oneTimeLoginWithOTP } from '@/features/auth/auth';
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import { TypographyP } from "@/components/typography/typography-elements";
 import {InputElement} from "@/components/form-components/elements/form-elements";
-import { oneTimeLoginSchema} from "@/actions/auth/schemas";
 
 const formSchema = z.object({
   email: emailSchema

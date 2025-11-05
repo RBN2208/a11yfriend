@@ -2,7 +2,7 @@
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
-import {createReportSchema} from "@/utils/validations/zod-schema";
+import {createReportSchema} from "@/features/report/zod-schema";
 import {Form} from "@/components/shadcn-components/ui/form"
 import React, {useState} from 'react';
 import {AlertCircleIcon} from 'lucide-react';
@@ -12,9 +12,9 @@ import {
 } from "@/components/form-components/elements/form-elements";
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
 import {toast} from "sonner";
-import {MessageCodes} from "@/utils/message-codes";
-import {createReport, initAxeReport} from "@/actions/report/actions";
-import {AxeReportConfig, SupabaseReport} from "@/types/report/types";
+import {MessageCodes} from "@/shared/message-codes";
+import {createReport, initAxeReport} from "@/features/report/actions/actions";
+import {AxeReportConfig, SupabaseReport} from "@/features/report/types/types";
 
 type CreateAuditFormProps = {
     callbackAction?: () => void
