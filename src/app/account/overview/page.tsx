@@ -1,4 +1,4 @@
-import {getAudit} from "@/features/audit/actions/actions";
+import {getAudit} from "@/features/audit/manual/actions/actions";
 
 export default async function OverviewPage() {
   const response = await getAudit(null,5);

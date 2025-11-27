@@ -2,16 +2,16 @@
 
 import {AxePuppeteer} from '@axe-core/puppeteer';
 import puppeteer from 'puppeteer';
-import {AxeReport, AxeReportConfig} from "@/features/report/types/types";
+import {AxeReport, AxeReportConfig} from "@/features/audit/automatic/types/types";
 import {z} from "zod";
-import {createReportSchema} from "@/features/report/zod-schema";
+import {createReportSchema} from "@/features/audit/automatic/zod-schema";
 import {ApiResponse} from "@/shared/api/types/types";
 import {createServerSupabase} from "@/shared/supabase/server";
 import {MessageCodes} from "@/shared/message-codes";
 import {revalidatePath} from "next/cache";
 import {getErrorOfUnknownError} from "@/shared/utils";
 import {createApiResponse} from "@/shared/api/response";
-import {SupabaseReport} from "@/features/report/types/types";
+import {SupabaseReport} from "@/features/audit/automatic/types/types";
 
 export async function initAxeReport(config: AxeReportConfig, reportId: string): Promise<ApiResponse> {
     const browser = await puppeteer.launch();

@@ -5,9 +5,9 @@ import {Button} from "@/components/shadcn-components/ui/button";
 import {Trash2} from "lucide-react";
 import {useRouter} from "next/navigation";
 import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
-import {deleteAudit} from "@/features/audit/actions/actions";
+import {deleteAudit} from "@/features/audit/manual/actions/actions";
 import {toast} from "sonner";
-import {deleteReport} from "@/features/report/actions/actions";
+import {deleteReport} from "@/features/audit/automatic/actions/actions";
 
 interface ReportMenuProps {
     reportId: string

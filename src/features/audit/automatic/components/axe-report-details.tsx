@@ -1,11 +1,11 @@
-import {AxeReport} from "@/features/report/types/types";
+import {AxeReport} from "@/features/audit/automatic/types/types";
 import {Accordion} from "@/components/shadcn-components/ui/accordion";
 import {TypographyP} from "@/components/typography/typography-elements";
 import {Button} from "@/components/shadcn-components/ui/button";
 import Link from "next/link";
 import {ExternalLink} from "lucide-react";
 import React from "react";
-import {AxeReportNode} from "@/features/report/components/axe-report-node";
+import {AxeReportNode} from "@/features/audit/automatic/components/axe-report-node";
 import {UIDivider} from "@/components/common/ui-elements/UIDivider";
 import LazyAccordionItem from "@/components/shadn-wrappers/LazyAccordionItem";
 

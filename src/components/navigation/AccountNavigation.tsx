@@ -15,12 +15,22 @@ const navigation = [
     href: '/account/overview'
   },
   {
-    name: 'Reports',
-    href: '/account/reports'
-  },
-  {
     name: 'Audits',
-    href: '/account/audits'
+    href: '/account/audits',
+    subs: [
+      {
+        name: 'Manual',
+        href: '/account/audits/manual'
+      },
+      {
+        name: 'Automatic',
+        href: '/account/audits/automatic'
+      },
+      {
+        name: 'AI-Assisted',
+        href: '/account/audits/ai-assisted'
+      }
+    ]
   },
   {
     name: 'Settings',

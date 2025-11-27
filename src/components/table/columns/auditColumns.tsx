@@ -2,7 +2,7 @@
 
 import {ColumnDef} from "@tanstack/react-table"
 import Link from 'next/link';
-import {SupabaseAudit} from '@/features/audit/types/types';
+import {SupabaseAudit} from '@/features/audit/manual/types/types';
 import DeleteAuditModal from "@/components/modals/delete-audit-modal";
 import {buttonVariants} from "@/components/shadcn-components/ui/button"
 import {Separator} from "@/components/shadcn-components/ui/separator";

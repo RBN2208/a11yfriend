@@ -1,6 +1,6 @@
 import {Document, Packer} from "docx";
 import {saveAs} from "file-saver";
-import {SupabaseAudit} from "@/features/audit/types/types";
+import {SupabaseAudit} from "@/features/audit/manual/types/types";
 import {createCriteriaSection, createIntroSection} from "@/shared/word-converter/sections";
 import {DEFAULT_STYLES_CONFIG} from "@/shared/word-converter/configs";
 

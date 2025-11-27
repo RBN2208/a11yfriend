@@ -6,7 +6,7 @@ import {buttonVariants} from "@/components/shadcn-components/ui/button"
 import {Separator} from "@/components/shadcn-components/ui/separator";
 import {View} from "lucide-react";
 import DeleteReportModal from "@/components/modals/delete-report-modal";
-import {SupabaseReport} from "@/features/report/types/types";
+import {SupabaseReport} from "@/features/audit/automatic/types/types";
 
 
 /**

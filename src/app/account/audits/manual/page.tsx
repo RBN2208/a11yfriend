@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/shadcn-components/ui/card';
-import {getAudit} from "@/features/audit/actions/actions";
-import {SupabaseAudit} from "@/features/audit/types/types";
+import {getAudit} from "@/features/audit/manual/actions/actions";
+import {SupabaseAudit} from "@/features/audit/manual/types/types";
 import {UITable} from "@/components/table/UITable";
 import {auditColumns} from "@/components/table/columns/auditColumns";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";

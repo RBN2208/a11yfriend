@@ -2,7 +2,7 @@
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
-import {createAuditSchema} from "@/features/audit/zod-schema";
+import {createAuditSchema} from "@/features/audit/manual/zod-schema";
 import {Form} from "@/components/shadcn-components/ui/form"
 import React, {useState} from 'react';
 import {AlertCircleIcon} from 'lucide-react';
@@ -13,8 +13,8 @@ import {
     TextAreaElement
 } from "@/components/form-components/elements/form-elements";
 import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
-import {SupabaseAudit} from "@/features/audit/types/types";
-import {createAudit, updateAudit} from "@/features/audit/actions/actions";
+import {SupabaseAudit} from "@/features/audit/manual/types/types";
+import {createAudit, updateAudit} from "@/features/audit/manual/actions/actions";
 import {toast} from "sonner";
 import {MessageCodes} from "@/shared/message-codes";
 

@@ -1,9 +1,9 @@
 'use server'
-import {DragAndDropImageFile, SupabaseAudit} from "@/features/audit/types/types";
+import {DragAndDropImageFile, SupabaseAudit} from "@/features/audit/manual/types/types";
 import {createServerSupabase} from "@/shared/supabase/server";
 import {ApiResponse} from "@/shared/api/types/types";
 import {createApiResponse} from "@/shared/api/response";
-import {getAudit} from "@/features/audit/actions/actions";
+import {getAudit} from "@/features/audit/manual/actions/actions";
 import {MessageCodes} from "@/shared/message-codes";
 
 const STORAGE_BUCKET_NAME = "images";

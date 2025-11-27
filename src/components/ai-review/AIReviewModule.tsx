@@ -9,8 +9,8 @@ import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "sonner";
 import {MessageCodes} from "@/shared/message-codes";
-import {aiReviewSchema} from "@/features/aiReview/zod-schema";
-import {startAiReview} from "@/features/audit/actions/actions";
+import {aiReviewSchema} from "@/features/audit/ai/zod-schema";
+import {startAiReview} from "@/features/audit/manual/actions/actions";
 
 export function AIReviewModule() {
     const [loading, setLoading] = useState(false);

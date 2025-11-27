@@ -1,12 +1,12 @@
 'use client'
-import {AuditResult, SupabaseAudit} from "@/features/audit/types/types";
+import {AuditResult, SupabaseAudit} from "@/features/audit/manual/types/types";
 import React, {useState} from "react";
 import AuditFindingsForm from "@/features/audit/components/audit-findings-form";
 import AuditImageViewUploadForm from "@/features/audit/components/audit-image-view-upload-form";
 import UIAccordion from "@/components/common/ui-elements/UIAccordion";
 import {Loader2, Info, ExternalLink, ChevronsDownUp, ChevronsUpDown} from "lucide-react";
 import {Button} from "@/components/shadcn-components/ui/button";
-import {updateAuditResults} from "@/features/audit/actions/actions";
+import {updateAuditResults} from "@/features/audit/manual/actions/actions";
 import {getCriteriasForSelectedConformanceLevel} from "@/features/audit/utils";
 import {TypographyH2, TypographyP} from "@/components/typography/typography-elements";
 import {toast} from "sonner";

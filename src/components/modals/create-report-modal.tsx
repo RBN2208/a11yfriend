@@ -4,7 +4,7 @@ import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {useState} from "react";
 import CreateAxeReportForm from "@/components/form-components/forms/create-axe-report-form";
-import {SupabaseReport} from "@/features/report/types/types";
+import {SupabaseReport} from "@/features/audit/automatic/types/types";
 
 type CreateReportModalProps = {
   reportData?: SupabaseReport

@@ -1,12 +1,12 @@
 "use server"
 import {z} from "zod";
-import {aiReviewSchema} from "@/features/aiReview/zod-schema";
-import { createAuditSchema } from '@/features/audit/zod-schema'
+import {aiReviewSchema} from "@/features/audit/ai/zod-schema";
+import { createAuditSchema } from '@/features/audit/manual/zod-schema'
 import {createServerSupabase} from "@/shared/supabase/server";
 import {revalidatePath} from "next/cache";
 import {getCriteriasForSelectedConformanceLevel} from "@/features/audit/utils";
 import { getErrorOfUnknownError } from "@/shared/utils"
-import {AuditResult, SupabaseAudit} from "@/features/audit/types/types";
+import {AuditResult, SupabaseAudit} from "@/features/audit/manual/types/types";
 import {ApiResponse} from "@/shared/api/types/types";
 import {createApiResponse} from "@/shared/api/response";
 import {MessageCodes} from "@/shared/message-codes";

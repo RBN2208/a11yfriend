@@ -4,8 +4,8 @@ import {Label} from "@/components/shadcn-components/ui/label";
 import {Input} from "@/components/shadcn-components/ui/input";
 import {reportColumns} from "@/components/table/columns/reportColumns";
 import CreateAxeReportModal from "@/components/modals/create-report-modal";
-import {getReport} from "@/features/report/actions/actions";
-import {SupabaseReport} from "@/features/report/types/types";
+import {getReport} from "@/features/audit/automatic/actions/actions";
+import {SupabaseReport} from "@/features/audit/automatic/types/types";
 
 export default async function ReportPage() {
     const response = await getReport(null, 20);

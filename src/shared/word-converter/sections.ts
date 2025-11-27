@@ -1,5 +1,5 @@
 import {Header, ISectionOptions, Paragraph, HeadingLevel, TextRun} from "docx";
-import { SupabaseAudit } from "@/features/audit/types/types";
+import { SupabaseAudit } from "@/features/audit/manual/types/types";
 import {convertFindingsToTables} from "@/shared/word-converter/json-parser";
 
 export function createIntroSection(audit: SupabaseAudit): ISectionOptions {

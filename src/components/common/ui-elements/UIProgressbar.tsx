@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Progress} from "@/components/shadcn-components/ui/progress";
-import {AuditResult} from "@/features/audit/types/types";
+import {AuditResult} from "@/features/audit/manual/types/types";
 
 type ProgressBarProps = {
   partial: AuditResult[],

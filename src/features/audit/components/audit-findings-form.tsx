@@ -5,7 +5,7 @@ import UISelect from "@/components/common/ui-elements/UISelect";
 import { SelectItem } from "@/components/shadcn-components/ui/select";
 import { Label } from "@/components/shadcn-components/ui/label";
 import Tiptap from "@/components/tiptap/Tiptap";
-import {AuditResult} from "@/features/audit/types/types";
+import {AuditResult} from "@/features/audit/manual/types/types";
 
 interface AuditFindingsFormProps {
   formData: AuditResult;

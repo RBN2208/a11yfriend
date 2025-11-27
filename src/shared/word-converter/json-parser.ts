@@ -1,5 +1,5 @@
 import {Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, BorderStyle, WidthType} from "docx";
-import {SupabaseAudit} from "@/features/audit/types/types";
+import {SupabaseAudit} from "@/features/audit/manual/types/types";
 import {WCAGCriterias} from "@/staticData/criteria";
 
 /**

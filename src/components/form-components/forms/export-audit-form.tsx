@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { SupabaseAudit } from "@/features/audit/types/types";
+import { SupabaseAudit } from "@/features/audit/manual/types/types";
 import {TypographyP} from "@/components/typography/typography-elements";
 import {Button} from "@/components/shadcn-components/ui/button";
 import {Loader2} from "lucide-react";

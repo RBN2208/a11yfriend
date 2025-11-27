@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import {DragAndDropField} from "@/components/form-components/drag-and-drop/drag-and-drop-field";
-import {DragAndDropImageFile, SupabaseAudit} from "@/features/audit/types/types";
+import {DragAndDropImageFile, SupabaseAudit} from "@/features/audit/manual/types/types";
 import {Ban, CircleCheck, Loader2, ScanSearch, TriangleAlert, UploadCloud, X} from "lucide-react";
 import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/components/shadcn-components/ui/button";
