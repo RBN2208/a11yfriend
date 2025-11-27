@@ -1,6 +1,6 @@
 import {NodeResult} from "axe-core";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import {TypographyP} from "@/components/typography/typography-elements";
+import {TypographyP} from "@/shared/components/typography/typography-elements";
 
 type AxeReportNodeProps = {
     node: NodeResult

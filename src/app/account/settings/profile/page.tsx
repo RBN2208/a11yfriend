@@ -1,7 +1,6 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/shadcn-components/ui/card';
-import { Button } from '@/components/shadcn-components/ui/button';
-import UIAccordion from "@/components/common/ui-elements/UIAccordion";
-import ChangePasswordForm from "@/components/form-components/forms/change-password-form";
+import {Card, CardContent, CardHeader, CardTitle} from '@/shared/components/shadcn-components/ui/card';
+import UIAccordion from "@/shared/components/common/ui-elements/UIAccordion";
+import ChangePasswordForm from "@/features/auth/components/change-password-form";
 
 export default async function AccountSettingsProfilePage() {
   return (

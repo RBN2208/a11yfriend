@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/shared/supabase/server';
-import { SidebarProvider, SidebarTrigger } from "@/components/shadcn-components/ui/sidebar"
-import UIBreadcrumb from "@/components/common/ui-elements/UIBreadcrumb";
-import AccountNavigationBase from "@/components/navigation/AccountNavigationBase";
+import { SidebarProvider, SidebarTrigger } from "@/shared/components/shadcn-components/ui/sidebar"
+import UIBreadcrumb from "@/shared/components/common/ui-elements/UIBreadcrumb";
+import AccountNavigationBase from "@/shared/components/navigation/AccountNavigationBase";
 
 export default async function AccountLayout({children}: { children: React.ReactNode }) {
   const supabase = await createServerSupabase();

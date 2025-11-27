@@ -1,9 +1,9 @@
-import {UITable} from "@/components/table/UITable";
+import {UITable} from "@/shared/components/table/UITable";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
-import {Label} from "@/components/shadcn-components/ui/label";
-import {Input} from "@/components/shadcn-components/ui/input";
-import {reportColumns} from "@/components/table/columns/reportColumns";
-import CreateAxeReportModal from "@/components/modals/create-report-modal";
+import {Label} from "@/shared/components/shadcn-components/ui/label";
+import {Input} from "@/shared/components/shadcn-components/ui/input";
+import {reportColumns} from "@/shared/components/table/columns/reportColumns";
+import CreateAxeReportModal from "@/features/audit/automatic/components/create-report-modal";
 import {getReport} from "@/features/audit/automatic/actions/actions";
 import {SupabaseReport} from "@/features/audit/automatic/types/types";
 

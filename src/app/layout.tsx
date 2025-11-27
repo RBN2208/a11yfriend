@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from '@/components/common/header/Header';
-import Footer from '@/components/common/Footer';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { MobileMenu } from '@/components/common/header/MobileMenu';
-import { Sheet } from '@/components/shadcn-components/ui/sheet';
+import Header from '@/shared/components/common/header/Header';
+import Footer from '@/shared/components/common/Footer';
+import { ThemeProvider } from '@/shared/components/ThemeProvider';
+import { MobileMenu } from '@/shared/components/common/header/MobileMenu';
+import { Sheet } from '@/shared/components/shadcn-components/ui/sheet';
 import { createServerSupabase } from '@/shared/supabase/server';
-import { Toaster } from '@/components/shadcn-components/ui/sonner';
+import { Toaster } from '@/shared/components/shadcn-components/ui/sonner';
 
 export const metadata: Metadata = {
   title: "A11y Friend",

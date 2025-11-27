@@ -1,13 +1,13 @@
 import {AxeReport} from "@/features/audit/automatic/types/types";
-import {Accordion} from "@/components/shadcn-components/ui/accordion";
-import {TypographyP} from "@/components/typography/typography-elements";
-import {Button} from "@/components/shadcn-components/ui/button";
+import {Accordion} from "@/shared/components/shadcn-components/ui/accordion";
+import {TypographyP} from "@/shared/components/typography/typography-elements";
+import {Button} from "@/shared/components/shadcn-components/ui/button";
 import Link from "next/link";
 import {ExternalLink} from "lucide-react";
 import React from "react";
 import {AxeReportNode} from "@/features/audit/automatic/components/axe-report-node";
-import {UIDivider} from "@/components/common/ui-elements/UIDivider";
-import LazyAccordionItem from "@/components/shadn-wrappers/LazyAccordionItem";
+import {UIDivider} from "@/shared/components/common/ui-elements/UIDivider";
+import LazyAccordionItem from "@/shared/components/shadn-wrappers/LazyAccordionItem";
 
 type AxeReportDetailsProps = {
     details: AxeReport['inapplicable' | 'incomplete' | 'passes' | 'violations'],

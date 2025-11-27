@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState } from 'react';
-import {DragAndDropField} from "@/components/form-components/drag-and-drop/drag-and-drop-field";
+import {DragAndDropField} from "@/shared/components/form-components/drag-and-drop/drag-and-drop-field";
 import {DragAndDropImageFile, SupabaseAudit} from "@/features/audit/manual/types/types";
 import {Ban, CircleCheck, Loader2, ScanSearch, TriangleAlert, UploadCloud, X} from "lucide-react";
-import DialogWrapper from "@/components/shadn-wrappers/DialogWrapper";
-import {Button} from "@/components/shadcn-components/ui/button";
+import DialogWrapper from "@/shared/components/shadn-wrappers/DialogWrapper";
+import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {useRouter} from "next/navigation";
 import {deleteImage, mergeImagesToAudit, uploadImage} from "@/features/images/actions";
 import {toast} from "sonner";

@@ -3,23 +3,23 @@ import {AuditResult, SupabaseAudit} from "@/features/audit/manual/types/types";
 import React, {useState} from "react";
 import AuditFindingsForm from "@/features/audit/components/audit-findings-form";
 import AuditImageViewUploadForm from "@/features/audit/components/audit-image-view-upload-form";
-import UIAccordion from "@/components/common/ui-elements/UIAccordion";
+import UIAccordion from "@/shared/components/common/ui-elements/UIAccordion";
 import {Loader2, Info, ExternalLink, ChevronsDownUp, ChevronsUpDown} from "lucide-react";
-import {Button} from "@/components/shadcn-components/ui/button";
+import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {updateAuditResults} from "@/features/audit/manual/actions/actions";
 import {getCriteriasForSelectedConformanceLevel} from "@/features/audit/utils";
-import {TypographyH2, TypographyP} from "@/components/typography/typography-elements";
+import {TypographyH2, TypographyP} from "@/shared/components/typography/typography-elements";
 import {toast} from "sonner";
 import {MessageCodes} from "@/shared/message-codes";
-import AlertWrapper from "@/components/shadn-wrappers/AlertWrapper";
-import {AIReviewModule} from "@/components/ai-review/AIReviewModule";
-import {UIDivider} from "@/components/common/ui-elements/UIDivider";
+import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
+import {AIReviewModule} from "@/features/ai/components/AIReviewModule";
+import {UIDivider} from "@/shared/components/common/ui-elements/UIDivider";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger
-} from "@/components/shadcn-components/ui/accordion";
+} from "@/shared/components/shadcn-components/ui/accordion";
 
 interface AuditDetailOverviewPageProps {
     audit: SupabaseAudit;
