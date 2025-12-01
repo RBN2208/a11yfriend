@@ -1,18 +1,59 @@
+'use server'
+
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import {WCAGCriterias} from "@/staticData/criteria";
+import {revalidatePath} from "next/cache";
+import {ApiResponse} from "@/shared/api/types/types";
+import {createServerSupabase} from "@/shared/supabase/server";
+import {createApiResponse} from "@/shared/api/response";
+import {MessageCodes} from "@/shared/message-codes";
+import {getErrorOfUnknownError} from "@/shared/helpers";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+const REVALIDATION_PATH = "/" as const;
+const REVALIDATION_TYPE = "layout" as const;
+
+
+/**
+ * Revalidates the application cache after data mutations.
+ */
+export async function revalidateCache(): Promise<void> {
+  revalidatePath(REVALIDATION_PATH, REVALIDATION_TYPE);
 }
 
 /**
- * Retrieves the error message from an Error object, or returns a fallback message if the provided value is not an Error.
+ * Validates user authentication and returns user data.
  *
- * @param {unknown} error - The error object or unknown value to retrieve the message from.
- * @param {string} fallback - The fallback message to use if the provided value is not an Error object.
- * @return {string} The error message if the value is an Error object, otherwise the fallback message.
+ * @returns {Promise<{success: boolean, user?: any, error?: ApiResponse}>}
  */
-export function getErrorOfUnknownError(error: unknown, fallback: string) {
-  return error instanceof Error ? error.message : fallback;
+export async function validateUserAuth(): Promise<{
+  success: boolean;
+  user?: any;
+  error?: ApiResponse;
+}> {
+  try {
+    const supabase = await createServerSupabase();
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !userData.user) {
+      return {
+        success: false,
+        error: createApiResponse({
+          success: false,
+          globalError: userError?.message,
+          message: MessageCodes.AUTH_USER_VERIFY_ERROR
+        })
+      };
+    }
+
+    return { success: true, user: userData.user };
+  } catch (error) {
+    return {
+      success: false,
+      error: createApiResponse({
+        success: false,
+        globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
+        message: MessageCodes.AUTH_USER_VERIFY_ERROR
+      })
+    };
+  }
 }

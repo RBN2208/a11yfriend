@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/shared/utils"
+import { cn } from "@/shared/helpers"
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/shared/components/shadcn-components/ui/button';
 

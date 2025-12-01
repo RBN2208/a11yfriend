@@ -46,7 +46,6 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
 
     const saveToSupabase = async (data: AuditResult[], auditId: string) => {
         setIsSaving(true);
-        console.log('saving to supabase', data);
         try {
             const {success, message, globalError} = await updateAuditResults(data, auditId);
             if (success) {
@@ -140,14 +139,16 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                             key={result.id}
                             value={result.id}
                         >
-                            <AccordionTrigger
-                                className={`AccordionTrigger px-4 font-bold ${stateClass}`}>
+                            <AccordionTrigger className={`AccordionTrigger px-4 font-bold ${stateClass}`}>
                                 {result.name}
                             </AccordionTrigger>
                             <AccordionContent>
                                 <AlertWrapper
-                                    alertClass="mt-4" title="Further informations on this criteria" variant="default"
-                                    icon={<Info/>}>
+                                    alertClass="mt-4"
+                                    title="Further informations on this criteria"
+                                    variant="default"
+                                    icon={<Info/>}
+                                >
                                     <Button variant="outline" asChild>
                                         <a href={result.referenceLink}>
                                             {result.name}
