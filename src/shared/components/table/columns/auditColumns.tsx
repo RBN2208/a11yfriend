@@ -2,28 +2,24 @@
 
 import {ColumnDef} from "@tanstack/react-table"
 import Link from 'next/link';
-import {SupabaseAudit} from '@/features/audit/manual/types/types';
-import DeleteAuditModal from "@/features/audit/components/delete-audit-modal";
+import {ManualAudit} from '@/features/audit/manual/types/types';
+import DeleteAuditModal from "@/features/audit/manual/components/delete-audit-modal";
 import {buttonVariants} from "@/shared/components/shadcn-components/ui/button"
 import {Separator} from "@/shared/components/shadcn-components/ui/separator";
 import {Edit, View} from "lucide-react";
 import {getCriteriaLengths} from "@/staticData/criteria";
 import {TypographyP} from "@/shared/components/typography/typography-elements";
-import CreateAuditModal from "@/features/audit/components/create-audit-modal";
-import ExportAuditModal from "@/features/audit/components/export-audit-modal";
+import CreateAuditModal from "@/features/audit/manual/components/create-audit-modal";
+import ExportAuditModal from "@/features/audit/manual/components/export-audit-modal";
 
 
 /**
  * columns for the audit tables
  */
-export const auditColumns: ColumnDef<SupabaseAudit>[] = [
+export const auditColumns: ColumnDef<ManualAudit>[] = [
   {
     accessorKey: "name",
     header: "Name",
-  },
-  {
-    accessorKey: "version",
-    header: "Version",
   },
   {
     accessorKey: "conformance",
@@ -34,7 +30,7 @@ export const auditColumns: ColumnDef<SupabaseAudit>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({row}) => {
-      const solvedCriterias = row.original.auditResults.filter(result => {
+      const solvedCriterias = row.original.findings.filter(result => {
         if (result.status !== 'not_checked') {
           return true
         }
@@ -42,7 +38,7 @@ export const auditColumns: ColumnDef<SupabaseAudit>[] = [
       return (
         <div className="flex justify-start items-center gap-2 h-8">
           <Link className={buttonVariants({variant: "outline", size: "icon"})}
-                href={`/account/audits/${row.original.id}`}
+                href={`/account/audits/manual/${row.original.id}`}
                 title="View audit"
           >
             <View/>

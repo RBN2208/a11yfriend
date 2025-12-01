@@ -1,20 +1,22 @@
-export interface SupabaseAudit {
-  id: string
-  name: string
-  description?: string
-  created_at: string
-  updated_at?: string
-  user_id: string
-  status: 'draft' | 'in_progress' | 'completed'
-  customer: string
-  project_name: string
-  module: string
-  version: '2.0' | '2.1' | '2.2'
-  conformance: 'A' | 'AA' | 'AAA'
-  miscellaneous: string
-  auditResults: AuditResult[]
-  images: DragAndDropImageFile[] | []
+/**
+ * ManualAudit interface, represents an own table in the database.
+ * {id} is primary key.
+ * {user_id} is foreign key relating to
+ * {created_at} and {updated_at} are Dates from Supabase.
+ */
+export interface ManualAudit {
+  id: string;
+  user_id: string;
+  name: string;
+  description: string;
+  status: AuditStatus;
+  conformance: 'A' | 'AA' | 'AAA';
+  findings: AuditResult[];
+  created_at: string;
+  updated_at: string;
 }
+
+export type AuditStatus = 'pending' | 'running' | 'done';
 
 export type AuditResult = {
   id: string
@@ -23,17 +25,6 @@ export type AuditResult = {
   referenceLink: string
   status: 'checked' | 'not_checked' | 'not_applicable' | 'failed'
   findings: TipTapContentType | null,
-}
-
-export type WCAGAuditFormType = {
-  id: string,
-  category: string
-  guideLine: string
-  name: string
-  conformance: 'A' | 'AA' | 'AAA'
-  referenceLink: string
-  findings: string
-  status: 'checked' | 'not_checked' | 'not_applicable'
 }
 
 type TipTapContentType = {
@@ -47,15 +38,6 @@ type TipTapContentType = {
     level: number
   } | {}
 }
-
-
-export type DragAndDropImageFile = {
-  id: string;
-  name: string;
-  preview: string;
-  file?: File;
-  uploadStatus?: 'idle' | 'uploading' | 'success' | 'error';
-};
 
 export type AuditResponse = {
   ok: boolean;

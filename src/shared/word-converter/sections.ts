@@ -1,8 +1,8 @@
 import {Header, ISectionOptions, Paragraph, HeadingLevel, TextRun} from "docx";
-import { SupabaseAudit } from "@/features/audit/manual/types/types";
+import {ManualAudit} from "@/features/audit/manual/types/types";
 import {convertFindingsToTables} from "@/shared/word-converter/json-parser";
 
-export function createIntroSection(audit: SupabaseAudit): ISectionOptions {
+export function createIntroSection(audit: ManualAudit): ISectionOptions {
   return {
     headers: {
       default: new Header({
@@ -26,36 +26,12 @@ export function createIntroSection(audit: SupabaseAudit): ISectionOptions {
         new Paragraph({
           heading: HeadingLevel.HEADING_2,
           children: [
-            new TextRun("Customer")
-          ]
-        }),
-        new Paragraph({
-          children: [
-            new TextRun(audit.customer || "No customer provided")
-          ]
-        }),
-
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [
             new TextRun("Audit description")
           ]
         }),
         new Paragraph({
           children: [
             new TextRun(audit.description || "No description provided")
-          ]
-        }),
-
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [
-            new TextRun("WCAG Version:")
-          ]
-        }),
-        new Paragraph({
-          children: [
-            new TextRun(audit.version || "No version provided")
           ]
         }),
 
@@ -69,37 +45,13 @@ export function createIntroSection(audit: SupabaseAudit): ISectionOptions {
           children: [
             new TextRun(audit.conformance || "No conformance provided")
           ]
-        }),
-
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [
-            new TextRun("Tested module / page:")
-          ]
-        }),
-        new Paragraph({
-          children: [
-            new TextRun(audit.module || "No module provided")
-          ]
-        }),
-
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [
-            new TextRun('Miscellaneous:')
-          ]
-        }),
-        new Paragraph({
-          children: [
-            new TextRun(audit.miscellaneous || "No miscellaneous provided")
-          ]
-        }),
+        })
     ]
   }
 }
 
 
-export function createCriteriaSection(results: SupabaseAudit['auditResults']): ISectionOptions {
+export function createCriteriaSection(results: ManualAudit['findings']): ISectionOptions {
   const tables = convertFindingsToTables(results);
   return {
     children: tables,

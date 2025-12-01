@@ -1,12 +1,11 @@
 "use server"
 import {z} from "zod";
-import {aiReviewSchema} from "@/features/audit/ai/zod-schema";
 import { createAuditSchema } from '@/features/audit/manual/zod-schema'
 import {createServerSupabase} from "@/shared/supabase/server";
 import {revalidatePath} from "next/cache";
 import {getCriteriasForSelectedConformanceLevel} from "@/features/audit/utils";
 import { getErrorOfUnknownError } from "@/shared/utils"
-import {AuditResult, SupabaseAudit} from "@/features/audit/manual/types/types";
+import {AuditResult, ManualAudit} from "@/features/audit/manual/types/types";
 import {ApiResponse} from "@/shared/api/types/types";
 import {createApiResponse} from "@/shared/api/response";
 import {MessageCodes} from "@/shared/message-codes";
@@ -39,7 +38,7 @@ function createAuditResultsDefault(): AuditResult[] | any[] {
 }
 
 function createAuditValidationResponse(formattedErrors: z.ZodFormattedError<z.infer<typeof createAuditSchema>, {}>): ApiResponse {
-  const fieldKeys = ['name', 'description', 'status', 'customer', 'project_name', 'module', 'version', 'conformance', 'miscellaneous'];
+  const fieldKeys = ['name', 'description', 'status', 'conformance'];
 
   return {
     success: false,
@@ -52,23 +51,6 @@ function createAuditValidationResponse(formattedErrors: z.ZodFormattedError<z.in
     message: MessageCodes.FORM_DATA_VALIDATION_ERROR
   };
 }
-
-function createAiReviewValidationResponse(formattedErrors: z.ZodFormattedError<z.infer<typeof aiReviewSchema>, {}>): ApiResponse {
-  const fieldKeys = ['code'];
-
-  return {
-    success: false,
-    errors: fieldKeys.map(name => {
-      return {
-        field: name,
-        error: (formattedErrors as any)[name]?._errors[0] || []
-      }
-    }),
-    message: MessageCodes.FORM_DATA_VALIDATION_ERROR
-  };
-}
-
-// createApiResponse now imported from shared helper
 
 export async function createAudit(values: z.infer<typeof createAuditSchema>): Promise<ApiResponse> {
   try {
@@ -93,11 +75,11 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     const updatedFormData = {
       ...values,
       user_id: userData.user?.id || "",
-      images: [],
-      auditResults: createAuditResultsDefault()
+      status: "pending",
+      findings: createAuditResultsDefault()
     };
 
-    const { error: insertError } = await supabase.from('audits').insert([updatedFormData]);
+    const { error: insertError } = await supabase.from('manual_audits').insert([updatedFormData]);
     if (insertError) {
       return {
         success: false,
@@ -125,7 +107,7 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
 export async function deleteAudit(auditId: string): Promise<ApiResponse> {
   try {
     const supabase = await createServerSupabase();
-    const {error: deleteError} = await supabase.from('audits')
+    const {error: deleteError} = await supabase.from('manual_audits')
       .delete()
       .eq('id', auditId);
 
@@ -162,7 +144,7 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
     const supabase = await createServerSupabase();
 
     const {error} = await supabase
-      .from('audits')
+      .from('manual_audits')
       .update(values)
       .eq('id', auditId);
 
@@ -194,8 +176,11 @@ export async function updateAuditResults(data: AuditResult[], auditId: string): 
     const supabase = await createServerSupabase();
 
     const { error } = await supabase
-        .from('audits')
-        .update({auditResults: data})
+        .from('manual_audits')
+        .update({
+          findings: data,
+          status: data.some(result => result.status === 'not_checked') ? 'pending' : 'done'
+        })
         .eq('id', auditId);
 
     if (error) {
@@ -218,15 +203,9 @@ export async function updateAuditResults(data: AuditResult[], auditId: string): 
       message: MessageCodes.AUDIT_RESULTS_UPDATE_ERROR_UNEXPECTED,
     })
   }
-
-
-  return createApiResponse({
-    success: true,
-    message: "Audit results updated successfully",
-  })
 }
 
-export async function getAudit(id: string | null = null, limit: number = 5): Promise<ApiResponse<SupabaseAudit[] | SupabaseAudit>> {
+export async function getAudit(id: string | null = null, limit: number = 5): Promise<ApiResponse<ManualAudit[] | ManualAudit>> {
   try {
     if (id) {
       return getSingleAudit(id);
@@ -242,12 +221,12 @@ export async function getAudit(id: string | null = null, limit: number = 5): Pro
   }
 }
 
-async function getMultipleAudits(limit: number): Promise<ApiResponse<SupabaseAudit[]>> {
+async function getMultipleAudits(limit: number): Promise<ApiResponse<ManualAudit[]>> {
   try {
     const supabase = await createServerSupabase();
 
     const {data: audits, error} = await supabase
-        .from('audits')
+        .from('manual_audits')
         .select('*')
         .order('created_at', {ascending: false})
         .limit(limit)
@@ -263,7 +242,7 @@ async function getMultipleAudits(limit: number): Promise<ApiResponse<SupabaseAud
     return createApiResponse({
       success: true,
       message: MessageCodes.AUDITS_GET_SUCCESS,
-      data: audits as SupabaseAudit[]
+      data: audits as ManualAudit[]
     })
   } catch (error: unknown) {
     return createApiResponse({
@@ -274,12 +253,12 @@ async function getMultipleAudits(limit: number): Promise<ApiResponse<SupabaseAud
   }
 }
 
-async function getSingleAudit(id: string): Promise<ApiResponse<SupabaseAudit>> {
+async function getSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
   try {
     const supabase = await createServerSupabase();
 
     const {data: audit, error} = await supabase
-        .from('audits')
+        .from('manual_audits')
         .select('*')
         .eq('id', id);
 
@@ -294,7 +273,7 @@ async function getSingleAudit(id: string): Promise<ApiResponse<SupabaseAudit>> {
     return createApiResponse({
       success: true,
       message: MessageCodes.AUDIT_GET_SUCCESS,
-      data: audit[0] as SupabaseAudit
+      data: audit[0] as ManualAudit
     })
   } catch (error: unknown) {
     return createApiResponse({
@@ -303,46 +282,4 @@ async function getSingleAudit(id: string): Promise<ApiResponse<SupabaseAudit>> {
       message: MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED,
     })
   }
-}
-
-export async function startAiReview(values: z.infer<typeof aiReviewSchema>): Promise<ApiResponse> {
-  try {
-    const validationResult = aiReviewSchema.safeParse(values);
-
-    if (!validationResult.success) {
-      return createAiReviewValidationResponse(validationResult.error.format());
-    }
-
-    const response = await mock(false, "Error Review");
-    if (!response.data) {
-      return createApiResponse({
-        success: false,
-        globalError: response.error,
-        message: MessageCodes.AUDIT_AI_REVIEW_ERROR
-      })
-    }
-    revalidatePath('/', 'layout');
-
-    return createApiResponse({
-      success: true,
-      message: MessageCodes.AUDIT_AI_REVIEW_SUCCESS
-    })
-  } catch (error) {
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      message: MessageCodes.AUDIT_AI_REVIEW_ERROR_UNEXPECTED,
-    })
-  }
-}
-
-function mock(data: any, error: any): Promise<{data: any, error: any}> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        data: data,
-        error: error
-      });
-    }, 1000);
-  });
 }

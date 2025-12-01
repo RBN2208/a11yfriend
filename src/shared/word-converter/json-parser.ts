@@ -1,6 +1,5 @@
 import {Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, BorderStyle, WidthType} from "docx";
-import {SupabaseAudit} from "@/features/audit/manual/types/types";
-import {WCAGCriterias} from "@/staticData/criteria";
+import {ManualAudit} from "@/features/audit/manual/types/types";
 
 /**
  * Renders a TipTap node to a docx Paragraph
@@ -121,7 +120,7 @@ function renderTextRun(node: any): TextRun {
 /**
  * Converts a WCAGAuditFormTypeWithFindings object to docx Paragraphs
  */
-export function convertFindingsToTables(results: SupabaseAudit['auditResults']): Table[] {
+export function convertFindingsToTables(results: ManualAudit['findings']): Table[] {
   const tables: Table[] = [];
 
   results.forEach((result) => {

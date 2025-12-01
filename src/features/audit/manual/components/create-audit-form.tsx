@@ -13,22 +13,16 @@ import {
     TextAreaElement
 } from "@/shared/components/form-components/elements/form-elements";
 import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
-import {SupabaseAudit} from "@/features/audit/manual/types/types";
+import {ManualAudit} from "@/features/audit/manual/types/types";
 import {createAudit, updateAudit} from "@/features/audit/manual/actions/actions";
 import {toast} from "sonner";
 import {MessageCodes} from "@/shared/message-codes";
 
 type CreateAuditFormProps = {
-    auditData: SupabaseAudit | undefined,
+    auditData: ManualAudit | undefined,
     isEditModal: boolean,
     callbackAction?: () => void,
 }
-
-const VERSION_OPTIONS = [
-    {label: 'v2.0', value: '2.0'},
-    {label: 'v2.1', value: '2.1'},
-    {label: 'v2.2', value: '2.2'},
-]
 
 const CONFORMANCE_OPTIONS = [
     {label: 'A', value: 'A'},
@@ -47,12 +41,7 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
             name: props.auditData?.name || "",
             description: props.auditData?.description || "",
             status: props.auditData?.status || "draft",
-            customer: props.auditData?.customer || "",
-            project_name: props.auditData?.project_name || "",
-            module: props.auditData?.module || "",
-            version: props.auditData?.version || undefined,
-            conformance: props.auditData?.conformance || undefined,
-            miscellaneous: props.auditData?.miscellaneous || ''
+            conformance: props.auditData?.conformance || undefined
         }
     })
 
@@ -94,36 +83,7 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
                               required={true}
                               name="name"
                               type="text"
-                              className="w-full sm:w-1/2 p-2"
-                />
-
-                <InputElement label="Customer name"
-                              required={true}
-                              name="customer"
-                              type="text"
-                              className="w-full sm:w-1/2 p-2"
-                />
-
-                <InputElement label="Project name"
-                              required={true}
-                              name="project_name"
-                              type="text"
-                              className="w-full sm:w-1/2 p-2"
-                />
-
-                <InputElement label="Module name"
-                              required={true}
-                              name="module"
-                              type="text"
-                              className="w-full sm:w-1/2 p-2"
-                />
-
-                <SelectElement name="version"
-                               label="Version"
-                               required={true}
-                               options={VERSION_OPTIONS}
-                               placeholder="Version"
-                               className="w-full sm:w-1/4 p-2"
+                              className="w-full sm:w-1/2 md:w-1/2 p-2"
                 />
 
                 <SelectElement name="conformance"
@@ -131,7 +91,7 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
                                required={true}
                                options={CONFORMANCE_OPTIONS}
                                placeholder="Conformance level"
-                               className="w-full sm:w-1/4 p-2"
+                               className="w-full sm:w-1/4 md:w-1/2 p-2"
                 />
 
                 <div className="w-full sm:w-2/4"></div>
@@ -139,16 +99,8 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
 
                 <TextAreaElement name="description"
                                  label="Description"
-                                 className="w-full sm:w-1/2 p-3"
+                                 className="w-full sm:w-1/2 md:w-full p-3"
                 />
-
-
-                <TextAreaElement name="miscellaneous"
-                                 label="Miscellaneous"
-                                 description="Any other information you want to add"
-                                 className="w-full sm:w-1/2 p-3"
-                />
-
 
                 <FormButton loading={loading}
                             loadingLabel="Creating audit"

@@ -1,14 +1,13 @@
 'use client'
 
-import CreateAuditForm from '@/features/audit/components/create-audit-form';
 import DialogWrapper from "@/shared/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/shared/components/shadcn-components/ui/button";
-import {Edit, FileText} from "lucide-react";
-import {SupabaseAudit} from "@/features/audit/manual/types/types";
-import ExportAuditForm from "@/features/audit/components/export-audit-form";
+import {FileText} from "lucide-react";
+import {ManualAudit} from "@/features/audit/manual/types/types";
+import ExportAuditForm from "@/features/audit/manual/components/export-audit-form";
 
 type CreateAuditModalProps = {
-  auditData?: SupabaseAudit
+  auditData?: ManualAudit
 }
 
 export default function ExportAuditModal(props: CreateAuditModalProps) {

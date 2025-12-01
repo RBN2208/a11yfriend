@@ -1,8 +1,7 @@
 'use client'
-import {AuditResult, SupabaseAudit} from "@/features/audit/manual/types/types";
+import {AuditResult, ManualAudit} from "@/features/audit/manual/types/types";
 import React, {useState} from "react";
-import AuditFindingsForm from "@/features/audit/components/audit-findings-form";
-import AuditImageViewUploadForm from "@/features/audit/components/audit-image-view-upload-form";
+import AuditFindingsForm from "@/features/audit/manual/components/audit-findings-form";
 import UIAccordion from "@/shared/components/common/ui-elements/UIAccordion";
 import {Loader2, Info, ExternalLink, ChevronsDownUp, ChevronsUpDown} from "lucide-react";
 import {Button} from "@/shared/components/shadcn-components/ui/button";
@@ -12,7 +11,6 @@ import {TypographyH2, TypographyP} from "@/shared/components/typography/typograp
 import {toast} from "sonner";
 import {MessageCodes} from "@/shared/message-codes";
 import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
-import {AIReviewModule} from "@/features/ai/components/AIReviewModule";
 import {UIDivider} from "@/shared/components/common/ui-elements/UIDivider";
 import {
     Accordion,
@@ -22,11 +20,11 @@ import {
 } from "@/shared/components/shadcn-components/ui/accordion";
 
 interface AuditDetailOverviewPageProps {
-    audit: SupabaseAudit;
+    audit: ManualAudit;
 }
 
 export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPageProps) {
-    const filteredResults = getCriteriasForSelectedConformanceLevel(audit.conformance, audit.auditResults);
+    const filteredResults = getCriteriasForSelectedConformanceLevel(audit.conformance, audit.findings);
 
     const [auditResultFormData, setAuditResultFormData] = useState<AuditResult[]>(filteredResults);
     const [isSaving, setIsSaving] = useState(false);
@@ -48,6 +46,7 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
 
     const saveToSupabase = async (data: AuditResult[], auditId: string) => {
         setIsSaving(true);
+        console.log('saving to supabase', data);
         try {
             const {success, message, globalError} = await updateAuditResults(data, auditId);
             if (success) {
@@ -83,47 +82,6 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                             {audit.description}
                         </TypographyP>
                     </div>
-                    <div className="flex gap-4 p-4 border border-transparent border-b-gray-300">
-                        <TypographyP className="font-bold min-w-24">
-                            Module
-                        </TypographyP>
-                        <TypographyP className="m-0">
-                            {audit.module}
-                        </TypographyP>
-                    </div>
-                    <div className="flex gap-4 p-4 border border-transparent border-b-gray-300">
-                        <TypographyP className="font-bold min-w-24">
-                            Customer
-                        </TypographyP>
-                        <TypographyP className="m-0">
-                            {audit.customer}
-                        </TypographyP>
-                    </div>
-                    <div className="flex gap-4 p-4 border border-transparent border-b-gray-300">
-                        <TypographyP className="font-bold min-w-24">
-                            Project Name
-                        </TypographyP>
-                        <TypographyP className="m-0">{audit.project_name}</TypographyP>
-                    </div>
-                    <div className="flex gap-4 p-4">
-                        <TypographyP className="font-bold min-w-24">
-                            Miscellaneous
-                        </TypographyP>
-                        <TypographyP className="m-0">{audit.miscellaneous}</TypographyP>
-                    </div>
-                </UIAccordion>
-
-                {/* audit images */}
-                <UIAccordion triggerLabel="Images">
-                    <AuditImageViewUploadForm
-                        images={audit.images}
-                        auditId={audit.id}
-                    />
-                </UIAccordion>
-
-                {/* AI Review Module */}
-                <UIAccordion triggerLabel="AI Review">
-                    <AIReviewModule />
                 </UIAccordion>
             </div>
 
