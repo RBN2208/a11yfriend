@@ -10,7 +10,7 @@ type UISelectProps = {
   label?: string;
   id?: string;
 }
-export default function UISelect({placeholder, label, value, id = "", onChange, children, ...props}: UISelectProps) {
+export default function SelectWrapper({placeholder, label, value, id = "", onChange, children, ...props}: UISelectProps) {
   return (
       <>
         {label &&

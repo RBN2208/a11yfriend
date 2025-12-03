@@ -1,16 +1,16 @@
 "use server"
 
+import type { AuditResult, ManualAudit } from "@/features/audit/manual/types/types";
+import type { ApiResponse } from "@/shared/api/types/types";
 import { z } from "zod";
 import { createServerSupabase } from "@/shared/supabase/server";
 import { getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
-import {revalidateCache} from "@/shared/utils";
+import { revalidateCache } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";
-import { MessageCodes } from "@/shared/message-codes";
+import { MessageCodes } from "@/shared/i18n/message-codes";
 import { createAuditSchema } from "@/features/audit/manual/zod-schema";
-import type { AuditResult, ManualAudit } from "@/features/audit/manual/types/types";
-import type { ApiResponse } from "@/shared/api/types/types";
-import {validateUserAuth} from "@/shared/utils";
-import {getErrorOfUnknownError} from "@/shared/helpers";
+import { validateUserAuth } from "@/shared/utils/server-utils";
+import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
 
 // ============================================
 // Constants

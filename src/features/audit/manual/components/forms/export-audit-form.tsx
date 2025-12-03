@@ -4,7 +4,7 @@ import {ManualAudit} from "@/features/audit/manual/types/types";
 import {TypographyP} from "@/shared/components/typography/typography-elements";
 import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {Loader2} from "lucide-react";
-import {createWordDocument} from "@/shared/word-converter/document";
+import {createWordDocument} from "@/shared/features/word-converter/document";
 
 export default function ExportAuditForm({auditData}: {auditData: ManualAudit | undefined}) {
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,6 @@
 'use client'
 
-import CreateAuditForm from '@/features/audit/manual/components/create-audit-form';
+import CreateAuditForm from '@/features/audit/manual/components/forms/create-audit-form';
 import DialogWrapper from "@/shared/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {Edit} from "lucide-react";

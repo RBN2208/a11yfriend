@@ -1,15 +1,14 @@
 'use client'
 import {AuditResult, ManualAudit} from "@/features/audit/manual/types/types";
 import React, {useState} from "react";
-import AuditFindingsForm from "@/features/audit/manual/components/audit-findings-form";
-import UIAccordion from "@/shared/components/common/ui-elements/UIAccordion";
+import AuditFindingsForm from "@/features/audit/manual/components/forms/audit-findings-form";
 import {Loader2, Info, ExternalLink, ChevronsDownUp, ChevronsUpDown} from "lucide-react";
 import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {updateAuditResults} from "@/features/audit/manual/actions/actions";
 import {getCriteriasForSelectedConformanceLevel} from "@/features/audit/utils";
 import {TypographyH2, TypographyP} from "@/shared/components/typography/typography-elements";
 import {toast} from "sonner";
-import {MessageCodes} from "@/shared/message-codes";
+import {MessageCodes} from "@/shared/i18n/message-codes";
 import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
 import {UIDivider} from "@/shared/components/common/ui-elements/UIDivider";
 import {
@@ -18,6 +17,7 @@ import {
     AccordionItem,
     AccordionTrigger
 } from "@/shared/components/shadcn-components/ui/accordion";
+import {getStaticCriteriaById} from "@/staticData/audit/criteria";
 
 interface AuditDetailOverviewPageProps {
     audit: ManualAudit;
@@ -70,18 +70,27 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                 <TypographyH2>
                     {audit.name}
                 </TypographyH2>
+
                 <UIDivider label="General Informations" />
+
                 {/* audit informations */}
-                <UIAccordion triggerLabel="Audit overview">
-                    <div className="flex gap-4 p-4 border border-transparent border-b-gray-300">
-                        <TypographyP className="font-bold min-w-24">
-                            Description
-                        </TypographyP>
-                        <TypographyP className="m-0">
-                            {audit.description}
-                        </TypographyP>
-                    </div>
-                </UIAccordion>
+                <Accordion type="single" collapsible>
+                    <AccordionItem value="item-1">
+                        <AccordionTrigger className="AccordionTrigger px-4 font-bold">
+                            Audit overview
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <div className="flex gap-4 p-4">
+                                <TypographyP className="font-bold min-w-24">
+                                    Description
+                                </TypographyP>
+                                <TypographyP className="m-0">
+                                    {audit.description}
+                                </TypographyP>
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
             </div>
 
             <UIDivider label="Audit" />
@@ -123,6 +132,7 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                     </Button>
                 </div>
             </div>
+
             <Accordion
                 type="multiple"
                 value={accordionValues}
@@ -134,13 +144,15 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                     const isNotApplicableClass = result.status === 'not_applicable' ? 'bg-gray-100' : '';
                     const stateClass = `${isCheckedClass} ${isFailedClass} ${isNotApplicableClass}`;
 
+                    const STATIC_CRITERIA = getStaticCriteriaById(result.id)
+
                     return (
                         <AccordionItem
                             key={result.id}
                             value={result.id}
                         >
                             <AccordionTrigger className={`AccordionTrigger px-4 font-bold ${stateClass}`}>
-                                {result.name}
+                                {STATIC_CRITERIA.name} - ({STATIC_CRITERIA.conformance})
                             </AccordionTrigger>
                             <AccordionContent>
                                 <AlertWrapper
@@ -150,11 +162,16 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                                     icon={<Info/>}
                                 >
                                     <Button variant="outline" asChild>
-                                        <a href={result.referenceLink}>
-                                            {result.name}
+                                        <a href={STATIC_CRITERIA.referenceLink}>
+                                            {STATIC_CRITERIA.name}
                                             <ExternalLink />
                                         </a>
                                     </Button>
+                                    <div className="py-4">
+                                        <TypographyP>
+                                            {STATIC_CRITERIA.userGuide.description}
+                                        </TypographyP>
+                                    </div>
                                 </AlertWrapper>
                                 <AuditFindingsForm
                                     formData={result}

@@ -1,6 +1,6 @@
 import {Header, ISectionOptions, Paragraph, HeadingLevel, TextRun} from "docx";
 import {ManualAudit} from "@/features/audit/manual/types/types";
-import {convertFindingsToTables} from "@/shared/word-converter/json-parser";
+import {convertFindingsToTables} from "@/shared/features/word-converter/json-parser";
 
 export function createIntroSection(audit: ManualAudit): ISectionOptions {
   return {

@@ -18,11 +18,16 @@ export interface ManualAudit {
 
 export type AuditStatus = 'pending' | 'running' | 'done';
 
+/**
+ * AuditResult type, represents the result of an individual audit criterion.
+ * {id} is the identifier of the criterion.
+ * {status} indicates the result of the audit for that criterion.
+ * {findings} contains detailed findings in a rich text format (TipTap).
+ *
+ * additional informations will be merged with the static data from WCAGCriterias.
+ */
 export type AuditResult = {
   id: string
-  name: string
-  conformance: 'A' | 'AA' | 'AAA'
-  referenceLink: string
   status: 'checked' | 'not_checked' | 'not_applicable' | 'failed'
   findings: TipTapContentType | null,
 }

@@ -1,8 +1,8 @@
 import {Document, Packer} from "docx";
 import {saveAs} from "file-saver";
 import {ManualAudit} from "@/features/audit/manual/types/types";
-import {createCriteriaSection, createIntroSection} from "@/shared/word-converter/sections";
-import {DEFAULT_STYLES_CONFIG} from "@/shared/word-converter/configs";
+import {createCriteriaSection, createIntroSection} from "@/shared/features/word-converter/sections";
+import {DEFAULT_STYLES_CONFIG} from "@/shared/features/word-converter/configs";
 
 export function createWordDocument(auditData: ManualAudit | undefined) {
   if (!auditData) return;

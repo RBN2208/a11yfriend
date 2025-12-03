@@ -23,7 +23,7 @@ interface DataTableProps<TData, TValue> {
   children: React.ReactNode
 }
 
-export function UITable<TData, TValue>({columns, data, children}: DataTableProps<TData, TValue>) {
+export function TableWrapper<TData, TValue>({columns, data, children}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,

@@ -12,7 +12,7 @@ import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
 import {InputElement} from "@/shared/components/form-components/elements/form-elements";
 import {loginSchema, emailSchema, passwordSchemaLogin} from "@/features/auth/zod-schema";
 import {toast} from "sonner";
-import {MessageCodes} from "@/shared/message-codes";
+import {MessageCodes} from "@/shared/i18n/message-codes";
 
 const formSchema = z.object({
   email: emailSchema,

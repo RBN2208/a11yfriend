@@ -1,12 +1,12 @@
 'use server'
 import {createServerSupabase} from "@/shared/supabase/server";
 import {revalidatePath} from "next/cache";
-import {ApiResponse} from "@/shared/api/types/types";
+import type {ApiResponse} from "@/shared/api/types/types";
 import {loginSchema, oneTimeLoginSchema, passwordSchema} from "@/features/auth/zod-schema";
 import {z} from "zod";
-import {MessageCodes} from "@/shared/message-codes";
+import {MessageCodes} from "@/shared/i18n/message-codes";
 import {createApiResponse} from "@/shared/api/response";
-import {getErrorOfUnknownError} from "@/shared/utils";
+import {getErrorOfUnknownError} from "@/shared/utils/client-utils";
 
 function createSignInValidationResponse(formattedErrors: z.ZodFormattedError<z.infer<typeof loginSchema>, {}>): ApiResponse {
     const fieldKeys = ['email', 'password'];

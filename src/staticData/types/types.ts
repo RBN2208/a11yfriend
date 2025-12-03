@@ -1,10 +1,11 @@
-export type WCAGAuditFormType = {
+export type CriteriaDefinition = {
     id: string,
-    category: string
-    guideLine: string
     name: string
+    category: "Perceivable" | "Operable" | "Understandable" | "Robust"
+    guideLine: string
     conformance: 'A' | 'AA' | 'AAA'
-    referenceLink: string
-    findings: string
-    status: 'checked' | 'not_checked' | 'not_applicable'
+    referenceLink: string,
+    userGuide: {
+        description: string
+    }
 }

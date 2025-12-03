@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/shared/supabase/server';
 import { SidebarProvider, SidebarTrigger } from "@/shared/components/shadcn-components/ui/sidebar"
-import UIBreadcrumb from "@/shared/components/common/ui-elements/UIBreadcrumb";
+import BreadCrumbs from "@/shared/components/navigation/BreadCrumbs";
 import AccountNavigationBase from "@/shared/components/navigation/AccountNavigationBase";
 
 export default async function AccountLayout({children}: { children: React.ReactNode }) {
@@ -18,7 +18,7 @@ export default async function AccountLayout({children}: { children: React.ReactN
       <main className="p-1 pr-4 w-full">
         <div className="flex justify-start items-center p-4 pl-0">
           <SidebarTrigger className="block md:hidden" />
-          <UIBreadcrumb />
+          <BreadCrumbs />
         </div>
         {children}
       </main>

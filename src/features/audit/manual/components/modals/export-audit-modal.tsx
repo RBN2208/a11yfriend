@@ -4,7 +4,7 @@ import DialogWrapper from "@/shared/components/shadn-wrappers/DialogWrapper";
 import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {FileText} from "lucide-react";
 import {ManualAudit} from "@/features/audit/manual/types/types";
-import ExportAuditForm from "@/features/audit/manual/components/export-audit-form";
+import ExportAuditForm from "@/features/audit/manual/components/forms/export-audit-form";
 
 type CreateAuditModalProps = {
   auditData?: ManualAudit

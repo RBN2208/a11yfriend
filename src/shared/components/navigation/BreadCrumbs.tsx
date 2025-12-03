@@ -29,7 +29,7 @@ const capitalizeFirstLetter = (str: string) => {
   return str.at(0)?.toUpperCase() + str.slice(1);
 }
 
-export default function UIBreadcrumb() {
+export default function BreadCrumbs() {
   const paths = usePathname();
 
   const crumbs = createBreadcrumbs(paths);

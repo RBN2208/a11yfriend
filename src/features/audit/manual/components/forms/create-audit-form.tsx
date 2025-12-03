@@ -16,7 +16,7 @@ import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
 import {ManualAudit} from "@/features/audit/manual/types/types";
 import {createAudit, updateAudit} from "@/features/audit/manual/actions/actions";
 import {toast} from "sonner";
-import {MessageCodes} from "@/shared/message-codes";
+import {MessageCodes} from "@/shared/i18n/message-codes";
 
 type CreateAuditFormProps = {
     auditData: ManualAudit | undefined,
