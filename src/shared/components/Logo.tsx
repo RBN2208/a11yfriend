@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function AllyFriendLogo() {
   return (
-    <Link href="/public" title="Home">
+    <Link href="/" title="Home">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
            width="160px" height="35px" viewBox="0 0 2157.216 477.048"
       >

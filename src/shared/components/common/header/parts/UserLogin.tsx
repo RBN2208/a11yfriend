@@ -1,3 +1,5 @@
+'use client';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +11,7 @@ import { User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/shared/components/shadcn-components/ui/dialog';
 import { SignInAndUpModal } from '@/features/auth/components/SignInAndUpModal';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 type UserLoginProps = {
   user: User | null
