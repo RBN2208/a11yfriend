@@ -7,7 +7,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem, SidebarMenuSubButton
 } from '@/shared/components/shadcn-components/ui/sidebar';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 
 const navigation = [
   {

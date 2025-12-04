@@ -4,12 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/shared/components/shadcn-components/ui/button"
 import {Form} from "@/shared/components/shadcn-components/ui/form"
-import React, {useEffect, useState} from 'react';
-import {AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AlertCircleIcon, BadgeCheckIcon, Loader2 } from 'lucide-react';
 import { passwordSchemaLogin } from '@/features/auth/zod-schema';
 import { changePassword } from '@/features/auth/actions/actions';
 import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
-import {InputElement} from "@/shared/components/form-components/elements/form-elements";
+import { InputElement } from "@/shared/components/form-components/elements/form-elements";
+import { useTranslations } from "next-intl";
 
 const formSchemaBase = z.object({
   newPassword: passwordSchemaLogin,
@@ -25,6 +26,7 @@ const formSchema = formSchemaBase
 export default function ChangePasswordForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const t = useTranslations('auth');
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
@@ -72,11 +74,11 @@ export default function ChangePasswordForm() {
   if (success) {
     return (
         <AlertWrapper
-            title="Congratulation!"
+            title={t('success')}
             variant="default"
             icon={<BadgeCheckIcon />}
         >
-          Your password has been changed.
+          {t('dataChanged')}
         </AlertWrapper>
     )
   }
@@ -85,13 +87,13 @@ export default function ChangePasswordForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4">
 
-        <InputElement label="New Password"
+        <InputElement label={t('newPassword')}
                       required={true}
                       name="newPassword"
                       type="password"
         />
 
-        <InputElement label="Confirm new password"
+        <InputElement label={t('confirmNewPassword')}
                       required={true}
                       name="confirmNewPassword"
                       type="password"
@@ -99,7 +101,7 @@ export default function ChangePasswordForm() {
 
         <Button disabled={loading} className="w-max mt-4">
           {loading && <Loader2 className="animate-spin"/>}
-          {loading ? 'Submitting' : 'Change password'}
+          {loading ? t('saving') : t('confirmPassword')}
         </Button>
 
         {form.formState.errors && form.formState.errors.root &&

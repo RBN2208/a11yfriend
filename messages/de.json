@@ -1,0 +1,70 @@
+{
+  "account": {
+    "navigation": {
+      "sidebar": {
+        "account": "Konto",
+        "overview": "Übersicht",
+        "audits": "Prüfungen",
+        "manual": "Manuell",
+        "automatic": "Automatisch",
+        "ai": "KI",
+        "settings": "Einstellungen",
+        "profile": "Profil"
+      }
+    },
+    "dashboard": {
+      "title": "Kontoübersicht"
+    },
+    "settings": {
+      "title": "Kontoeinstellungen",
+      "changePassword": "Passwort ändern",
+      "changeEmail": "E-Mail ändern"
+    },
+    "audit": {
+      "overview": "Prüfungsübersicht",
+      "manage": "Prüfungen verwalten",
+      "create": "Prüfung erstellen",
+      "edit": "Prüfung bearbeiten",
+      "details": "Prüfungsdetails",
+      "view": "Prüfung ansehen",
+      "delete": "Prüfung löschen",
+      "deleteDetail": "Ich möchte die Prüfung '{auditName}' löschen.",
+      "export": "Prüfung exportieren",
+      "exportFormat": "Exportieren nach: {format}",
+      "search": "Prüfung suchen",
+      "auditName": "Name der Prüfung",
+      "auditLevel": "Prüfungsstufe",
+      "description": "Beschreibung"
+    }
+  },
+  "common": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "search": "Suchen",
+    "loading": "Lädt...",
+    "noData": "Keine Daten verfügbar",
+    "notUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "generalInformation": "Allgemeine Informationen",
+    "expandAll": "Alle erweitern",
+    "collapseAll": "Alle reduzieren"
+  },
+  "auth": {
+    "logout": "Abmelden",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "confirmPassword": "Passwort bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "resetPassword": "Passwort zurücksetzen",
+    "saving": "Speichern...",
+    "success": "Erfolg",
+    "dataChanged": "Daten wurden geändert"
+  }
+}

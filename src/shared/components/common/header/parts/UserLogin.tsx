@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/shadcn-components/ui/dropdown-menu';
 import { Button } from '@/shared/components/shadcn-components/ui/button';
 import { User as UserIcon } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { SignInAndUpModal } from '@/features/auth/components/SignInAndUpModal';

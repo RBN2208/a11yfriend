@@ -7,19 +7,24 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/shared/components/shadcn-components/ui/accordion";
+import {getTranslations} from "next-intl/server";
 
 export default async function AccountSettingsProfilePage() {
+  const t = await getTranslations('account');
+
   return (
       <div className="grid grid-cols-12 gap-4">
         <Card className="col-span-6">
           <CardHeader>
-            <CardTitle>Account Settings</CardTitle>
+            <CardTitle>
+              {t('settings.title')}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <Accordion type="single" collapsible>
               <AccordionItem value="change-pw">
                 <AccordionTrigger className="AccordionTrigger px-4 font-bold">
-                  Change Password
+                  {t('settings.changePassword')}
                 </AccordionTrigger>
                 <AccordionContent>
                   <ChangePasswordForm />
@@ -27,7 +32,7 @@ export default async function AccountSettingsProfilePage() {
               </AccordionItem>
               <AccordionItem value="change-mail">
                 <AccordionTrigger className="AccordionTrigger px-4 font-bold">
-                  Change E-Mail
+                  {t('settings.changeEmail')}
                 </AccordionTrigger>
                 <AccordionContent>
                   TODO: add email change form
@@ -38,7 +43,9 @@ export default async function AccountSettingsProfilePage() {
         </Card>
         <Card className="col-span-6">
           <CardHeader>
-            <CardTitle>Account informations</CardTitle>
+            <CardTitle>
+              {t('settings.title')}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             TODO: add account informations (name, subscription, ...)

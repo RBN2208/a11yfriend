@@ -6,7 +6,7 @@ import {
   NavigationMenuTrigger, navigationMenuTriggerStyle
 } from '@/shared/components/shadcn-components/ui/navigation-menu';
 import { features, resources } from '@/shared/components/common/header/data/static-navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import * as React from 'react';
 
 export default function HeaderNavigation() {

@@ -1,7 +1,7 @@
 "use client"
 
 import {ColumnDef} from "@tanstack/react-table"
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import {ManualAudit} from '@/features/audit/manual/types/types';
 import DeleteAuditModal from "@/features/audit/manual/components/modals/delete-audit-modal";
 import {buttonVariants} from "@/shared/components/shadcn-components/ui/button"

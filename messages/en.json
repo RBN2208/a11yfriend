@@ -1,0 +1,70 @@
+{
+  "account": {
+    "navigation": {
+      "sidebar": {
+        "account": "Account",
+        "overview": "Overview",
+        "audits": "Audits",
+        "manual": "Manual",
+        "automatic": "Automatic",
+        "ai": "AI",
+        "settings": "Settings",
+        "profile": "Profile"
+      }
+    },
+    "dashboard": {
+      "title": "Account Dashboard"
+    },
+    "settings": {
+      "title": "Account Settings",
+      "changePassword": "Change password",
+      "changeEmail": "Change email"
+    },
+    "audit": {
+      "overview": "Audit overview",
+      "manage": "Manage audits",
+      "create": "Create audit",
+      "edit": "Edit audit",
+      "details": "Audit details",
+      "view": "View audit",
+      "delete": "Delete audit",
+      "deleteDetail": "I want to delete the audit '{auditName}'.",
+      "export": "Export audit",
+      "exportFormat": "Export to: {format}",
+      "search": "Search audits",
+      "auditName": "Audit name",
+      "auditLevel": "Audit level",
+      "description": "Description"
+    }
+  },
+  "common": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "search": "Search",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "notUndone": "This action cannot be undone.",
+    "generalInformation": "General information",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all"
+  },
+  "auth": {
+    "logout": "Log out",
+    "login": "Log in",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "saving": "Saving...",
+    "success": "Success",
+    "dataChanged": "Data changed successfully"
+  }
+}
