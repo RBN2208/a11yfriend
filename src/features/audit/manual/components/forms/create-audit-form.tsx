@@ -17,6 +17,7 @@ import {ManualAudit} from "@/features/audit/manual/types/types";
 import {createAudit, updateAudit} from "@/features/audit/manual/actions/actions";
 import {toast} from "sonner";
 import {MessageCodes} from "@/shared/i18n/message-codes";
+import {useTranslations} from "next-intl";
 
 type CreateAuditFormProps = {
     auditData: ManualAudit | undefined,
@@ -32,6 +33,7 @@ const CONFORMANCE_OPTIONS = [
 
 export default function CreateAuditForm(props: CreateAuditFormProps) {
     const [loading, setLoading] = useState(false);
+    const t = useTranslations();
 
     const form = useForm<z.infer<typeof createAuditSchema>>({
         resolver: zodResolver(createAuditSchema),
@@ -79,7 +81,7 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap">
 
-                <InputElement label="Audit name"
+                <InputElement label={t("audit.name")}
                               required={true}
                               name="name"
                               type="text"
@@ -87,10 +89,9 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
                 />
 
                 <SelectElement name="conformance"
-                               label="Conformance"
+                               label={t("audit.conformance")}
                                required={true}
                                options={CONFORMANCE_OPTIONS}
-                               placeholder="Conformance level"
                                className="w-full sm:w-1/4 md:w-1/2 p-2"
                 />
 
@@ -98,13 +99,13 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
 
 
                 <TextAreaElement name="description"
-                                 label="Description"
+                                 label={t("audit.description")}
                                  className="w-full sm:w-1/2 md:w-full p-3"
                 />
 
                 <FormButton loading={loading}
-                            loadingLabel="Creating audit"
-                            label={props.auditData ? 'Update' : 'Create'}
+                            loadingLabel={t("common.creating")}
+                            label={props.auditData ? t('common.save') : t('common.create')}
                 />
 
                 {form.formState.errors && form.formState.errors.root &&

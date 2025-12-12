@@ -1,43 +1,17 @@
 {
-  "account": {
-    "navigation": {
-      "sidebar": {
-        "account": "Account",
-        "overview": "Overview",
-        "audits": "Audits",
-        "manual": "Manual",
-        "automatic": "Automatic",
-        "ai": "AI",
-        "settings": "Settings",
-        "profile": "Profile"
-      }
-    },
-    "dashboard": {
-      "title": "Account Dashboard"
-    },
-    "settings": {
-      "title": "Account Settings",
-      "changePassword": "Change password",
-      "changeEmail": "Change email"
-    },
-    "audit": {
-      "overview": "Audit overview",
-      "manage": "Manage audits",
-      "create": "Create audit",
-      "edit": "Edit audit",
-      "details": "Audit details",
-      "view": "View audit",
-      "delete": "Delete audit",
-      "deleteDetail": "I want to delete the audit '{auditName}'.",
-      "export": "Export audit",
-      "exportFormat": "Export to: {format}",
-      "search": "Search audits",
-      "auditName": "Audit name",
-      "auditLevel": "Audit level",
-      "description": "Description"
-    }
-  },
   "common": {
+    "account": "Account",
+    "accountOverview": "Account Overview",
+    "accountSettings": "Account Settings",
+    "overview": "Overview",
+    "audits": "Audits",
+    "manual": "Manual",
+    "automatic": "Automatic",
+    "ai": "AI",
+    "settings": "Settings",
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "changeEmail": "Change Email",
     "create": "Create",
     "edit": "Edit",
     "delete": "Delete",
@@ -46,25 +20,65 @@
     "confirm": "Confirm",
     "search": "Search",
     "loading": "Loading...",
+    "creating": "Creating...",
     "noData": "No data available",
     "notUndone": "This action cannot be undone.",
-    "generalInformation": "General information",
-    "expandAll": "Expand all",
-    "collapseAll": "Collapse all"
+    "generalInformation": "General Information",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "languageToggle": "Switch Language",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "themeToggle": "Toggle theme",
+    "general": "General",
+    "security": "Security"
   },
+  "lang": {
+    "german": "German",
+    "english": "English"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you are looking for doesn't exist.",
+    "info": "The URL might be incorrect or the page may have been moved.",
+    "backHome": "Back to Home"
+  },
+  "error": {},
   "auth": {
-    "logout": "Log out",
-    "login": "Log in",
+    "logout": "Log Out",
+    "login": "Log In",
     "register": "Register",
     "email": "Email",
     "password": "Password",
-    "newPassword": "New password",
-    "confirmNewPassword": "Confirm new password",
-    "confirmPassword": "Confirm password",
-    "forgotPassword": "Forgot password?",
-    "resetPassword": "Reset password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
     "saving": "Saving...",
     "success": "Success",
-    "dataChanged": "Data changed successfully"
+    "passwordChangedSuccessfully": "Password has been updated",
+    "emailVerified": "Email Verified",
+    "emailVerifiedDescription": "Your email address has been successfully verified.",
+    "emailVerifiedInfo": "You can now check out with your account and use all features."
+  },
+  "audit": {
+    "overview": "Audit Overview",
+    "manage": "Manage Audits",
+    "create": "Create Audit",
+    "conformance": "Conformance",
+    "name": "Auditname",
+    "action": "Actions",
+    "edit": "Edit Audit",
+    "details": "Audit Details",
+    "view": "View Audit",
+    "delete": "Delete Audit",
+    "deleteDetail": "I want to delete the audit '{auditName}'.",
+    "export": "Export Audit",
+    "exportFormat": "Export to: {format}",
+    "search": "Search Audit",
+    "auditName": "Audit Name",
+    "auditLevel": "Audit Level",
+    "description": "Description"
   }
 }

@@ -8,41 +8,41 @@ import {
   SidebarMenuSubItem, SidebarMenuSubButton
 } from '@/shared/components/shadcn-components/ui/sidebar';
 import { Link } from '@/i18n/navigation';
-
-const navigation = [
-  {
-    name: 'Overview',
-    href: '/account/overview'
-  },
-  {
-    name: 'Audits',
-    href: '/account/audits',
-    subs: [
-      {
-        name: 'Manual',
-        href: '/account/audits/manual'
-      },
-      {
-        name: 'Automatic',
-        href: '/account/audits/automatic'
-      },
-      {
-        name: 'AI-Assisted',
-        href: '/account/audits/ai-assisted'
-      }
-    ]
-  },
-  {
-    name: 'Settings',
-    href: '/account/settings',
-    subs: [
-      { name: 'Profile', href: '/account/settings/profile' }
-    ]
-  },
-]
+import ProfileSettingsModal from "@/shared/components/profile-settings/profile-settings-modal";
+import {Badge} from "@/shared/components/shadcn-components/ui/badge";
+import {useTranslations} from "next-intl";
 
 export default function AccountNavigation() {
   const pathname = usePathname();
+  const t = useTranslations();
+
+  const navigation = [
+    {
+      name: t('common.overview'),
+      href: '/account/overview'
+    },
+    {
+      name: t('common.audits'),
+      href: '/account/audits',
+      subs: [
+        {
+          name: t('common.manual'),
+          href: '/account/audits/manual',
+          active: true
+        },
+        {
+          name: t('common.automatic'),
+          href: '/account/audits/automatic',
+          active: false
+        },
+        {
+          name: t('common.ai'),
+          href: '/account/audits/ai-assisted',
+          active: false
+        }
+      ]
+    }
+  ]
 
   return (
      <>
@@ -63,9 +63,15 @@ export default function AccountNavigation() {
                   <SidebarMenuSub key={sub.name}>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild isActive={isActiveSub}>
-                        <Link href={sub.href}>
-                          {sub.name}
-                        </Link>
+                        {sub.active ? (
+                            <Link href={sub.href}>
+                              {sub.name}
+                            </Link>
+                        ) : (
+                            <span>
+                              {sub.name} <Badge>Soon</Badge>
+                            </span>
+                        )}
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   </SidebarMenuSub>
@@ -74,6 +80,7 @@ export default function AccountNavigation() {
             </SidebarMenuItem>
           )
         })}
+       <ProfileSettingsModal />
      </>
   )
 }

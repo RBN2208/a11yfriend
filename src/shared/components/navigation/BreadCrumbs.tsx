@@ -15,12 +15,13 @@ const createBreadcrumbs = (path: string) => {
   const crumbs: {name: string, href: string}[] = [];
 
   paths.forEach((path, index) => {
-    if (index !== 0) {
-      crumbs.push({
-        name: capitalizeFirstLetter(path),
-        href: paths.slice(0, index + 1).join("/")
-      })
-    }
+    if (path === "de" || path === "en") return; // skip locale part
+    if (index === 0) return;
+
+    crumbs.push({
+      name: capitalizeFirstLetter(path),
+      href: paths.slice(0, index + 1).join("/")
+    })
   })
   return crumbs;
 }

@@ -12,6 +12,7 @@ import ThemeToggle from '@/shared/components/common/header/parts/theme-toggle';
 import UserLogin from '@/shared/components/common/header/parts/UserLogin';
 import type { User } from '@supabase/supabase-js';
 import { Card, CardContent, CardDescription } from '@/shared/components/shadcn-components/ui/card';
+import LangToggle from "@/shared/components/common/header/parts/LangToggle";
 
 type MobileMenuProps = {
   user: User | null;
@@ -53,7 +54,8 @@ export function MobileMenu({ user }: MobileMenuProps) {
         </nav>
       </div>
       <SheetFooter className="flex flex-col gap-4">
-        <UserLogin user={user} />
+        <LangToggle showLabel={true} />
+        <UserLogin user={user} showLabel={true} />
         <ThemeToggle showLabel={true} />
       </SheetFooter>
     </SheetContent>

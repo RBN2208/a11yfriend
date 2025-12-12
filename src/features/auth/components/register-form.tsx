@@ -6,7 +6,7 @@ import { Button } from "@/shared/components/shadcn-components/ui/button"
 import { Form } from "@/shared/components/shadcn-components/ui/form"
 import React, { useState } from 'react';
 import { AlertCircleIcon, BadgeCheckIcon, Loader2} from 'lucide-react';
-import { passwordSchemaRegister, emailSchema, loginSchema } from '@/features/auth/zod-schema';
+import { passwordSchema, emailSchema, loginSchema } from '@/features/auth/zod-schema';
 import { signUp } from '@/features/auth/actions/actions';
 import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
 import { InputElement } from "@/shared/components/form-components/elements/form-elements";
@@ -14,8 +14,8 @@ import {toast} from "sonner";
 
 const formSchema = z.object({
   email: emailSchema,
-  password: passwordSchemaRegister,
-  confirmPassword: passwordSchemaRegister
+  password: passwordSchema,
+  confirmPassword: passwordSchema
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],

@@ -3,13 +3,13 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { createServerSupabase } from '@/shared/supabase/server'
 
-// Creating a handler to a GET request to route /auth/confirm
-// user clicks on verify link, gets directed to here, validation runs and if valid gets redirect to auth/confirm
+// Creating a handler to a GET request to route /account
+// user clicks on the magic link, gets directed to here, validation runs and if valid gets redirect to /account
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null
-  const next = '/account/settings/profile'
+  const next = '/account'
 
   const redirectTo = request.nextUrl.clone()
   redirectTo.pathname = next

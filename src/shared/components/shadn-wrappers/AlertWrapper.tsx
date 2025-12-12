@@ -3,7 +3,7 @@ import React from "react";
 
 type AlertWrapperProps = {
   title: string;
-  variant: "default" | "destructive";
+  variant: "default" | "destructive" | "success";
   icon: React.ReactNode;
   children: React.ReactNode;
   alertClass?: string;

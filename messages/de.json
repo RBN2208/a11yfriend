@@ -1,43 +1,17 @@
 {
-  "account": {
-    "navigation": {
-      "sidebar": {
-        "account": "Konto",
-        "overview": "Übersicht",
-        "audits": "Prüfungen",
-        "manual": "Manuell",
-        "automatic": "Automatisch",
-        "ai": "KI",
-        "settings": "Einstellungen",
-        "profile": "Profil"
-      }
-    },
-    "dashboard": {
-      "title": "Kontoübersicht"
-    },
-    "settings": {
-      "title": "Kontoeinstellungen",
-      "changePassword": "Passwort ändern",
-      "changeEmail": "E-Mail ändern"
-    },
-    "audit": {
-      "overview": "Prüfungsübersicht",
-      "manage": "Prüfungen verwalten",
-      "create": "Prüfung erstellen",
-      "edit": "Prüfung bearbeiten",
-      "details": "Prüfungsdetails",
-      "view": "Prüfung ansehen",
-      "delete": "Prüfung löschen",
-      "deleteDetail": "Ich möchte die Prüfung '{auditName}' löschen.",
-      "export": "Prüfung exportieren",
-      "exportFormat": "Exportieren nach: {format}",
-      "search": "Prüfung suchen",
-      "auditName": "Name der Prüfung",
-      "auditLevel": "Prüfungsstufe",
-      "description": "Beschreibung"
-    }
-  },
   "common": {
+    "account": "Konto",
+    "accountOverview": "Kontoübersicht",
+    "accountSettings": "Kontoeinstellungen",
+    "overview": "Übersicht",
+    "audits": "Prüfungen",
+    "manual": "Manuell",
+    "automatic": "Automatisch",
+    "ai": "KI",
+    "settings": "Einstellungen",
+    "profile": "Profil",
+    "changePassword": "Passwort ändern",
+    "changeEmail": "E-Mail ändern",
     "create": "Erstellen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
@@ -46,12 +20,30 @@
     "confirm": "Bestätigen",
     "search": "Suchen",
     "loading": "Lädt...",
+    "creating": "Erstelle...",
     "noData": "Keine Daten verfügbar",
     "notUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
     "generalInformation": "Allgemeine Informationen",
     "expandAll": "Alle erweitern",
-    "collapseAll": "Alle reduzieren"
+    "collapseAll": "Alle reduzieren",
+    "languageToggle": "Sprache wechseln",
+    "lightMode": "Heller Modus",
+    "darkMode": "Dunkler Modus",
+    "themeToggle": "Theme wechseln",
+    "general": "Allgemein",
+    "security": "Sicherheit"
   },
+  "lang": {
+    "german": "Deutsch",
+    "english": "Englisch"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die angeforderte Seite existiert leider nicht.",
+    "info": "Die URL ist möglicherweise falsch oder die Seite wurde verschoben.",
+    "backHome": "Zur Startseite"
+  },
+  "error": {},
   "auth": {
     "logout": "Abmelden",
     "login": "Anmelden",
@@ -65,6 +57,28 @@
     "resetPassword": "Passwort zurücksetzen",
     "saving": "Speichern...",
     "success": "Erfolg",
-    "dataChanged": "Daten wurden geändert"
+    "passwordChangedSuccessfully": "Passwort wurde erfolgreich geändert",
+    "emailVerified": "E-Mail bestätigt",
+    "emailVerifiedDescription": "Deine E-Mail-Adresse wurde erfolgreich verifiziert.",
+    "emailVerifiedInfo": "Du kannst in der Account-Übersicht alle Funktionen testen."
+  },
+  "audit": {
+    "overview": "Prüfungsübersicht",
+    "manage": "Prüfungen verwalten",
+    "conformance": "Konformität",
+    "create": "Prüfung erstellen",
+    "name": "Prüfungsname",
+    "action": "Aktionen",
+    "edit": "Prüfung bearbeiten",
+    "details": "Prüfungsdetails",
+    "view": "Prüfung ansehen",
+    "delete": "Prüfung löschen",
+    "deleteDetail": "Ich möchte die Prüfung '{auditName}' löschen.",
+    "export": "Prüfung exportieren",
+    "exportFormat": "Exportieren nach: {format}",
+    "search": "Prüfung suchen",
+    "auditName": "Name der Prüfung",
+    "auditLevel": "Prüfungsstufe",
+    "description": "Beschreibung"
   }
 }

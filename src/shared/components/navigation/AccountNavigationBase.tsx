@@ -9,16 +9,18 @@ import {
   SidebarMenu
 } from '@/shared/components/shadcn-components/ui/sidebar';
 import AccountNavigation from "@/shared/components/navigation/AccountNavigation";
-
+import {getTranslations} from "next-intl/server";
 
 export default async function AccountNavigationBase() {
+  const t = await getTranslations();
+
   return (
     <Sidebar className="sticky" variant="floating">
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>
-            Account
+            {t('common.account')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

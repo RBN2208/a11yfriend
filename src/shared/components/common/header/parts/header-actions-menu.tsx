@@ -4,6 +4,7 @@ import {Menu} from 'lucide-react';
 import type {User} from '@supabase/supabase-js'
 import {SheetTrigger} from '@/shared/components/shadcn-components/ui/sheet';
 import UserLogin from '@/shared/components/common/header/parts/UserLogin';
+import LangToggle from "@/shared/components/common/header/parts/LangToggle";
 
 type HeaderActionsMenuProps = {
   user: User | null;
@@ -20,11 +21,15 @@ export default function HeaderActionsMenu({ user }: HeaderActionsMenuProps) {
             </SheetTrigger>
 
             <div className="hidden sm:block">
-                <ThemeToggle/>
+                <LangToggle />
             </div>
 
             <div className="hidden sm:block">
-                <UserLogin user={user}/>
+                <ThemeToggle />
+            </div>
+
+            <div className="hidden sm:block">
+                <UserLogin user={user} />
             </div>
         </div>
     )

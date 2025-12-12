@@ -6,15 +6,15 @@ import { Button } from "@/shared/components/shadcn-components/ui/button"
 import {Form} from "@/shared/components/shadcn-components/ui/form"
 import React, { useEffect, useState } from 'react';
 import { AlertCircleIcon, BadgeCheckIcon, Loader2 } from 'lucide-react';
-import { passwordSchemaLogin } from '@/features/auth/zod-schema';
+import { passwordSchema } from '@/features/auth/zod-schema';
 import { changePassword } from '@/features/auth/actions/actions';
 import AlertWrapper from "@/shared/components/shadn-wrappers/AlertWrapper";
 import { InputElement } from "@/shared/components/form-components/elements/form-elements";
 import { useTranslations } from "next-intl";
 
 const formSchemaBase = z.object({
-  newPassword: passwordSchemaLogin,
-  confirmNewPassword: passwordSchemaLogin
+  newPassword: passwordSchema,
+  confirmNewPassword: passwordSchema
 });
 
 const formSchema = formSchemaBase
@@ -75,10 +75,10 @@ export default function ChangePasswordForm() {
     return (
         <AlertWrapper
             title={t('success')}
-            variant="default"
+            variant="success"
             icon={<BadgeCheckIcon />}
         >
-          {t('dataChanged')}
+          {t('passwordChangedSuccessfully')}
         </AlertWrapper>
     )
   }

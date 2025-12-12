@@ -62,9 +62,12 @@ export async function signIn(email: string, password: string): Promise<ApiRespon
             return createSignInValidationResponse(validationResult.error.format());
         }
 
+        console.log("validationResult success", validationResult);
+
         const supabase = await createServerSupabase();
 
         const {error} = await supabase.auth.signInWithPassword({email, password});
+        console.log(error?.message, email, password)
         if (error) {
             return createApiResponse({
                 success: false,
@@ -193,7 +196,7 @@ export async function oneTimeLoginWithOTP(email: string): Promise<ApiResponse> {
 
 export async function changePassword(password: string): Promise<ApiResponse> {
     try {
-        const validationResult = passwordSchema.safeParse({newPassword: password});
+        const validationResult = passwordSchema.safeParse(password);
 
         if (!validationResult.success) {
             return createChangePasswordValidationResponse(validationResult.error.format());

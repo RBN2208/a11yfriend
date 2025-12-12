@@ -1,18 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/shadcn-components/ui/card';
 import {getAudit} from "@/features/audit/manual/actions/actions";
 import {ManualAudit} from "@/features/audit/manual/types/types";
-import {TableWrapper} from "@/shared/components/shadn-wrappers/TableWrapper";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import {Label} from "@/shared/components/shadcn-components/ui/label";
 import {Input} from "@/shared/components/shadcn-components/ui/input";
 import CreateAuditModal from "@/features/audit/manual/components/modals/create-audit-modal";
-import {auditColumns} from "@/features/audit/manual/components/UITableColumns/auditColumns";
+import {AuditTable} from "@/features/audit/manual/components/AuditTable";
+import {getTranslations} from "next-intl/server";
 
 export default async function AuditsPage() {
   const response = await getAudit(null, 20);
   if (!response.data) return null;
-
   const audits = response.data as ManualAudit[];
+
+  const t = await getTranslations();
 
   return (
     <div>
@@ -20,7 +21,7 @@ export default async function AuditsPage() {
         <CardHeader>
           <CardTitle>
             <h1>
-              Audit Overview
+              {t('audit.overview')}
             </h1>
           </CardTitle>
         </CardHeader>
@@ -30,20 +31,20 @@ export default async function AuditsPage() {
         <CardHeader>
           <CardTitle>
             <h2>
-              Manage your audits
+              {t('audit.manage')}
             </h2>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <TableWrapper columns={auditColumns} data={audits}>
+          <AuditTable audits={audits}>
             <VisuallyHidden>
               <Label htmlFor="searchAuditsInput">
-                Search audits
+                {t('audit.search')}
               </Label>
             </VisuallyHidden>
-            <Input id="searchAuditsInput" placeholder="Search audits"/>
+            <Input id="searchAuditsInput" placeholder={t('audit.search')} />
             <CreateAuditModal isEditModal={false}/>
-          </TableWrapper>
+          </AuditTable>
         </CardContent>
       </Card>
     </div>

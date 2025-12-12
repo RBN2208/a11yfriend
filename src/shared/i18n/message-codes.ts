@@ -23,7 +23,7 @@ export enum MessageCodes {
     AUDIT_DELETE_ERROR_UNEXPECTED = "An unexpected error occurred while deleting the audit data from the database. Please try again.",
 
     AUTH_USER_VERIFY_ERROR = "Authentication failed, could not verify user",
-    AUTH_REGISTER_SUCCESS = "Registration successful",
+    AUTH_REGISTER_SUCCESS = "Registration successful, please check your email to verify your account",
     AUTH_REGISTER_ERROR = "Registration failed",
     AUTH_PASSWORD_CHANGE_ERROR = "Password change failed",
     AUTH_PASSWORD_CHANGE_SUCCESS = "Password change successful",

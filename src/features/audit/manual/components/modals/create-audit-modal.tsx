@@ -6,6 +6,7 @@ import {Button} from "@/shared/components/shadcn-components/ui/button";
 import {Edit} from "lucide-react";
 import {ManualAudit} from "@/features/audit/manual/types/types";
 import {useState} from "react";
+import {useTranslations} from "next-intl";
 
 type CreateAuditModalProps = {
   isEditModal: boolean; // reuse component to create or update the audit data
@@ -15,14 +16,16 @@ type CreateAuditModalProps = {
 export default function CreateAuditModal(props: CreateAuditModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const t = useTranslations();
+
   const editModalTrigger = () => <Button variant={"outline"} size={"icon"}><Edit /></Button>;
-  const defaultModalTrigger = () => <Button>Create audit</Button>;
+  const defaultModalTrigger = () => <Button>{t('audit.create')}</Button>;
 
   const dialogTriggerButton = props.isEditModal ? editModalTrigger() : defaultModalTrigger();
 
   return (
     <DialogWrapper
-        title="Create a new audit"
+        title={t("audit.create")}
         description=""
         open={isOpen}
         onOpenChange={setIsOpen}
