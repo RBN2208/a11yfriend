@@ -36,7 +36,7 @@ export default function LangToggle({showLabel}: { showLabel?: boolean }) {
         <Popover>
             <PopoverTrigger asChild>
                 <Button variant="outline"
-                        size="icon"
+                        size={showLabel ? "default" : "icon"}
                         title={t('ui.languageToggle')}
                 >
                     <Languages/> {showLabel && t('ui.languageToggle')}

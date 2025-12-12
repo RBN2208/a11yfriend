@@ -13,7 +13,7 @@ import { Separator } from '@/shared/components/shadcn-components/ui/separator';
 // - /accessibility (Barrierefreiheitserklärung)
 
 export default function Footer() {
-  const t = useTranslations('footer');
+  const t = useTranslations();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -23,68 +23,74 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground">
-              {t('description')}
+              {t('footer.description')}
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">{t('product')}</h3>
+            <h3 className="font-semibold mb-4">
+              {t('footer.product')}
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/features" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('features')}
+                  {t('footer.features')}
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('pricing')}
+                  {t('footer.pricing')}
                 </Link>
               </li>
               <li>
                 <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('faq')}
+                  {t('footer.faq')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">{t('company')}</h3>
+            <h3 className="font-semibold mb-4">
+              {t('footer.company')}
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('about')}
+                  {t('footer.about')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('contact')}
+                  {t('footer.contact')}
                 </Link>
               </li>
               <li>
                 <Link href="/imprint" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('imprint')}
+                  {t('footer.imprint')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">{t('legal')}</h3>
+            <h3 className="font-semibold mb-4">
+              {t('footer.legal')}
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('privacy')}
+                  {t('footer.privacy')}
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('terms')}
+                  {t('footer.terms')}
                 </Link>
               </li>
               <li>
                 <Link href="/accessibility" className="text-muted-foreground hover:text-foreground transition-colors">
-                  {t('accessibility')}
+                  {t('footer.accessibility')}
                 </Link>
               </li>
             </ul>
@@ -94,9 +100,9 @@ export default function Footer() {
         <Separator className="my-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>{t('copyright', { year: currentYear })}</p>
+          <p>{t('footer.copyright', { year: currentYear })}</p>
           <p className="mt-2 md:mt-0">
-            {t('madeWith')}
+            {t('footer.madeWith')}
           </p>
         </div>
       </div>

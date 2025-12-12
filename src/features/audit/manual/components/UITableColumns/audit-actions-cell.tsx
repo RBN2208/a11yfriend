@@ -28,12 +28,21 @@ export function AuditActionsCell({ audit }: AuditActionsCellProps) {
       >
         <View/>
       </Link>
-      <CreateAuditModal isEditModal={true} auditData={audit}/>
+      <CreateAuditModal
+          isEditModal={true}
+          auditData={audit}
+      />
       <ExportAuditModal auditData={audit}/>
       <Separator orientation="vertical"/>
-      <DeleteAuditModal auditId={audit.id} auditName={audit.name}/>
+      <DeleteAuditModal
+          auditId={audit.id}
+          auditName={audit.name}
+      />
       <Separator orientation="vertical"/>
-      <TypographyP aria-label="Completed criteria:" className="m-0">
+      <TypographyP
+          aria-label="Completed criteria:"
+          className="m-0 whitespace-nowrap"
+      >
         {solvedCriterias.length} / {getCriteriaLengths(audit.conformance)}
       </TypographyP>
     </div>

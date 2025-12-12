@@ -44,6 +44,42 @@
     "lightMode": "Heller Modus",
     "darkMode": "Dunkler Modus"
   },
+  "header": {
+    "features": {
+      "title": "Produkt",
+      "items": {
+        "features": {
+          "title": "Funktionen",
+          "description": "Alle Funktionen im Überblick"
+        },
+        "pricing": {
+          "title": "Preise",
+          "description": "Flexible Preismodelle für jede Unternehmensgröße"
+        },
+        "faq": {
+          "title": "FAQ",
+          "description": "Häufig gestellte Fragen und Antworten"
+        }
+      }
+    },
+    "resources": {
+      "title": "Ressourcen",
+      "items": {
+        "documentation": {
+          "title": "Dokumentation",
+          "description": "Ausführliche Anleitungen und Referenzen"
+        },
+        "support": {
+          "title": "Support",
+          "description": "Hilfe und Unterstützung erhalten"
+        },
+        "blog": {
+          "title": "Blog",
+          "description": "Neuigkeiten und Updates"
+        }
+      }
+    }
+  },
   "lang": {
     "german": "Deutsch",
     "english": "Englisch"

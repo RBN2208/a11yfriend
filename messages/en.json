@@ -43,6 +43,42 @@
     "lightMode": "Light Mode",
     "darkMode": "Dark Mode"
   },
+  "header": {
+    "features": {
+      "title": "Product",
+      "items": {
+        "features": {
+          "title": "Features",
+          "description": "Overview of all features"
+        },
+        "pricing": {
+          "title": "Pricing",
+          "description": "Flexible pricing models for every business size"
+        },
+        "faq": {
+          "title": "FAQ",
+          "description": "Frequently asked questions and answers"
+        }
+      }
+    },
+    "resources": {
+      "title": "Resources",
+      "items": {
+        "documentation": {
+          "title": "Documentation",
+          "description": "Comprehensive guides and references"
+        },
+        "support": {
+          "title": "Support",
+          "description": "Get help and assistance"
+        },
+        "blog": {
+          "title": "Blog",
+          "description": "News and updates"
+        }
+      }
+    }
+  },
   "lang": {
     "german": "German",
     "english": "English"

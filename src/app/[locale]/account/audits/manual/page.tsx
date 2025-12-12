@@ -11,6 +11,7 @@ import {getTranslations} from "next-intl/server";
 export default async function AuditsPage() {
   const response = await getAudit(null, 20);
   if (!response.data) return null;
+
   const audits = response.data as ManualAudit[];
 
   const t = await getTranslations();
@@ -36,15 +37,7 @@ export default async function AuditsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <AuditTable audits={audits}>
-            <VisuallyHidden>
-              <Label htmlFor="searchAuditsInput">
-                {t('audit.search')}
-              </Label>
-            </VisuallyHidden>
-            <Input id="searchAuditsInput" placeholder={t('audit.search')} />
-            <CreateAuditModal isEditModal={false}/>
-          </AuditTable>
+          <AuditTable audits={audits} />
         </CardContent>
       </Card>
     </div>

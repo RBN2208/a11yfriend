@@ -1,35 +1,34 @@
-export const features = [
+export type NavItem = {
+  key: string;
+  href: string;
+};
+
+export const features: NavItem[] = [
   {
-    title: "TBD 1",
-    href: "/tbd",
-    description: "to be determined"
+    key: "features",
+    href: "/features",
   },
   {
-    title: "TBD 2",
-    href: "/tbd",
-    description: "to be determined"
+    key: "pricing",
+    href: "/pricing",
   },
   {
-    title: "TBD 3",
-    href: "/tbd",
-    description: "to be determined"
-  }
+    key: "faq",
+    href: "/faq",
+  },
 ];
 
-export const resources = [
+export const resources: NavItem[] = [
   {
-    title: "TBD 1",
-    href: "/tbd",
-    description: "to be determined"
+    key: "documentation",
+    href: "/docs",
   },
   {
-    title: "TBD 2",
-    href: "/tbd",
-    description: "to be determined"
+    key: "support",
+    href: "/support",
   },
   {
-    title: "TBD 3",
-    href: "/tbd",
-    description: "to be determined"
-  }
+    key: "blog",
+    href: "/blog",
+  },
 ];

@@ -39,7 +39,7 @@ export default function UserLogin({ user, showLabel }: UserLoginProps  ) {
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline"
-                    size="icon"
+                    size={showLabel ? "default" : "icon"}
                     title={t('navigation.account')}
                     onClick={() => setOpen(!open)}
             >
