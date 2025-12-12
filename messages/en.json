@@ -80,5 +80,22 @@
     "auditName": "Audit Name",
     "auditLevel": "Audit Level",
     "description": "Description"
+  },
+  "footer": {
+    "description": "Accessible web audits made easy. Check your website for WCAG compliance.",
+    "product": "Product",
+    "features": "Features",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "company": "Company",
+    "about": "About Us",
+    "contact": "Contact",
+    "imprint": "Imprint",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "accessibility": "Accessibility",
+    "copyright": "© {year} A11y Friend. All rights reserved.",
+    "madeWith": "Made with ♥ for accessibility"
   }
 }

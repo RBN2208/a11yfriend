@@ -80,5 +80,22 @@
     "auditName": "Name der Prüfung",
     "auditLevel": "Prüfungsstufe",
     "description": "Beschreibung"
+  },
+  "footer": {
+    "description": "Barrierefreie Webaudits leicht gemacht. Prüfe deine Website auf WCAG-Konformität.",
+    "product": "Produkt",
+    "features": "Features",
+    "pricing": "Preise",
+    "faq": "FAQ",
+    "company": "Unternehmen",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "imprint": "Impressum",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "accessibility": "Barrierefreiheit",
+    "copyright": "© {year} A11y Friend. Alle Rechte vorbehalten.",
+    "madeWith": "Made with ♥ for accessibility"
   }
 }
