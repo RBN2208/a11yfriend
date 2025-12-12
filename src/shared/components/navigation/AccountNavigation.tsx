@@ -18,25 +18,25 @@ export default function AccountNavigation() {
 
   const navigation = [
     {
-      name: t('common.overview'),
+      name: t('navigation.overview'),
       href: '/account/overview'
     },
     {
-      name: t('common.audits'),
+      name: t('navigation.audits'),
       href: '/account/audits',
       subs: [
         {
-          name: t('common.manual'),
+          name: t('navigation.manual'),
           href: '/account/audits/manual',
           active: true
         },
         {
-          name: t('common.automatic'),
+          name: t('navigation.automatic'),
           href: '/account/audits/automatic',
           active: false
         },
         {
-          name: t('common.ai'),
+          name: t('navigation.ai'),
           href: '/account/audits/ai-assisted',
           active: false
         }

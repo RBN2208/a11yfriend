@@ -1,5 +1,32 @@
 {
-  "common": {
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "search": "Suchen",
+    "expandAll": "Alle erweitern",
+    "collapseAll": "Alle reduzieren"
+  },
+  "states": {
+    "loading": "Lädt...",
+    "creating": "Erstelle...",
+    "saving": "Speichern...",
+    "noData": "Keine Daten verfügbar",
+    "success": "Erfolg"
+  },
+  "labels": {
+    "general": "Allgemein",
+    "security": "Sicherheit",
+    "generalInformation": "Allgemeine Informationen",
+    "description": "Beschreibung"
+  },
+  "warnings": {
+    "notUndone": "Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "navigation": {
     "account": "Konto",
     "accountOverview": "Kontoübersicht",
     "accountSettings": "Kontoeinstellungen",
@@ -9,29 +36,13 @@
     "automatic": "Automatisch",
     "ai": "KI",
     "settings": "Einstellungen",
-    "profile": "Profil",
-    "changePassword": "Passwort ändern",
-    "changeEmail": "E-Mail ändern",
-    "create": "Erstellen",
-    "edit": "Bearbeiten",
-    "delete": "Löschen",
-    "save": "Speichern",
-    "cancel": "Abbrechen",
-    "confirm": "Bestätigen",
-    "search": "Suchen",
-    "loading": "Lädt...",
-    "creating": "Erstelle...",
-    "noData": "Keine Daten verfügbar",
-    "notUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
-    "generalInformation": "Allgemeine Informationen",
-    "expandAll": "Alle erweitern",
-    "collapseAll": "Alle reduzieren",
+    "profile": "Profil"
+  },
+  "ui": {
     "languageToggle": "Sprache wechseln",
-    "lightMode": "Heller Modus",
-    "darkMode": "Dunkler Modus",
     "themeToggle": "Theme wechseln",
-    "general": "Allgemein",
-    "security": "Sicherheit"
+    "lightMode": "Heller Modus",
+    "darkMode": "Dunkler Modus"
   },
   "lang": {
     "german": "Deutsch",
@@ -55,8 +66,8 @@
     "confirmPassword": "Passwort bestätigen",
     "forgotPassword": "Passwort vergessen?",
     "resetPassword": "Passwort zurücksetzen",
-    "saving": "Speichern...",
-    "success": "Erfolg",
+    "changePassword": "Passwort ändern",
+    "changeEmail": "E-Mail ändern",
     "passwordChangedSuccessfully": "Passwort wurde erfolgreich geändert",
     "emailVerified": "E-Mail bestätigt",
     "emailVerifiedDescription": "Deine E-Mail-Adresse wurde erfolgreich verifiziert.",
@@ -78,8 +89,7 @@
     "exportFormat": "Exportieren nach: {format}",
     "search": "Prüfung suchen",
     "auditName": "Name der Prüfung",
-    "auditLevel": "Prüfungsstufe",
-    "description": "Beschreibung"
+    "auditLevel": "Prüfungsstufe"
   },
   "footer": {
     "description": "Barrierefreie Webaudits leicht gemacht. Prüfe deine Website auf WCAG-Konformität.",

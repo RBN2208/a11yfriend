@@ -27,7 +27,7 @@ export default async function ConfirmSuccessPage() {
         <CardFooter className="flex justify-center">
           <Button asChild>
             <Link href="/account">
-              {t('common.accountOverview')}
+              {t('navigation.accountOverview')}
             </Link>
           </Button>
         </CardFooter>

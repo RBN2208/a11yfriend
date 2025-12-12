@@ -40,10 +40,10 @@ export default function UserLogin({ user, showLabel }: UserLoginProps  ) {
           <DropdownMenuTrigger asChild>
             <Button variant="outline"
                     size="icon"
-                    title={t('common.account')}
+                    title={t('navigation.account')}
                     onClick={() => setOpen(!open)}
             >
-              <UserIcon className="h-6 w-6"/> {showLabel && t('common.account')}
+              <UserIcon className="h-6 w-6"/> {showLabel && t('navigation.account')}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -52,7 +52,7 @@ export default function UserLogin({ user, showLabel }: UserLoginProps  ) {
                     onClick={() => setOpen(false)}
                     className="w-full h-full"
               >
-                {t('common.accountOverview')}
+                {t('navigation.accountOverview')}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
@@ -60,7 +60,7 @@ export default function UserLogin({ user, showLabel }: UserLoginProps  ) {
                     onClick={() => setOpen(false)}
                     className="w-full h-full"
               >
-                {t('common.accountSettings')}
+                {t('navigation.accountSettings')}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>

@@ -99,13 +99,13 @@ export default function CreateAuditForm(props: CreateAuditFormProps) {
 
 
                 <TextAreaElement name="description"
-                                 label={t("audit.description")}
+                                 label={t("labels.description")}
                                  className="w-full sm:w-1/2 md:w-full p-3"
                 />
 
                 <FormButton loading={loading}
-                            loadingLabel={t("common.creating")}
-                            label={props.auditData ? t('common.save') : t('common.create')}
+                            loadingLabel={t("states.creating")}
+                            label={props.auditData ? t('actions.save') : t('actions.create')}
                 />
 
                 {form.formState.errors && form.formState.errors.root &&

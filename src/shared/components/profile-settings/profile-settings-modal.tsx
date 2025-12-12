@@ -10,7 +10,7 @@ export default function ProfileSettingsModal() {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations();
 
-  const dialogTriggerButton = <Button variant={"outline"}>{t('common.settings')}</Button>
+  const dialogTriggerButton = <Button variant={"outline"}>{t('navigation.settings')}</Button>
 
   return (
     <DialogWrapper

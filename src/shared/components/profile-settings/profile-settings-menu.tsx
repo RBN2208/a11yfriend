@@ -25,21 +25,21 @@ export default function ProfileSettingsMenu() {
             className="flex gap-4 justify-start"
             onClick={() => handleAction('general')}
         >
-          <Settings /> {t('common.general')}
+          <Settings /> {t('labels.general')}
         </Button>
         <Button
             variant={menu === 'security' ? 'default' : 'outline'}
             className="flex gap-4 justify-start"
             onClick={() => handleAction('security')}
         >
-          <KeyRound /> {t('common.security')}
+          <KeyRound /> {t('labels.security')}
         </Button>
         <Button
             variant={menu === 'account' ? 'default' : 'outline'}
             className="flex gap-4 justify-start"
             onClick={() => handleAction('account')}
         >
-          <CircleUser /> {t('common.account')}
+          <CircleUser /> {t('navigation.account')}
         </Button>
       </div>
       <div className="w-full">

@@ -1,5 +1,31 @@
 {
-  "common": {
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "search": "Search",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All"
+  },
+  "states": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "noData": "No data available",
+    "success": "Success"
+  },
+  "labels": {
+    "general": "General",
+    "security": "Security",
+    "generalInformation": "General Information",
+    "description": "Description"
+  },
+  "warnings": {
+    "notUndone": "This action cannot be undone."
+  },
+  "navigation": {
     "account": "Account",
     "accountOverview": "Account Overview",
     "accountSettings": "Account Settings",
@@ -9,29 +35,13 @@
     "automatic": "Automatic",
     "ai": "AI",
     "settings": "Settings",
-    "profile": "Profile",
-    "changePassword": "Change Password",
-    "changeEmail": "Change Email",
-    "create": "Create",
-    "edit": "Edit",
-    "delete": "Delete",
-    "save": "Save",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "search": "Search",
-    "loading": "Loading...",
-    "creating": "Creating...",
-    "noData": "No data available",
-    "notUndone": "This action cannot be undone.",
-    "generalInformation": "General Information",
-    "expandAll": "Expand All",
-    "collapseAll": "Collapse All",
+    "profile": "Profile"
+  },
+  "ui": {
     "languageToggle": "Switch Language",
-    "lightMode": "Light Mode",
-    "darkMode": "Dark Mode",
     "themeToggle": "Toggle theme",
-    "general": "General",
-    "security": "Security"
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
   },
   "lang": {
     "german": "German",
@@ -55,8 +65,8 @@
     "confirmPassword": "Confirm Password",
     "forgotPassword": "Forgot Password?",
     "resetPassword": "Reset Password",
-    "saving": "Saving...",
-    "success": "Success",
+    "changePassword": "Change Password",
+    "changeEmail": "Change Email",
     "passwordChangedSuccessfully": "Password has been updated",
     "emailVerified": "Email Verified",
     "emailVerifiedDescription": "Your email address has been successfully verified.",
@@ -78,8 +88,7 @@
     "exportFormat": "Export to: {format}",
     "search": "Search Audit",
     "auditName": "Audit Name",
-    "auditLevel": "Audit Level",
-    "description": "Description"
+    "auditLevel": "Audit Level"
   },
   "footer": {
     "description": "Accessible web audits made easy. Check your website for WCAG compliance.",

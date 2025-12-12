@@ -23,20 +23,20 @@ export default function ThemeToggle({ showLabel }: ThemeToggleProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="outline"
                 size={showLabel ? 'default' : 'icon'}
-                title={theme === "dark" ? t('common.lightMode') : t('common.darkMode')}
+                title={theme === "dark" ? t('ui.lightMode') : t('ui.darkMode')}
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
           {theme === "dark" ? (
             <>
-              <Moon className="h-5 w-5"/> {showLabel && t('common.lightMode')}
+              <Moon className="h-5 w-5"/> {showLabel && t('ui.lightMode')}
             </>
           ) : (
             <>
-              <Sun className="h-5 w-5"/> {showLabel && t('common.darkMode')}
+              <Sun className="h-5 w-5"/> {showLabel && t('ui.darkMode')}
             </>
           )}
           <span className="sr-only">
-            {t('common.themeToggle')}
+            {t('ui.themeToggle')}
           </span>
         </Button>
       </DropdownMenuTrigger>

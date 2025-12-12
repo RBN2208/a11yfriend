@@ -20,7 +20,7 @@ export default async function AccountNavigationBase() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>
-            {t('common.account')}
+            {t('navigation.account')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

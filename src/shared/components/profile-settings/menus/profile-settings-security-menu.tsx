@@ -18,7 +18,7 @@ export default function ProfileSettingsSecurityMenu() {
             <Accordion type={"single"} collapsible className="w-full">
                 <AccordionItem value={"change-password"}>
                     <AccordionTrigger className="AccordionTrigger px-4">
-                        {t('common.changePassword')}
+                        {t('auth.changePassword')}
                     </AccordionTrigger>
                     <AccordionContent className="p-4">
                         <ChangePasswordForm />

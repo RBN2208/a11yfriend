@@ -37,9 +37,9 @@ export default function LangToggle({showLabel}: { showLabel?: boolean }) {
             <PopoverTrigger asChild>
                 <Button variant="outline"
                         size="icon"
-                        title={t('common.languageToggle')}
+                        title={t('ui.languageToggle')}
                 >
-                    <Languages/> {showLabel && t('common.languageToggle')}
+                    <Languages/> {showLabel && t('ui.languageToggle')}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-max flex flex-col gap-4">

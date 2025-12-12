@@ -25,7 +25,7 @@ export default function CreateAuditModal(props: CreateAuditModalProps) {
 
   return (
     <DialogWrapper
-        title={t("audit.create")}
+        title={t("actions.create")}
         description=""
         open={isOpen}
         onOpenChange={setIsOpen}
