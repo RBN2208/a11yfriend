@@ -121,11 +121,27 @@
     "view": "Prüfung ansehen",
     "delete": "Prüfung löschen",
     "deleteDetail": "Ich möchte die Prüfung '{auditName}' löschen.",
-    "export": "Prüfung exportieren",
     "exportFormat": "Exportieren nach: {format}",
     "search": "Prüfung suchen",
     "auditName": "Name der Prüfung",
-    "auditLevel": "Prüfungsstufe"
+    "auditLevel": "Prüfungsstufe",
+    "export": {
+      "label": "Prüfungen exportieren",
+      "exportToFormat": "Exportieren als {format} Format",
+      "generateFormat": "Erstelle {format} ..."
+    },
+    "pdf": {
+      "summary": "Zusammenfassung",
+      "passed": "Bestanden",
+      "failed": "Nicht bestanden",
+      "not_applicable": "Nicht anwendbar",
+      "not_checked": "Nicht geprüft",
+      "failedTests": "Fehlgeschlagene Tests",
+      "successTests": "Erfolgreiche Tests",
+      "notApplicableTests": "Nicht anwendbare Tests",
+      "notCheckedTests": "Nicht geprüfte Tests",
+      "footerText": "Erstellt am {date} | A11yFriend Accessibility Audit"
+    }
   },
   "footer": {
     "description": "Barrierefreie Webaudits leicht gemacht. Prüfe deine Website auf WCAG-Konformität.",

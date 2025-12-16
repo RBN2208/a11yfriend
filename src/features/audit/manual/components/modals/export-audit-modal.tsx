@@ -12,6 +12,7 @@ type CreateAuditModalProps = {
 
 export default function ExportAuditModal(props: CreateAuditModalProps) {
   const modalTrigger = <Button variant={"outline"} size={"icon"} title="Export"><FileText /></Button>;
+
   return (
     <DialogWrapper
         title="Export options"

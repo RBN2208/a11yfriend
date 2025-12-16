@@ -1,8 +1,9 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { ManualAudit, AuditResult } from "@/features/audit/manual/types/types";
+import { AuditResult } from "@/features/audit/manual/types/types";
 import { TipTapDoc, TipTapText } from "@/shared/components/tiptap/types";
 import { getStaticCriteriaById } from "@/staticData/audit/criteria";
+import {ManualAuditPDFExportProps, PDFTranslations} from "@/shared/features/pdf-renderer/types/types";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -127,13 +128,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const statusLabels: Record<AuditResult['status'], string> = {
-    checked: 'Bestanden',
-    failed: 'Fehlgeschlagen',
-    not_checked: 'Nicht geprüft',
-    not_applicable: 'Nicht anwendbar',
-};
-
 const getStatusStyle = (status: AuditResult['status'], variant: 'state' | 'border') => {
     switch (status) {
         case 'checked':
@@ -173,7 +167,7 @@ const renderTipTapContent = (doc: TipTapDoc | null): string => {
     return extractText(doc.content as unknown[]);
 };
 
-const FindingItem = ({ finding }: { finding: AuditResult }) => {
+const FindingItem = ({ finding, translations }: { finding: AuditResult, translations: PDFTranslations }) => {
     const criteria = getStaticCriteriaById(finding.id);
     const criteriaName = criteria?.name || finding.id;
     const findingsText = renderTipTapContent(finding.findings);
@@ -181,19 +175,30 @@ const FindingItem = ({ finding }: { finding: AuditResult }) => {
     return (
         <View style={[styles.finding, getStatusStyle(finding.status, 'border')]}>
             <View style={styles.findingHeader}>
-                <Text style={styles.findingName}>{criteriaName}</Text>
+                <Text style={styles.findingName}>
+                    {criteriaName}
+                </Text>
                 <Text style={[styles.findingStatus, getStatusStyle(finding.status, 'state')]}>
-                    {statusLabels[finding.status]}
+                    {translations[finding.status]}
                 </Text>
             </View>
             {findingsText && (
-                <Text style={styles.findingContent}>{findingsText}</Text>
+                <Text style={styles.findingContent}>
+                    {findingsText}
+                </Text>
             )}
         </View>
     );
 };
 
-export const ManualAuditPDFDocument = ({ audit }: { audit: ManualAudit }) => {
+/**
+ * PDF Document component for ManualAudit export.
+ * basic structure like showcased in the react-pdf documentation.
+ * @param audit
+ * @param translations
+ * @constructor
+ */
+export const ManualAuditPDFDocument = ({audit, translations}: ManualAuditPDFExportProps) => {
     const passedFindings = audit.findings.filter(f => f.status === 'checked');
     const failedFindings = audit.findings.filter(f => f.status === 'failed');
     const notCheckedFindings = audit.findings.filter(f => f.status === 'not_checked');
@@ -214,22 +219,28 @@ export const ManualAuditPDFDocument = ({ audit }: { audit: ManualAudit }) => {
                 </View>
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Zusammenfassung</Text>
+                    <Text style={styles.sectionTitle}>
+                        {translations.summary}
+                    </Text>
                     <Text style={styles.paragraph}>
-                        Bestanden: {passedFindings.length} |
-                        Fehlgeschlagen: {failedFindings.length} |
-                        Nicht geprüft: {notCheckedFindings.length} |
-                        Nicht anwendbar: {notApplicableFindings.length}
+                        {translations.checked}: {passedFindings.length} |
+                        {translations.failed}: {failedFindings.length} |
+                        {translations.not_checked}: {notCheckedFindings.length} |
+                        {translations.not_applicable}: {notApplicableFindings.length}
                     </Text>
                 </View>
 
                 {failedFindings.length > 0 && (
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>
-                            Fehlgeschlagene Prüfungen ({failedFindings.length})
+                            {translations.failedTests} ({failedFindings.length})
                         </Text>
                         {failedFindings.map((finding) => (
-                            <FindingItem key={finding.id} finding={finding} />
+                            <FindingItem
+                                key={finding.id}
+                                finding={finding}
+                                translations={translations}
+                            />
                         ))}
                     </View>
                 )}
@@ -237,10 +248,14 @@ export const ManualAuditPDFDocument = ({ audit }: { audit: ManualAudit }) => {
                 {passedFindings.length > 0 && (
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>
-                            Bestandene Prüfungen ({passedFindings.length})
+                            {translations.successTests} ({passedFindings.length})
                         </Text>
                         {passedFindings.map((finding) => (
-                            <FindingItem key={finding.id} finding={finding} />
+                            <FindingItem
+                                key={finding.id}
+                                finding={finding}
+                                translations={translations}
+                            />
                         ))}
                     </View>
                 )}
@@ -248,16 +263,35 @@ export const ManualAuditPDFDocument = ({ audit }: { audit: ManualAudit }) => {
                 {notApplicableFindings.length > 0 && (
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>
-                            Nicht anwendbar ({notApplicableFindings.length})
+                            {translations.notApplicableTests} ({notApplicableFindings.length})
                         </Text>
                         {notApplicableFindings.map((finding) => (
-                            <FindingItem key={finding.id} finding={finding} />
+                            <FindingItem
+                                key={finding.id}
+                                finding={finding}
+                                translations={translations}
+                            />
+                        ))}
+                    </View>
+                )}
+
+                {notCheckedFindings.length > 0 && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>
+                            {translations.notCheckedTests} ({notCheckedFindings.length})
+                        </Text>
+                        {notCheckedFindings.map((finding) => (
+                            <FindingItem
+                                key={finding.id}
+                                finding={finding}
+                                translations={translations}
+                            />
                         ))}
                     </View>
                 )}
 
                 <Text style={styles.footer}>
-                    Erstellt am {new Date().toLocaleDateString('de-DE')} | A11yFriend Accessibility Audit
+                    {translations.footerText}
                 </Text>
             </Page>
         </Document>

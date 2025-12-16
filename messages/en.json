@@ -120,11 +120,27 @@
     "view": "View Audit",
     "delete": "Delete Audit",
     "deleteDetail": "I want to delete the audit '{auditName}'.",
-    "export": "Export Audit",
     "exportFormat": "Export to: {format}",
     "search": "Search Audit",
     "auditName": "Audit Name",
-    "auditLevel": "Audit Level"
+    "auditLevel": "Audit Level",
+    "export": {
+      "label": "Export Audits",
+      "exportToFormat": "Export as {format}",
+      "generateFormat": "Generate {format} ..."
+    },
+    "pdf": {
+      "summary": "Summary",
+      "checked": "Passed",
+      "failed": "Failed",
+      "not_applicable": "Not Applicable",
+      "not_checked": "Not Checked",
+      "failedTests": "Failed Tests",
+      "successTests": "Success Tests",
+      "notApplicableTests": "Not Applicable Tests",
+      "notCheckedTests": "Not Checked Tests",
+      "footerText": "Created on {date} | A11yFriend Accessibility Audit"
+    }
   },
   "footer": {
     "description": "Accessible web audits made easy. Check your website for WCAG compliance.",

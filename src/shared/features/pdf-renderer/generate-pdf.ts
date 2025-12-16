@@ -1,29 +1,21 @@
 import { pdf } from '@react-pdf/renderer';
 import React from 'react';
-import { ManualAudit } from '@/features/audit/manual/types/types';
-import { ManualAuditPDFDocument } from './pdf-renderer';
+import { ManualAuditPDFDocument } from './manual-audit-pdf-renderer';
 import {getErrorOfUnknownError} from "@/shared/utils/client-utils";
-
-export type PDFGenerationResult = {
-    success: true;
-    blob: Blob;
-    filename: string;
-} | {
-    success: false;
-    error: string;
-};
+import {ManualAuditPDFExportProps, PDFGenerationResult} from "@/shared/features/pdf-renderer/types/types";
 
 /**
  * Generates a PDF for a ManualAudit.
  * The pdf() function from @react-pdf/renderer is already asynchronous.
  * @param audit The manual audit data to generate the PDF from
+ * @param translations Translations for the PDF content
  * @returns Promise resolving to the generated PDF blob and filename, or an error
  */
-export async function generateAuditPDF(audit: ManualAudit): Promise<PDFGenerationResult> {
+export async function generateAuditPDF({audit, translations}: ManualAuditPDFExportProps): Promise<PDFGenerationResult> {
     try {
         // Create the document element - cast to any to avoid type issues with @react-pdf/renderer
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const documentElement = React.createElement(ManualAuditPDFDocument, { audit }) as any;
+        const documentElement = React.createElement(ManualAuditPDFDocument, { audit, translations }) as any;
         const blob = await pdf(documentElement).toBlob();
 
         const sanitizedName = audit.name.replace(/[^a-zA-Z0-9-_]/g, '_');
@@ -45,10 +37,11 @@ export async function generateAuditPDF(audit: ManualAudit): Promise<PDFGeneratio
 /**
  * Generates and downloads a PDF for a ManualAudit.
  * @param audit The manual audit data to generate the PDF from
+ * @param translations Translations for the PDF content
  * @returns Promise resolving to true if successful, false otherwise
  */
-export async function downloadAuditPDF(audit: ManualAudit): Promise<boolean> {
-    const result = await generateAuditPDF(audit);
+export async function downloadAuditPDF({audit, translations}: ManualAuditPDFExportProps): Promise<boolean> {
+    const result = await generateAuditPDF({audit, translations});
 
     if (result.success) {
         // Create download link
