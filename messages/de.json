@@ -132,7 +132,7 @@
     },
     "pdf": {
       "summary": "Zusammenfassung",
-      "passed": "Bestanden",
+      "checked": "Bestanden",
       "failed": "Nicht bestanden",
       "not_applicable": "Nicht anwendbar",
       "not_checked": "Nicht geprüft",
