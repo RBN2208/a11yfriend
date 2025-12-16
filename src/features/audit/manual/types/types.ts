@@ -1,3 +1,5 @@
+import {TipTapDoc} from "@/shared/components/tiptap/types";
+
 /**
  * ManualAudit interface, represents an own table in the database.
  * {id} is primary key.
@@ -29,19 +31,7 @@ export type AuditStatus = 'pending' | 'running' | 'done';
 export type AuditResult = {
   id: string
   status: 'checked' | 'not_checked' | 'not_applicable' | 'failed'
-  findings: TipTapContentType | null,
-}
-
-type TipTapContentType = {
-  type: string,
-  content: TipTapContentType[],
-  text?: string,
-  marks?: {
-    type: string
-  }[],
-  attrs?: {
-    level: number
-  } | {}
+  findings: TipTapDoc | null,
 }
 
 export type AuditResponse = {
