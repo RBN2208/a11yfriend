@@ -17,7 +17,8 @@ import {
     AccordionItem,
     AccordionTrigger
 } from "@/shared/components/shadcn-components/ui/accordion";
-import {getStaticCriteriaById} from "@/staticData/audit/criteria";
+import {getStaticCriteriaById} from "@/shared/staticData/audit/criteria";
+import {useTranslations} from "next-intl";
 
 interface AuditDetailOverviewPageProps {
     audit: ManualAudit;
@@ -25,6 +26,7 @@ interface AuditDetailOverviewPageProps {
 
 export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPageProps) {
     const filteredResults = getCriteriasForSelectedConformanceLevel(audit.conformance, audit.findings);
+    const t = useTranslations();
 
     const [auditResultFormData, setAuditResultFormData] = useState<AuditResult[]>(filteredResults);
     const [isSaving, setIsSaving] = useState(false);
@@ -152,7 +154,7 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                             value={result.id}
                         >
                             <AccordionTrigger className={`AccordionTrigger px-4 font-bold ${stateClass}`}>
-                                {STATIC_CRITERIA.name} - ({STATIC_CRITERIA.conformance})
+                                {t(STATIC_CRITERIA.name)} - ({STATIC_CRITERIA.conformance})
                             </AccordionTrigger>
                             <AccordionContent>
                                 <AlertWrapper
@@ -163,15 +165,10 @@ export default function AuditDetailOverviewPage({audit}: AuditDetailOverviewPage
                                 >
                                     <Button variant="outline" asChild>
                                         <a href={STATIC_CRITERIA.referenceLink}>
-                                            {STATIC_CRITERIA.name}
+                                            {t(STATIC_CRITERIA.name)}
                                             <ExternalLink />
                                         </a>
                                     </Button>
-                                    <div className="py-4">
-                                        <TypographyP>
-                                            {STATIC_CRITERIA.userGuide.description}
-                                        </TypographyP>
-                                    </div>
                                 </AlertWrapper>
                                 <AuditFindingsForm
                                     formData={result}

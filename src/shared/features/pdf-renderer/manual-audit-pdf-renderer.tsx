@@ -12,7 +12,7 @@ import {
     TipTapCodeBlock,
     TipTapHeading
 } from "@/shared/components/tiptap/types";
-import { getStaticCriteriaById } from "@/staticData/audit/criteria";
+import { getStaticCriteriaById } from "@/shared/staticData/audit/criteria";
 import {ManualAuditPDFExportProps, PDFTranslations} from "@/shared/features/pdf-renderer/types/types";
 
 // Create styles

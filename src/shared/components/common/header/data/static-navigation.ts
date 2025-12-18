@@ -20,6 +20,10 @@ export const features: NavItem[] = [
 
 export const resources: NavItem[] = [
   {
+    key: "wcagGuide",
+    href: "/resources/guides/wcag",
+  },
+  {
     key: "documentation",
     href: "/docs",
   },

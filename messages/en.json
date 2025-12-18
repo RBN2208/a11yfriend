@@ -64,6 +64,10 @@
     "resources": {
       "title": "Resources",
       "items": {
+        "wcagGuide": {
+          "title": "WCAG Guide",
+          "description": "Comprehensive guide to all WCAG 2.1 success criteria"
+        },
         "documentation": {
           "title": "Documentation",
           "description": "Comprehensive guides and references"
@@ -76,6 +80,360 @@
           "title": "Blog",
           "description": "News and updates"
         }
+      }
+    }
+  },
+  "criteria": {
+    "guidelines": {
+      "robust": "Robust",
+      "operable": "Operable",
+      "understandable": "Understandable",
+      "accessible": "Accessible"
+    },
+    "list": {
+      "1-1-1-non-text-content": {
+        "name": "1.1.1 Non-text Content",
+        "guideline": "Guideline 1.1 – Text Alternatives"
+      },
+      "1-2-1-audio-only-and-video-only-prerecorded": {
+        "name": "1.2.1 Audio-only and Video-only (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-2-captions-prerecorded": {
+        "name": "1.2.2 Captions (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-3-audio-description-or-media-alternative-prerecorded": {
+        "name": "1.2.3 Audio Description or Media Alternative (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-4-captions-live": {
+        "name": "1.2.4 Captions (Live)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-5-audio-description-prerecorded": {
+        "name": "1.2.5 Audio Description (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-6-sign-language-prerecorded": {
+        "name": "1.2.6 Sign Language (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-7-extended-audio-description-prerecorded": {
+        "name": "1.2.7 Extended Audio Description (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-8-media-alternative-prerecorded": {
+        "name": "1.2.8 Media Alternative (Prerecorded)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-2-9-audio-only-live": {
+        "name": "1.2.9 Audio-only (Live)",
+        "guideline": "Guideline 1.2 – Time-based Media"
+      },
+      "1-3-1-info-and-relationships": {
+        "name": "1.3.1 Info and Relationships",
+        "guideline": "Guideline 1.3 – Adaptable"
+      },
+      "1-3-2-meaningful-sequence": {
+        "name": "1.3.2 Meaningful Sequence",
+        "guideline": "Guideline 1.3 – Adaptable"
+      },
+      "1-3-3-sensory-characteristics": {
+        "name": "1.3.3 Sensory Characteristics",
+        "guideline": "Guideline 1.3 – Adaptable"
+      },
+      "1-3-4-orientation": {
+        "name": "1.3.4 Orientation",
+        "guideline": "Guideline 1.3 – Adaptable"
+      },
+      "1-3-5-identify-input-purpose": {
+        "name": "1.3.5 Identify Input Purpose",
+        "guideline": "Guideline 1.3 – Adaptable"
+      },
+      "1-3-6-identify-purpose": {
+        "name": "1.3.6 Identify Purpose",
+        "guideline": "Guideline 1.3 – Adaptable"
+      },
+      "1-4-1-use-of-color": {
+        "name": "1.4.1 Use of Color",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-2-audio-control": {
+        "name": "1.4.2 Audio Control",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-3-contrast-minimum": {
+        "name": "1.4.3 Contrast (Minimum)",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-4-resize-text": {
+        "name": "1.4.4 Resize Text",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-5-images-of-text": {
+        "name": "1.4.5 Images of Text",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-6-contrast-enhanced": {
+        "name": "1.4.6 Contrast (Enhanced)",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-7-low-or-no-background-audio": {
+        "name": "1.4.7 Low or No Background Audio",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-8-visual-presentation": {
+        "name": "1.4.8 Visual Presentation",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-9-images-of-text-no-exception": {
+        "name": "1.4.9 Images of Text (No Exception)",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-10-reflow": {
+        "name": "1.4.10 Reflow",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-11-non-text-contrast": {
+        "name": "1.4.11 Non-text Contrast",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-12-text-spacing": {
+        "name": "1.4.12 Text Spacing",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "1-4-13-content-on-hover-or-focus": {
+        "name": "1.4.13 Content on Hover or Focus",
+        "guideline": "Guideline 1.4 – Distinguishable"
+      },
+      "2-1-1-keyboard": {
+        "name": "2.1.1 Keyboard",
+        "guideline": "Guideline 2.1 – Keyboard Accessible"
+      },
+      "2-1-2-no-keyboard-trap": {
+        "name": "2.1.2 No Keyboard Trap",
+        "guideline": "Guideline 2.1 – Keyboard Accessible"
+      },
+      "2-1-3-keyboard-no-exception": {
+        "name": "2.1.3 Keyboard (No Exception)",
+        "guideline": "Guideline 2.1 – Keyboard Accessible"
+      },
+      "2-1-4-character-key-shortcuts": {
+        "name": "2.1.4 Character Key Shortcuts",
+        "guideline": "Guideline 2.1 – Keyboard Accessible"
+      },
+      "2-2-1-timing-adjustable": {
+        "name": "2.2.1 Timing Adjustable",
+        "guideline": "Guideline 2.2 – Enough Time"
+      },
+      "2-2-2-pause-stop-hide": {
+        "name": "2.2.2 Pause, Stop, Hide",
+        "guideline": "Guideline 2.2 – Enough Time"
+      },
+      "2-2-3-no-timing": {
+        "name": "2.2.3 No Timing",
+        "guideline": "Guideline 2.2 – Enough Time"
+      },
+      "2-2-4-interruptions": {
+        "name": "2.2.4 Interruptions",
+        "guideline": "Guideline 2.2 – Enough Time"
+      },
+      "2-2-5-re-authenticating": {
+        "name": "2.2.5 Re-authenticating",
+        "guideline": "Guideline 2.2 – Enough Time"
+      },
+      "2-2-6-timeouts": {
+        "name": "2.2.6 Timeouts",
+        "guideline": "Guideline 2.2 – Enough Time"
+      },
+      "2-3-1-three-flashes-or-below-threshold": {
+        "name": "2.3.1 Three Flashes or Below Threshold",
+        "guideline": "Guideline 2.3 – Seizures and Physical Reactions"
+      },
+      "2-3-2-three-flashes": {
+        "name": "2.3.2 Three Flashes",
+        "guideline": "Guideline 2.3 – Seizures and Physical Reactions"
+      },
+      "2-3-3-animation-from-interactions": {
+        "name": "2.3.3 Animation from Interactions",
+        "guideline": "Guideline 2.3 – Seizures and Physical Reactions"
+      },
+      "2-4-1-bypass-blocks": {
+        "name": "2.4.1 Bypass Blocks",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-2-page-titled": {
+        "name": "2.4.2 Page Titled",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-3-focus-order": {
+        "name": "2.4.3 Focus Order",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-4-link-purpose-in-context": {
+        "name": "2.4.4 Link Purpose (In Context)",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-5-multiple-ways": {
+        "name": "2.4.5 Multiple Ways",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-6-headings-and-labels": {
+        "name": "2.4.6 Headings and Labels",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-7-focus-visible": {
+        "name": "2.4.7 Focus Visible",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-8-location": {
+        "name": "2.4.8 Location",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-9-link-purpose-link-only": {
+        "name": "2.4.9 Link Purpose (Link Only)",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-10-section-headings": {
+        "name": "2.4.10 Section Headings",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-11-focus-not-obscured-minimum": {
+        "name": "2.4.11 Focus Not Obscured (Minimum)",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-12-focus-not-obscured-enhanced": {
+        "name": "2.4.12 Focus Not Obscured (Enhanced)",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-4-13-focus-appearance": {
+        "name": "2.4.13 Focus Appearance",
+        "guideline": "Guideline 2.4 – Navigable"
+      },
+      "2-5-1-pointer-gestures": {
+        "name": "2.5.1 Pointer Gestures",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-2-pointer-cancellation": {
+        "name": "2.5.2 Pointer Cancellation",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-3-label-in-name": {
+        "name": "2.5.3 Label in Name",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-4-motion-actuation": {
+        "name": "2.5.4 Motion Actuation",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-5-target-size-enhanced": {
+        "name": "2.5.5 Target Size (Enhanced)",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-6-concurrent-input-mechanisms": {
+        "name": "2.5.6 Concurrent Input Mechanisms",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-7-dragging-movements": {
+        "name": "2.5.7 Dragging Movements",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "2-5-8-target-size-minimum": {
+        "name": "2.5.8 Target Size (Minimum)",
+        "guideline": "Guideline 2.5 – Input Modalities"
+      },
+      "3-1-1-language-of-page": {
+        "name": "3.1.1 Language of Page",
+        "guideline": "Guideline 3.1 – Readable"
+      },
+      "3-1-2-language-of-parts": {
+        "name": "3.1.2 Language of Parts",
+        "guideline": "Guideline 3.1 – Readable"
+      },
+      "3-1-3-unusual-words": {
+        "name": "3.1.3 Unusual Words",
+        "guideline": "Guideline 3.1 – Readable"
+      },
+      "3-1-4-abbreviations": {
+        "name": "3.1.4 Abbreviations",
+        "guideline": "Guideline 3.1 – Readable"
+      },
+      "3-1-5-reading-conformance": {
+        "name": "3.1.5 Reading Level",
+        "guideline": "Guideline 3.1 – Readable"
+      },
+      "3-1-6-pronunciation": {
+        "name": "3.1.6 Pronunciation",
+        "guideline": "Guideline 3.1 – Readable"
+      },
+      "3-2-1-on-focus": {
+        "name": "3.2.1 On Focus",
+        "guideline": "Guideline 3.2 – Predictable"
+      },
+      "3-2-2-on-input": {
+        "name": "3.2.2 On Input",
+        "guideline": "Guideline 3.2 – Predictable"
+      },
+      "3-2-3-consistent-navigation": {
+        "name": "3.2.3 Consistent Navigation",
+        "guideline": "Guideline 3.2 – Predictable"
+      },
+      "3-2-4-consistent-identification": {
+        "name": "3.2.4 Consistent Identification",
+        "guideline": "Guideline 3.2 – Predictable"
+      },
+      "3-2-5-change-on-request": {
+        "name": "3.2.5 Change on Request",
+        "guideline": "Guideline 3.2 – Predictable"
+      },
+      "3-2-6-consistent-help": {
+        "name": "3.2.6 Consistent Help",
+        "guideline": "Guideline 3.2 – Predictable"
+      },
+      "3-3-1-error-identification": {
+        "name": "3.3.1 Error Identification",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-2-labels-or-instructions": {
+        "name": "3.3.2 Labels or Instructions",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-3-error-suggestion": {
+        "name": "3.3.3 Error Suggestion",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-4-error-prevention-legal-financial-data": {
+        "name": "3.3.4 Error Prevention (Legal, Financial, Data)",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-5-help": {
+        "name": "3.3.5 Help",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-6-error-prevention-all": {
+        "name": "3.3.6 Error Prevention (All)",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-7-redundant-entry": {
+        "name": "3.3.7 Redundant Entry",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-8-accessible-authentication-minimum": {
+        "name": "3.3.8 Accessible Authentication (Minimum)",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "3-3-9-accessible-authentication-enhanced": {
+        "name": "3.3.9 Accessible Authentication (Enhanced)",
+        "guideline": "Guideline 3.3 – Input Assistance"
+      },
+      "4-1-2-name-role-value": {
+        "name": "4.1.2 Name, Role, Value",
+        "guideline": "Guideline 4.1 – Compatible"
+      },
+      "4-1-3-status-messages": {
+        "name": "4.1.3 Status Messages",
+        "guideline": "Guideline 4.1 – Compatible"
       }
     }
   },

@@ -1,4 +1,4 @@
-import {WCAGCriterias} from "@/staticData/audit/criteria";
+import {WCAGCriterias} from "@/shared/staticData/audit/criteria";
 
 /**
  * Retrieves a filtered list of WCAG criteria based on the selected conformance level.

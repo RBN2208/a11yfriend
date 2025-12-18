@@ -13,16 +13,14 @@ import {routing} from "@/i18n/routing";
 import {notFound} from "next/navigation";
 
 export const metadata: Metadata = {
-    title: "A11y Friend",
-    description: "Seemingly easy accessibility audits for the web.",
+    title: "A11y Friend"
 };
 
 type Props = {
     children: React.ReactNode;
-    params: {
-        locale: string;
-    };
+    params: Promise<{ locale: string }>;
 }
+
 export default async function RootLayout({children, params}: Props) {
     const supabase = await createServerSupabase();
     const {data: {user}} = await supabase.auth.getUser();
@@ -49,7 +47,9 @@ export default async function RootLayout({children, params}: Props) {
                         <Sheet>
                             <MobileMenu user={user}/>
                             <Header user={user}/>
-                            {children}
+                            <div className="p-4">
+                                {children}
+                            </div>
                             <Footer/>
                         </Sheet>
                         <Toaster position="top-center" richColors/>
