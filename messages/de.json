@@ -91,6 +91,16 @@
       "understandable": "Verständlich",
       "accessible": "Wahrnehmbar"
     },
+    "common": {
+      "successCriteria": "Erfolgskriterien",
+      "summary": "Zusammenfassung",
+      "moreInfo": "Weitere Informationen",
+      "topics": "Themen",
+      "officialDocumentation": "Offizielle WCAG Dokumentation",
+      "moreAboutCriteria": "Weitere Informationen zum Kriterium {criteria}",
+      "examples": "Beispiele & Best Practices",
+      "overviewTitle": "Umfassende Guides zu den Web Content Accessibility Guidelines (WCAG) 2.2 Erfolgskriterien mit Best Practices und Beispielen."
+    },
     "list": {
       "1-1-1-non-text-content": {
         "name": "1.1.1 Nicht-Text-Inhalte",

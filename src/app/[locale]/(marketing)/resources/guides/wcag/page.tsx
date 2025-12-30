@@ -1,4 +1,8 @@
-import {TypographyH1, TypographyP} from "@/shared/components/typography/typography-elements";
+import { getAllCriteria } from "@/features/user-guides/wcag/config/helper";
+import { loadCriterionContent } from "@/features/user-guides/wcag/config/content-loader";
+import { WcagCriteriaList } from "@/features/user-guides/wcag/components/WcagCriteriaList";
+import type { WcagCriterionData, WcagCriterionMeta } from "@/features/user-guides/wcag/config/types";
+import {getTranslations} from "next-intl/server";
 
 interface PageProps {
   params: Promise<{
@@ -6,25 +10,31 @@ interface PageProps {
   }>;
 }
 
-export default async function WcagGuidePage({ params }: PageProps) {
+export default async function WcagGuidesPage({ params }: PageProps) {
   const { locale } = await params;
+  const allCriteria = getAllCriteria();
+  const t = await getTranslations();
+
+  const criteriaWithContent = await Promise.all(
+      allCriteria.map(async (meta: WcagCriterionMeta) => {
+        const content = await loadCriterionContent(meta, locale);
+        return { meta, content } as WcagCriterionData;
+      })
+  );
 
   return (
-    <>
-      <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="mx-auto max-w-2xl py-18 sm:py-28 lg:py-36">
-          <div className="text-center">
-            <TypographyH1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl dark:text-white">
-              H1 TBD
-            </TypographyH1>
-            <TypographyP className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8 dark:text-gray-400">
-              Intro TBD
-            </TypographyP>
-          </div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="mb-12">
+          <h1 className="text-4xl font-bold mb-4">
+              WCAG 2.2 {t("criteria.common.successCriteria")}
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl">
+              {t("criteria.common.overviewTitle")}
+          </p>
         </div>
+
+        <WcagCriteriaList criteria={criteriaWithContent} locale={locale} />
       </div>
-      tbd
-    </>
   );
 }
 
