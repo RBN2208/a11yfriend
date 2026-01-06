@@ -224,6 +224,20 @@ const renderParagraphContent = (content: TipTapText[] | undefined): React.ReactN
     return content.map((textNode, index) => renderTextWithMarks(textNode, index));
 };
 
+const transformCriteriaName = (input: string) =>  {
+    const rawKey = input.split(".")[2]; // "3-3-7-redundant-entry"
+
+    const segments = rawKey.split("-");
+    const numberPart = segments.slice(0, 3).join(".");
+    const textPart = segments
+        .slice(3)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+
+    return `${numberPart} ${textPart}`;
+}
+
+
 /**
  * Renders a single TipTap paragraph
  */
@@ -362,7 +376,7 @@ const FindingItem = ({ finding, translations }: { finding: AuditResult, translat
         <View style={[styles.finding, getStatusStyle(finding.status, 'border')]}>
             <View style={styles.findingHeader}>
                 <Text style={styles.findingName}>
-                    {criteriaName}
+                    {transformCriteriaName(criteriaName)}
                 </Text>
                 <Text style={[styles.findingStatus, getStatusStyle(finding.status, 'state')]}>
                     {translations[finding.status]}
@@ -409,9 +423,9 @@ export const ManualAuditPDFDocument = ({audit, translations}: ManualAuditPDFExpo
                         {translations.summary}
                     </Text>
                     <Text style={styles.paragraph}>
-                        {translations.checked}: {passedFindings.length} |
-                        {translations.failed}: {failedFindings.length} |
-                        {translations.not_checked}: {notCheckedFindings.length} |
+                        {translations.checked}: {passedFindings.length} {" | "}
+                        {translations.failed}: {failedFindings.length} {" | "}
+                        {translations.not_checked}: {notCheckedFindings.length} {" | "}
                         {translations.not_applicable}: {notApplicableFindings.length}
                     </Text>
                 </View>

@@ -3,7 +3,7 @@ import {
   NavigationMenuContent,
   NavigationMenuItem, NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger, navigationMenuTriggerStyle
+  NavigationMenuTrigger
 } from '@/shared/components/shadcn-components/ui/navigation-menu';
 import { features, resources } from '@/shared/components/common/header/data/static-navigation';
 import { Link } from '@/i18n/navigation';
@@ -12,6 +12,23 @@ import {useTranslations} from "next-intl";
 
 export default function HeaderNavigation() {
   const t = useTranslations();
+
+  const simple = true;
+
+  if (simple) {
+    return (
+        <NavigationMenu className="hidden md:flex pt-2">
+          <NavigationMenuList>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/resources/guides/wcag">
+                WCAG Guide
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+    )
+  }
 
   return (
     <NavigationMenu className="hidden md:flex pt-2">
