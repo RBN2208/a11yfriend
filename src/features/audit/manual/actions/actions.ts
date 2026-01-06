@@ -7,10 +7,10 @@ import { createServerSupabase } from "@/shared/supabase/server";
 import { getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
 import { revalidateCache } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";
-import { MessageCodes } from "@/shared/i18n/message-codes";
 import { createAuditSchema } from "@/features/audit/manual/zod-schema";
 import { validateUserAuth } from "@/shared/utils/server-utils";
 import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
+import { getTranslations } from "next-intl/server";
 
 // ============================================
 // Constants
@@ -47,9 +47,8 @@ function createDefaultAuditResults(): AuditResult[] {
  * @param {z.ZodFormattedError} formattedErrors - Zod formatted error object
  * @returns {ApiResponse} Formatted API response with field errors
  */
-function formatValidationErrors(
-  formattedErrors: z.ZodFormattedError<z.infer<typeof createAuditSchema>>
-): ApiResponse {
+async function formatValidationErrors(formattedErrors: z.ZodFormattedError<z.infer<typeof createAuditSchema>>): Promise<ApiResponse> {
+  const t = await getTranslations('audit.messageCodes');
   const fieldKeys: Array<keyof z.infer<typeof createAuditSchema>> = [
     'name',
     'description',
@@ -67,7 +66,7 @@ function formatValidationErrors(
   return createApiResponse({
     success: false,
     errors,
-    message: MessageCodes.FORM_DATA_VALIDATION_ERROR
+    message: t('validationError')
   });
 }
 
@@ -94,6 +93,7 @@ function computeAuditStatus(findings: AuditResult[]): 'pending' | 'done' {
  * @returns {Promise<ApiResponse<ManualAudit[]>>}
  */
 async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAudit[]>> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
 
@@ -107,20 +107,20 @@ async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAud
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+        message: t('getError')
       });
     }
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDITS_GET_SUCCESS,
+      message: t('getMultiSuccess'),
       data: audits as ManualAudit[]
     });
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED),
-      message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+      globalError: getErrorOfUnknownError(error, t('getErrorUnexpected')),
+      message: t('getError')
     });
   }
 }
@@ -132,6 +132,7 @@ async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAud
  * @returns {Promise<ApiResponse<ManualAudit>>}
  */
 async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
 
@@ -145,20 +146,20 @@ async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+        message: t('getError')
       });
     }
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_GET_SUCCESS,
+      message: t('getSingleSuccess'),
       data: audit as ManualAudit
     });
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED),
-      message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+      globalError: getErrorOfUnknownError(error, t('getErrorUnexpected')),
+      message: t('getError')
     });
   }
 }
@@ -182,9 +183,8 @@ async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
  *   conformance: "AA"
  * });
  */
-export async function createAudit(
-  values: z.infer<typeof createAuditSchema>
-): Promise<ApiResponse> {
+export async function createAudit(values: z.infer<typeof createAuditSchema>): Promise<ApiResponse> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     const validationResult = createAuditSchema.safeParse(values);
     if (!validationResult.success) {
@@ -212,7 +212,7 @@ export async function createAudit(
       return createApiResponse({
         success: false,
         globalError: insertError.message,
-        message: MessageCodes.AUDIT_CREATE_ERROR
+        message: t('error')
       });
     }
 
@@ -220,15 +220,15 @@ export async function createAudit(
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_CREATE_SUCCESS
+      message: t('success')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      errors: [{ field: 'root', error: MessageCodes.GENERIC_UNEXPECTED_ERROR }],
-      message: MessageCodes.AUDIT_CREATE_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('error')),
+      errors: [{ field: 'root', error: t('errorUnexpected') }],
+      message: t('errorUnexpected')
     });
   }
 }
@@ -241,10 +241,8 @@ export async function createAudit(
  * @param {string} auditId - ID of audit to update
  * @returns {Promise<ApiResponse>} API response with success/error information
  */
-export async function updateAudit(
-  values: z.infer<typeof createAuditSchema>,
-  auditId: string
-): Promise<ApiResponse> {
+export async function updateAudit(values: z.infer<typeof createAuditSchema>, auditId: string): Promise<ApiResponse> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     const validationResult = createAuditSchema.safeParse(values);
     if (!validationResult.success) {
@@ -261,7 +259,7 @@ export async function updateAudit(
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_UPDATE_ERROR
+        message: t('updateError')
       });
     }
 
@@ -269,14 +267,14 @@ export async function updateAudit(
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_UPDATE_SUCCESS
+      message: t('updateSuccess')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      message: MessageCodes.AUDIT_UPDATE_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('errorUnexpected')),
+      message: t('errorUnexpected')
     });
   }
 }
@@ -289,10 +287,8 @@ export async function updateAudit(
  * @param {string} auditId - ID of audit to update
  * @returns {Promise<ApiResponse>} API response with success/error information
  */
-export async function updateAuditResults(
-  findings: AuditResult[],
-  auditId: string
-): Promise<ApiResponse> {
+export async function updateAuditResults(findings: AuditResult[], auditId: string): Promise<ApiResponse> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     const status = computeAuditStatus(findings);
 
@@ -309,20 +305,20 @@ export async function updateAuditResults(
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_RESULTS_UPDATE_ERROR
+        message: t('updateError')
       });
     }
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_RESULTS_UPDATE_SUCCESS
+      message: t('updateSuccess')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_RESULTS_UPDATE_ERROR_UNEXPECTED),
-      message: MessageCodes.AUDIT_RESULTS_UPDATE_ERROR
+      globalError: getErrorOfUnknownError(error, t('updateErrorUnexpected')),
+      message: t('updateError')
     });
   }
 }
@@ -335,6 +331,7 @@ export async function updateAuditResults(
  * @returns {Promise<ApiResponse>} API response with success/error information
  */
 export async function deleteAudit(auditId: string): Promise<ApiResponse> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
     const { error } = await supabase
@@ -346,7 +343,7 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_DELETE_ERROR
+        message: t('deleteError')
       });
     }
 
@@ -354,15 +351,15 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_DELETE_SUCCESS
+      message: t('deleteSuccess')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      errors: [{ field: 'root', error: MessageCodes.GENERIC_UNEXPECTED_ERROR }],
-      message: MessageCodes.AUDIT_DELETE_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('deleteErrorUnexpected')),
+      errors: [{ field: 'root', error: t('deleteError') }],
+      message: t('deleteError')
     });
   }
 }
@@ -382,10 +379,8 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
  * // Fetch multiple audits
  * const audits = await getAudit(null, 20);
  */
-export async function getAudit(
-  id: string | null = null,
-  limit: number = 5
-): Promise<ApiResponse<ManualAudit[] | ManualAudit>> {
+export async function getAudit(id: string | null = null, limit: number = 5): Promise<ApiResponse<ManualAudit[] | ManualAudit>> {
+  const t = await getTranslations('audit.messageCodes');
   try {
     if (id) {
       return await fetchSingleAudit(id);
@@ -395,8 +390,8 @@ export async function getAudit(
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      message: MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('getErrorUnexpected')),
+      message: t('getError')
     });
   }
 }
