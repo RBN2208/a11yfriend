@@ -13,6 +13,7 @@
   "states": {
     "loading": "Loading...",
     "saving": "Saving...",
+    "creating": "Creating...",
     "noData": "No data available",
     "success": "Success"
   },
@@ -508,6 +509,26 @@
       "notApplicableTests": "Not Applicable Tests",
       "notCheckedTests": "Not Checked Tests",
       "footerText": "Created on {date} | A11yFriend Accessibility Audit"
+    }
+  },
+  "report": {
+    "overview": "Report Overview",
+    "manage": "Manage Reports",
+    "create": "Create Report",
+    "name": "Report Name",
+    "action": "Actions",
+    "edit": "Edit Report",
+    "details": "Report Details",
+    "view": "View Report",
+    "delete": "Delete Report",
+    "deleteDetail": "I want to delete the report '{reportName}'.",
+    "exportFormat": "Export to: {format}",
+    "search": "Search for Reports",
+    "reportName": "Report Name",
+    "export": {
+      "label": "Export Report",
+      "exportToFormat": "Export as {format} format",
+      "generateFormat": "Create {format} ..."
     }
   },
   "footer": {

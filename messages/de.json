@@ -511,6 +511,26 @@
       "footerText": "Erstellt am {date} | A11yFriend Accessibility Audit"
     }
   },
+  "report": {
+    "overview": "Report Übersicht",
+    "manage": "Reports verwalten",
+    "create": "Report erstellen",
+    "name": "Report Name",
+    "action": "Aktionen",
+    "edit": "Report bearbeiten",
+    "details": "Report Details",
+    "view": "Report ansehen",
+    "delete": "Report löschen",
+    "deleteDetail": "Ich möchte den Report '{reportName}' löschen.",
+    "exportFormat": "Exportieren nach: {format}",
+    "search": "Reports suchen",
+    "reportName": "Name des Reports",
+    "export": {
+      "label": "Report exportieren",
+      "exportToFormat": "Exportieren als {format} Format",
+      "generateFormat": "Erstelle {format} ..."
+    }
+  },
   "footer": {
     "description": "Barrierefreie Webaudits leicht gemacht. Prüfe deine Website auf WCAG-Konformität.",
     "product": "Produkt",
