@@ -1,16 +1,17 @@
 "use server"
 
-import type { AuditResult, ManualAudit } from "@/features/audit/manual/types/types";
-import type { ApiResponse } from "@/shared/api/types/types";
 import { z } from "zod";
-import { createServerSupabase } from "@/shared/supabase/server";
-import { getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
-import { revalidateCache } from "@/shared/utils/server-utils";
-import { createApiResponse } from "@/shared/api/response";
-import { createAuditSchema } from "@/features/audit/manual/zod-schema";
-import { validateUserAuth } from "@/shared/utils/server-utils";
-import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
 import { getTranslations } from "next-intl/server";
+
+import type { AuditResult, ManualAudit } from "@/features/audit/manual/types/types";
+import { validateFormData, getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
+import { createAuditSchema } from "@/features/audit/manual/zod-schema";
+
+import type { ApiResponse } from "@/shared/api/types/types";
+import { createServerSupabase } from "@/shared/supabase/server";
+import {revalidateCache, validateUser} from "@/shared/utils/server-utils";
+import { createApiResponse } from "@/shared/api/response";
+import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
 
 // ============================================
 // Constants
@@ -42,35 +43,6 @@ function createDefaultAuditResults(): AuditResult[] {
 }
 
 /**
- * Formats Zod validation errors into API response format.
- *
- * @param {z.ZodFormattedError} formattedErrors - Zod formatted error object
- * @returns {ApiResponse} Formatted API response with field errors
- */
-async function formatValidationErrors(formattedErrors: z.ZodFormattedError<z.infer<typeof createAuditSchema>>): Promise<ApiResponse> {
-  const t = await getTranslations('audit.messageCodes');
-  const fieldKeys: Array<keyof z.infer<typeof createAuditSchema>> = [
-    'name',
-    'description',
-    'status',
-    'conformance'
-  ];
-
-  const errors = fieldKeys
-    .map(field => {
-      const fieldError = (formattedErrors as any)[field]?._errors[0];
-      return fieldError ? { field: String(field), error: fieldError } : null;
-    })
-    .filter((error): error is { field: string; error: string } => error !== null);
-
-  return createApiResponse({
-    success: false,
-    errors,
-    message: t('validationError')
-  });
-}
-
-/**
  * Determines audit status based on findings.
  * Returns 'done' if all findings are checked, otherwise 'pending'.
  *
@@ -96,6 +68,11 @@ async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAud
   const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
 
     const { data: audits, error } = await supabase
       .from(TABLE_NAME)
@@ -135,6 +112,11 @@ async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
   const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
 
     const { data: audit, error } = await supabase
       .from(TABLE_NAME)
@@ -186,24 +168,31 @@ async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
 export async function createAudit(values: z.infer<typeof createAuditSchema>): Promise<ApiResponse> {
   const t = await getTranslations('audit.messageCodes');
   try {
-    const validationResult = createAuditSchema.safeParse(values);
-    if (!validationResult.success) {
-      return formatValidationErrors(validationResult.error.format());
+    const formValidation = await validateFormData(
+        values,
+        createAuditSchema,
+        t('validationError'),
+        ['name', 'description', 'status', 'conformance']
+    );
+
+    if (!formValidation.success) {
+      return formValidation
     }
 
-    const authResult = await validateUserAuth();
-    if (!authResult.success) {
-      return authResult.error!;
+    const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
     }
 
     const auditData = {
       ...values,
-      user_id: authResult.user.id,
+      user_id: validation.user.id,
       status: "pending" as const,
       findings: createDefaultAuditResults()
     };
 
-    const supabase = await createServerSupabase();
     const { error: insertError } = await supabase
       .from(TABLE_NAME)
       .insert([auditData]);
@@ -244,12 +233,24 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
 export async function updateAudit(values: z.infer<typeof createAuditSchema>, auditId: string): Promise<ApiResponse> {
   const t = await getTranslations('audit.messageCodes');
   try {
-    const validationResult = createAuditSchema.safeParse(values);
-    if (!validationResult.success) {
-      return formatValidationErrors(validationResult.error.format());
+    const formValidation = await validateFormData(
+        values,
+        createAuditSchema,
+        t('validationError'),
+        ['name', 'description', 'status', 'conformance']
+    );
+
+    if (!formValidation.success) {
+      return formValidation
     }
 
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
+
     const { error } = await supabase
       .from(TABLE_NAME)
       .update(values)
@@ -293,6 +294,12 @@ export async function updateAuditResults(findings: AuditResult[], auditId: strin
     const status = computeAuditStatus(findings);
 
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
+
     const { error } = await supabase
       .from(TABLE_NAME)
       .update({
@@ -334,6 +341,12 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
   const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
+
     const { error } = await supabase
       .from(TABLE_NAME)
       .delete()

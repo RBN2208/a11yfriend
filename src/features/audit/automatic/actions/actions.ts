@@ -1,49 +1,23 @@
 "use server"
 
-import type { AutomaticAudit } from "@/features/audit/automatic/types/types";
-import type { ApiResponse } from "@/shared/api/types/types";
 import { z } from "zod";
-import { createServerSupabase } from "@/shared/supabase/server";
-import { revalidateCache } from "@/shared/utils/server-utils";
-import { createApiResponse } from "@/shared/api/response";
-import { MessageCodes } from "@/shared/i18n/message-codes";
+import { getTranslations } from "next-intl/server";
+
+import type { AutomaticAudit } from "@/features/audit/automatic/types/types";
 import { createReportSchema } from "@/features/audit/automatic/zod-schema";
-import { validateUserAuth } from "@/shared/utils/server-utils";
+import { validateFormData } from "@/features/audit/utils";
+
+import type { ApiResponse } from "@/shared/api/types/types";
+import { createServerSupabase } from "@/shared/supabase/server";
+import { revalidateCache, validateUser } from "@/shared/utils/server-utils";
+import { createApiResponse } from "@/shared/api/response";
 import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
-import {getTranslations} from "next-intl/server";
 
 // ============================================
 // Constants
 // ============================================
 
 const TABLE_NAME = "automatic_audits" as const;
-
-/**
- * Formats Zod validation errors into API response format.
- *
- * @param {z.ZodFormattedError} formattedErrors - Zod formatted error object
- * @returns {ApiResponse} Formatted API response with field errors
- */
-async function formatValidationErrors(formattedErrors: z.ZodFormattedError<z.infer<typeof createReportSchema>>): Promise<ApiResponse> {
-  const t = await getTranslations('report.messageCodes');
-  const fieldKeys: Array<keyof z.infer<typeof createReportSchema>> = [
-    'name',
-    'description'
-  ];
-
-  const errors = fieldKeys
-      .map(field => {
-        const fieldError = (formattedErrors as any)[field]?._errors[0];
-        return fieldError ? { field: String(field), error: fieldError } : null;
-      })
-      .filter((error): error is { field: string; error: string } => error !== null);
-
-  return createApiResponse({
-    success: false,
-    errors,
-    message: t('validationError')
-  });
-}
 
 /**
  * Fetches multiple reports from the database.
@@ -55,6 +29,11 @@ async function fetchMultipleReports(limit: number): Promise<ApiResponse<Automati
   const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
 
     const { data: audits, error } = await supabase
       .from(TABLE_NAME)
@@ -94,6 +73,11 @@ async function fetchSingleReport(id: string): Promise<ApiResponse<AutomaticAudit
   const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
 
     const { data: audit, error } = await supabase
       .from(TABLE_NAME)
@@ -145,22 +129,29 @@ async function fetchSingleReport(id: string): Promise<ApiResponse<AutomaticAudit
 export async function createReport(values: z.infer<typeof createReportSchema>): Promise<ApiResponse> {
   const t = await getTranslations('report.messageCodes');
   try {
-    const validationResult = createReportSchema.safeParse(values);
-    if (!validationResult.success) {
-      return formatValidationErrors(validationResult.error.format());
+    const formValidation = await validateFormData(
+        values,
+        createReportSchema,
+        t('validationError'),
+        ['name', 'description']
+    );
+
+    if (!formValidation.success) {
+      return formValidation
     }
 
-    const authResult = await validateUserAuth();
-    if (!authResult.success) {
-      return authResult.error!;
+    const supabase = await createServerSupabase();
+    const user = await validateUser(supabase);
+
+    if (!user.success) {
+      return user.error!;
     }
 
     const auditData = {
       ...values,
-      user_id: authResult.user.id
+      user_id: user.user.id
     };
 
-    const supabase = await createServerSupabase();
     const { error: insertError } = await supabase
       .from(TABLE_NAME)
       .insert([auditData]);
@@ -201,12 +192,24 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
 export async function updateReport(values: z.infer<typeof createReportSchema>, auditId: string): Promise<ApiResponse> {
   const t = await getTranslations('report.messageCodes');
   try {
-    const validationResult = createReportSchema.safeParse(values);
-    if (!validationResult.success) {
-      return formatValidationErrors(validationResult.error.format());
+    const formValidation = await validateFormData(
+        values,
+        createReportSchema,
+        t('validationError'),
+        ['name', 'description']
+    );
+
+    if (!formValidation.success) {
+      return formValidation
     }
 
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
+
     const { error } = await supabase
       .from(TABLE_NAME)
       .update(values)
@@ -248,6 +251,12 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
   const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
+
     const { error } = await supabase
       .from(TABLE_NAME)
       .delete()
