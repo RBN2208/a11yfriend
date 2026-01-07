@@ -549,6 +549,21 @@
       "label": "Export Report",
       "exportToFormat": "Export as {format} format",
       "generateFormat": "Create {format} ..."
+    },
+    "messageCodes": {
+      "unexpected": "An unexpected error occurred",
+      "success": "Report created successfully",
+      "error": "An error occurred while creating the report data. Please try again.",
+      "updateSuccess": "Report successfully updated",
+      "updateError": "An error occurred while updating the report data. Please try again.",
+      "resultsUpdateSuccess": "Audit results successfully updated",
+      "resultsUpdateError": "An error occurred while updating the report results. Please try again.",
+      "getSingleSuccess": "Report retrieved successfully",
+      "getMultiSuccess": "Reports retrieved successfully",
+      "getError": "An error occurred while retrieving the reports. Please try again.",
+      "deleteSuccess": "Report successfully deleted",
+      "deleteError": "An error occurred while deleting the report. Please try again.",
+      "validationError": "Data could not be validated"
     }
   },
   "footer": {

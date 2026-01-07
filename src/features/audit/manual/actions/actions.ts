@@ -119,7 +119,7 @@ async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAud
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, t('getErrorUnexpected')),
+      globalError: getErrorOfUnknownError(error, t('getError')),
       message: t('getError')
     });
   }
@@ -158,7 +158,7 @@ async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, t('getErrorUnexpected')),
+      globalError: getErrorOfUnknownError(error, t('getError')),
       message: t('getError')
     });
   }
@@ -227,8 +227,8 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('error')),
-      errors: [{ field: 'root', error: t('errorUnexpected') }],
-      message: t('errorUnexpected')
+      errors: [{ field: 'root', error: t('error') }],
+      message: t('error')
     });
   }
 }
@@ -273,8 +273,8 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, t('errorUnexpected')),
-      message: t('errorUnexpected')
+      globalError: getErrorOfUnknownError(error, t('error')),
+      message: t('error')
     });
   }
 }
@@ -317,7 +317,7 @@ export async function updateAuditResults(findings: AuditResult[], auditId: strin
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, t('updateErrorUnexpected')),
+      globalError: getErrorOfUnknownError(error, t('updateError')),
       message: t('updateError')
     });
   }
@@ -357,7 +357,7 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, t('deleteErrorUnexpected')),
+      globalError: getErrorOfUnknownError(error, t('deleteError')),
       errors: [{ field: 'root', error: t('deleteError') }],
       message: t('deleteError')
     });
@@ -390,7 +390,7 @@ export async function getAudit(id: string | null = null, limit: number = 5): Pro
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, t('getErrorUnexpected')),
+      globalError: getErrorOfUnknownError(error, t('getError')),
       message: t('getError')
     });
   }

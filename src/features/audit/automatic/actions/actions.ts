@@ -24,9 +24,8 @@ const TABLE_NAME = "automatic_audits" as const;
  * @param {z.ZodFormattedError} formattedErrors - Zod formatted error object
  * @returns {ApiResponse} Formatted API response with field errors
  */
-function formatValidationErrors(
-    formattedErrors: z.ZodFormattedError<z.infer<typeof createReportSchema>>
-): ApiResponse {
+async function formatValidationErrors(formattedErrors: z.ZodFormattedError<z.infer<typeof createReportSchema>>): Promise<ApiResponse> {
+  const t = await getTranslations('report.messageCodes');
   const fieldKeys: Array<keyof z.infer<typeof createReportSchema>> = [
     'name',
     'description'
@@ -42,7 +41,7 @@ function formatValidationErrors(
   return createApiResponse({
     success: false,
     errors,
-    message: MessageCodes.FORM_DATA_VALIDATION_ERROR
+    message: t('validationError')
   });
 }
 
@@ -53,6 +52,7 @@ function formatValidationErrors(
  * @returns {Promise<ApiResponse<ManualAudit[]>>}
  */
 async function fetchMultipleReports(limit: number): Promise<ApiResponse<AutomaticAudit[]>> {
+  const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
 
@@ -66,20 +66,20 @@ async function fetchMultipleReports(limit: number): Promise<ApiResponse<Automati
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+        message: t('error')
       });
     }
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDITS_GET_SUCCESS,
+      message: t('getMultiSuccess'),
       data: audits as AutomaticAudit[]
     });
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED),
-      message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+      globalError: getErrorOfUnknownError(error, t('getError')),
+      message: t('getError')
     });
   }
 }
@@ -91,6 +91,7 @@ async function fetchMultipleReports(limit: number): Promise<ApiResponse<Automati
  * @returns {Promise<ApiResponse<ManualAudit>>}
  */
 async function fetchSingleReport(id: string): Promise<ApiResponse<AutomaticAudit>> {
+  const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
 
@@ -104,20 +105,20 @@ async function fetchSingleReport(id: string): Promise<ApiResponse<AutomaticAudit
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+        message: t('getError')
       });
     }
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_GET_SUCCESS,
+      message: t('getSingleSuccess'),
       data: audit as AutomaticAudit
     });
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED),
-      message: MessageCodes.AUDIT_GET_GENERIC_ERROR
+      globalError: getErrorOfUnknownError(error, t('getError')),
+      message: t('getError')
     });
   }
 }
@@ -142,6 +143,7 @@ async function fetchSingleReport(id: string): Promise<ApiResponse<AutomaticAudit
  * });
  */
 export async function createReport(values: z.infer<typeof createReportSchema>): Promise<ApiResponse> {
+  const t = await getTranslations('report.messageCodes');
   try {
     const validationResult = createReportSchema.safeParse(values);
     if (!validationResult.success) {
@@ -155,8 +157,7 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
 
     const auditData = {
       ...values,
-      user_id: authResult.user.id,
-      status: "pending" as const
+      user_id: authResult.user.id
     };
 
     const supabase = await createServerSupabase();
@@ -168,7 +169,7 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
       return createApiResponse({
         success: false,
         globalError: insertError.message,
-        message: MessageCodes.AUDIT_CREATE_ERROR
+        message: t('error')
       });
     }
 
@@ -176,15 +177,15 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_CREATE_SUCCESS
+      message: t('success')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      errors: [{ field: 'root', error: MessageCodes.GENERIC_UNEXPECTED_ERROR }],
-      message: MessageCodes.AUDIT_CREATE_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('error')),
+      errors: [{ field: 'root', error: t('error') }],
+      message: t('error')
     });
   }
 }
@@ -197,10 +198,8 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
  * @param {string} auditId - ID of audit to update
  * @returns {Promise<ApiResponse>} API response with success/error information
  */
-export async function updateReport(
-  values: z.infer<typeof createReportSchema>,
-  auditId: string
-): Promise<ApiResponse> {
+export async function updateReport(values: z.infer<typeof createReportSchema>, auditId: string): Promise<ApiResponse> {
+  const t = await getTranslations('report.messageCodes');
   try {
     const validationResult = createReportSchema.safeParse(values);
     if (!validationResult.success) {
@@ -217,7 +216,7 @@ export async function updateReport(
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_UPDATE_ERROR
+        message: t('updateError')
       });
     }
 
@@ -225,14 +224,14 @@ export async function updateReport(
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_UPDATE_SUCCESS
+      message: t('updateSuccess')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      message: MessageCodes.AUDIT_UPDATE_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('updateError')),
+      message: t('updateError')
     });
   }
 }
@@ -246,6 +245,7 @@ export async function updateReport(
  * @returns {Promise<ApiResponse>} API response with success/error information
  */
 export async function deleteReport(auditId: string): Promise<ApiResponse> {
+  const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
     const { error } = await supabase
@@ -257,7 +257,7 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
       return createApiResponse({
         success: false,
         globalError: error.message,
-        message: MessageCodes.AUDIT_DELETE_ERROR
+        message: t('deleteError')
       });
     }
 
@@ -265,15 +265,15 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
 
     return createApiResponse({
       success: true,
-      message: MessageCodes.AUDIT_DELETE_SUCCESS
+      message: t('deleteSuccess')
     });
 
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      errors: [{ field: 'root', error: MessageCodes.GENERIC_UNEXPECTED_ERROR }],
-      message: MessageCodes.AUDIT_DELETE_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('deleteError')),
+      errors: [{ field: 'root', error: t('deleteError') }],
+      message: t('deleteError')
     });
   }
 }
@@ -293,10 +293,8 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
  * // Fetch multiple audits
  * const audits = await getAudit(null, 20);
  */
-export async function getReport(
-  id: string | null = null,
-  limit: number = 5
-): Promise<ApiResponse<AutomaticAudit[] | AutomaticAudit>> {
+export async function getReport(id: string | null = null, limit: number = 5): Promise<ApiResponse<AutomaticAudit[] | AutomaticAudit>> {
+  const t = await getTranslations('report.messageCodes');
   try {
     if (id) {
       return await fetchSingleReport(id);
@@ -306,8 +304,8 @@ export async function getReport(
   } catch (error: unknown) {
     return createApiResponse({
       success: false,
-      globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-      message: MessageCodes.AUDIT_GET_GENERIC_ERROR_UNEXPECTED
+      globalError: getErrorOfUnknownError(error, t('getError')),
+      message: t('getError')
     });
   }
 }

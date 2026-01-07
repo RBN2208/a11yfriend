@@ -514,19 +514,15 @@
       "unexpected": "Ein unerwarteter Fehler ist aufgetreten",
       "success": "Audit erfolgreich erstellt",
       "error": "Beim Einfügen der Auditdaten in die Datenbank ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "error_unexpected": "Beim Einfügen der Auditdaten in die Datenbank ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
       "updateSuccess": "Audit erfolgreich aktualisiert",
       "updateError": "Beim Aktualisieren der Auditdaten in der Datenbank ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "updateErrorUnexpected": "Beim Aktualisieren der Auditdaten in der Datenbank ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
       "resultsUpdateSuccess": "Auditergebnisse erfolgreich aktualisiert",
       "resultsUpdateError": "Beim Aktualisieren der Auditergebnisse in der Datenbank ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
       "getSingleSuccess": "Audit abgerufen erfolgreich",
       "getMultiSuccess": "Audits erfolgreich abgerufen",
       "getError": "Beim Abrufen der Auditdaten aus der Datenbank ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "getErrorUnexpected": "Beim Abrufen der Auditdaten aus der Datenbank ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
       "deleteSuccess": "Audit erfolgreich gelöscht",
       "deleteError": "Beim Löschen der Auditdaten aus der Datenbank ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "deleteErrorUnexpected": "Beim Löschen der Auditdaten aus der Datenbank ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
       "validationError": "Daten konnten nicht validiert werden"
     }
   },
@@ -548,6 +544,21 @@
       "label": "Report exportieren",
       "exportToFormat": "Exportieren als {format} Format",
       "generateFormat": "Erstelle {format} ..."
+    },
+    "messageCodes": {
+      "unexpected": "Ein unerwarteter Fehler ist aufgetreten",
+      "success": "Report erfolgreich erstellt",
+      "error": "Beim erstellen der Reportdaten ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "updateSuccess": "Report erfolgreich aktualisiert",
+      "updateError": "Beim Aktualisieren der Reportdaten ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "resultsUpdateSuccess": "Auditergebnisse erfolgreich aktualisiert",
+      "resultsUpdateError": "Beim Aktualisieren der Reportergebnisse ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "getSingleSuccess": "Report abgerufen erfolgreich",
+      "getMultiSuccess": "Reports erfolgreich abgerufen",
+      "getError": "Beim Abrufen der Reports ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "deleteSuccess": "Report erfolgreich gelöscht",
+      "deleteError": "Beim Löschen des Reports ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "validationError": "Daten konnten nicht validiert werden"
     }
   },
   "footer": {
