@@ -475,7 +475,20 @@
     "passwordChangedSuccessfully": "Password has been updated",
     "emailVerified": "Email Verified",
     "emailVerifiedDescription": "Your email address has been successfully verified.",
-    "emailVerifiedInfo": "You can now check out with your account and use all features."
+    "emailVerifiedInfo": "You can now check out with your account and use all features.",
+    "messageCodes": {
+      "userVerifyError": "Authentication failed, could not verify user",
+      "registerSuccess": "Registration successful, please check your email to verify your account",
+      "registerError": "Registration failed",
+      "pwChangeError": "Password change failed",
+      "pwChangeSuccess": "Password change successful",
+      "loginSuccess": "Login successful",
+      "loginError": "Login failed",
+      "optError": "OTP verification failed",
+      "optSuccess": "OTP verification successful",
+      "error": "An unexpected error occurred while processing your request. Please try again later.",
+      "validationError": "Data could not be validated."
+    }
   },
   "audit": {
     "overview": "Audit Overview",

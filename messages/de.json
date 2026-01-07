@@ -475,7 +475,20 @@
     "passwordChangedSuccessfully": "Passwort wurde erfolgreich geändert",
     "emailVerified": "E-Mail bestätigt",
     "emailVerifiedDescription": "Deine E-Mail-Adresse wurde erfolgreich verifiziert.",
-    "emailVerifiedInfo": "Du kannst in der Account-Übersicht alle Funktionen testen."
+    "emailVerifiedInfo": "Du kannst in der Account-Übersicht alle Funktionen testen.",
+    "messageCodes": {
+      "userVerifyError": "Authentifizierung fehlgeschlagen, Benutzer konnte nicht verifiziert werden",
+      "registerSuccess": "Registrierung erfolgreich, bitte überprüfen Sie Ihre E-Mails zur Kontobestätigung",
+      "registerError": "Registrierung fehlgeschlagen",
+      "pwChangeError": "Passwortänderung fehlgeschlagen",
+      "pwChangeSuccess": "Passwortänderung erfolgreich",
+      "loginSuccess": "Anmeldung erfolgreich",
+      "loginError": "Anmeldung fehlgeschlagen",
+      "optError": "OTP-Verifizierung fehlgeschlagen",
+      "optSuccess": "OTP-Verifizierung erfolgreich",
+      "error": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+      "validationError": "Daten konnten nicht validiert werden"
+    }
   },
   "audit": {
     "overview": "Prüfungsübersicht",
