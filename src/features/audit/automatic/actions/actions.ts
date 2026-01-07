@@ -5,9 +5,9 @@ import { getTranslations } from "next-intl/server";
 
 import type { AutomaticAudit } from "@/features/audit/automatic/types/types";
 import { createReportSchema } from "@/features/audit/automatic/zod-schema";
-import { validateFormData } from "@/features/audit/utils";
 
 import type { ApiResponse } from "@/shared/api/types/types";
+import { validateFormData } from "@/shared/utils/server-utils";
 import { createServerSupabase } from "@/shared/supabase/server";
 import { revalidateCache, validateUser } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";

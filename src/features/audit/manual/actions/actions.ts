@@ -4,12 +4,13 @@ import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 
 import type { AuditResult, ManualAudit } from "@/features/audit/manual/types/types";
-import { validateFormData, getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
+import { getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
 import { createAuditSchema } from "@/features/audit/manual/zod-schema";
 
 import type { ApiResponse } from "@/shared/api/types/types";
+import { validateFormData } from "@/shared/utils/server-utils";
 import { createServerSupabase } from "@/shared/supabase/server";
-import {revalidateCache, validateUser} from "@/shared/utils/server-utils";
+import { revalidateCache, validateUser } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";
 import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
 
