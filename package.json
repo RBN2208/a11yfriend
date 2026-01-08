@@ -82,7 +82,7 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": "21.7.3"
+    "node": "24.13.0"
   },
   "packageManager": "pnpm@10.13.1",
   "overrides": {
