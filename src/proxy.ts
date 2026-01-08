@@ -6,6 +6,47 @@ import { routing } from "@/i18n/routing";
 const intlMiddleware = createMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
+  /**
+   * add basic auth for local development and for mvp
+   */
+  const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER;
+  const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD;
+
+  if (BASIC_AUTH_USER && BASIC_AUTH_PASSWORD) {
+    const unauthorized = () =>
+      new NextResponse('Authentication required', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="A11yfriend", charset="UTF-8"',
+        },
+      });
+
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader) {
+      return unauthorized();
+    }
+
+    const [scheme, encoded] = authHeader.split(' ');
+    if (scheme !== 'Basic' || !encoded) {
+      return unauthorized();
+    }
+
+    let decoded = '';
+    try {
+      decoded = atob(encoded);
+    } catch {
+      return unauthorized();
+    }
+
+    const colonIndex = decoded.indexOf(':');
+    const providedUser = colonIndex >= 0 ? decoded.slice(0, colonIndex) : decoded;
+    const providedPass = colonIndex >= 0 ? decoded.slice(colonIndex + 1) : '';
+
+    if (providedUser !== BASIC_AUTH_USER || providedPass !== BASIC_AUTH_PASSWORD) {
+      return unauthorized();
+    }
+  }
+
   const intlResponse = intlMiddleware(request);
 
   const pathname = request.nextUrl.pathname;
