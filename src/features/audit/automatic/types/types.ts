@@ -9,6 +9,7 @@ export interface AutomaticAudit {
   user_id: string;
   name: string;
   description: string;
+  urls: string[];
   findings: AuditResult[];
   created_at: string;
   updated_at: string;

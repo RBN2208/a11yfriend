@@ -15,7 +15,7 @@ export default async function AccountLayout({children}: { children: React.ReactN
     <SidebarProvider className="md:grid md:grid-cols-[256px_minmax(0,80%)] py-2">
       <AccountNavigationBase />
       <main className="p-1 pr-4 w-full">
-        <div className="flex justify-start items-center p-4 pl-0">
+        <div className="flex justify-start items-center pb-1 pl-0">
           <SidebarTrigger className="block md:hidden" />
         </div>
         {children}

@@ -1,5 +1,5 @@
 import {getReport} from "@/features/audit/automatic/actions/actions";
-import ReportDetailOverviewPage from "@/features/audit/automatic/components/report-detail-overview-page";
+import ReportOverviewPage from "@/features/audit/automatic/components/report-overview-page";
 import {AutomaticAudit} from "@/features/audit/automatic/types/types";
 
 export default async function ReportDetailPage({params}: { params: Promise<{ id: string }> }) {
@@ -17,7 +17,7 @@ export default async function ReportDetailPage({params}: { params: Promise<{ id:
 
   return (
       <>
-        <ReportDetailOverviewPage report={report} />
+        <ReportOverviewPage report={report} />
       </>
   )
 }
