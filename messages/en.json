@@ -595,5 +595,9 @@
     "accessibility": "Accessibility",
     "copyright": "© {year} A11y Friend. All rights reserved.",
     "madeWith": "Made with ♥ for accessibility"
+  },
+  "home": {
+    "title": "Why a11yfriend?",
+    "intro": "This project originated from accessibility audits and the learnings derived from them. It is a private project and a work in progress."
   }
 }

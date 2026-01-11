@@ -590,5 +590,9 @@
     "accessibility": "Barrierefreiheit",
     "copyright": "© {year} A11y Friend. Alle Rechte vorbehalten.",
     "madeWith": "Made with ♥ for accessibility"
+  },
+  "home": {
+    "title": "Warum a11yfriend?",
+    "intro": "Dieses Projekt ist aus Barrierefreiheitsaudits entstanden und den Learnings aus diesen Audits. Es ist ein privates Projekt und Work in progress"
   }
 }

@@ -13,7 +13,7 @@ import {useTranslations} from "next-intl";
 export default function HeaderNavigation() {
   const t = useTranslations();
 
-  const simple = true;
+  const simple = false;
 
   if (simple) {
     return (
