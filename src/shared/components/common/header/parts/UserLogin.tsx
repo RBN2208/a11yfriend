@@ -56,14 +56,6 @@ export default function UserLogin({ user, showLabel }: UserLoginProps  ) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/account/settings"
-                    onClick={() => setOpen(false)}
-                    className="w-full h-full"
-              >
-                {t('navigation.accountSettings')}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
               <Button className="w-full h-full"
                       onClick={callLogout}
               >
