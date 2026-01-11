@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public.automatic_audits (
     name TEXT NOT NULL,
     description TEXT NOT NULL DEFAULT '',
     status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'running', 'done', 'error')),
-    findings JSONB NOT NULL DEFAULT '{"axe_results": null, "lighthouse_results": null, "summary": null}'::jsonb,
+    findings JSONB NOT NULL DEFAULT '[]'::jsonb,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

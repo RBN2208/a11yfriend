@@ -9,7 +9,7 @@ export interface AutomaticAudit {
   user_id: string;
   name: string;
   description: string;
-  urls: string[];
+  urls: { url: string }[];
   findings: AuditResult[];
   created_at: string;
   updated_at: string;
@@ -22,7 +22,8 @@ export interface AutomaticAudit {
 export type AuditResult = {
   summary: AutomaticAuditSummary | null,
   axe_results: AutomaticAuditAxeResults | null,
-  lighthouse_results: AutomaticAuditLighthouseResults | null
+  lighthouse_results: AutomaticAuditLighthouseResults | null,
+  created_at: string
 }
 
 export type AutomaticAuditSummary = {};

@@ -319,3 +319,165 @@ export async function getReport(id: string | null = null, limit: number = 5): Pr
   }
 }
 
+/**
+ * Runs an Axe accessibility report for a specific audit.
+ * Executes Axe analysis and stores results in the findings array.
+ *
+ * @param {string} reportId - ID of the report to run Axe analysis on
+ * @returns {Promise<ApiResponse>} API response with success/error information
+ */
+export async function runAxeReport(reportId: string): Promise<ApiResponse> {
+  const t = await getTranslations('report.messageCodes');
+  try {
+    const supabase = await createServerSupabase();
+    const validation = await validateUser(supabase);
+
+    if (!validation.success) {
+      return validation.error!;
+    }
+
+    // Fetch the report to get URLs
+    const { data: report, error: fetchError } = await supabase
+      .from(TABLE_NAME)
+      .select('*')
+      .eq('id', reportId)
+      .single();
+
+    if (fetchError || !report) {
+      return createApiResponse({
+        success: false,
+        globalError: fetchError?.message || 'Report not found',
+        message: t('getError')
+      });
+    }
+    const audit = report as AutomaticAudit;
+
+    // Validate URLs exist
+    if (!audit.urls || audit.urls.length === 0) {
+      return createApiResponse({
+        success: false,
+        globalError: 'No URLs found in report',
+        message: t('error')
+      });
+    }
+
+    // Run Axe analysis for all URLs in parallel
+    const axeResultsPromises = audit.urls.map(({ url }) =>
+      axeReport(url).catch(error => ({
+        url,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      }))
+    );
+
+    const axeResults = await Promise.all(axeResultsPromises);
+
+    // Get current findings or initialize empty array
+    const currentFindings = audit.findings || [];
+
+    // Create new audit result
+    const newAuditResult = {
+      summary: null,
+      axe_results: axeResults,
+      lighthouse_results: null,
+      created_at: new Date().toISOString()
+    };
+
+    // Add new result to findings
+    const updatedFindings = [...currentFindings, newAuditResult];
+
+    // Update the report with new findings
+    const { error: updateError } = await supabase
+      .from(TABLE_NAME)
+      .update({ findings: updatedFindings })
+      .eq('id', reportId);
+
+    if (updateError) {
+      return createApiResponse({
+        success: false,
+        globalError: updateError.message,
+        message: t('updateError')
+      });
+    }
+
+    revalidateCache();
+
+    return createApiResponse({
+      success: true,
+      message: t('success')
+    });
+
+  } catch (error: unknown) {
+    return createApiResponse({
+      success: false,
+      globalError: getErrorOfUnknownError(error, t('error')),
+      message: t('error')
+    });
+  }
+}
+
+
+/**
+ * Runs an Axe accessibility analysis on a given URL using Puppeteer.
+ *
+ * @param {string} url - The URL to analyze for accessibility issues
+ * @returns {Promise<any>} Axe analysis results containing violations, passes, incomplete, and inapplicable tests
+ */
+async function axeReport(url: string) {
+  const puppeteer = await import('puppeteer');
+  const { AxePuppeteer } = await import('@axe-core/puppeteer');
+
+  let browser;
+
+  try {
+    // Try to find Chrome in common locations or use bundled Chromium
+    browser = await puppeteer.default.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu'
+      ],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH ||
+                      process.env.CHROME_BIN ||
+                      undefined // Let Puppeteer find Chrome automatically
+    });
+  } catch (error) {
+    // If Chrome is not found, provide helpful error message
+    throw new Error(
+      'Chrome browser not found. Please install Chrome or run: npx puppeteer browsers install chrome'
+    );
+  }
+
+  try {
+    const page = await browser.newPage();
+
+    // Set viewport for consistent results
+    await page.setViewport({ width: 1280, height: 720 });
+
+    await page.goto(url, {
+      waitUntil: 'networkidle2',
+      timeout: 30000
+    });
+
+    const results = await new AxePuppeteer(page).analyze();
+
+    return {
+      url,
+      timestamp: new Date().toISOString(),
+      violations: results.violations,
+      passes: results.passes,
+      incomplete: results.incomplete,
+      inapplicable: results.inapplicable,
+      testEngine: results.testEngine,
+      testRunner: results.testRunner,
+      testEnvironment: results.testEnvironment,
+      toolOptions: results.toolOptions
+    };
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
+  }
+}
