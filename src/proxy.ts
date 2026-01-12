@@ -62,10 +62,9 @@ export async function proxy(request: NextRequest) {
 
   if (isProtectedRoute) {
     const sessionResponse = await updateSession(request);
-    const sessionHeader = sessionResponse.headers.get('x-supabase-session');
-    const session = sessionHeader ? JSON.parse(sessionHeader) : null;
+    const userId = sessionResponse.headers.get('x-supabase-user-id');
 
-    if (!session) {
+    if (!userId) {
       const redirectUrl = new URL(`/${locale}`, request.url);
       redirectUrl.searchParams.set('redirectTo', pathname);
       return NextResponse.redirect(redirectUrl);

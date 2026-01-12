@@ -84,7 +84,7 @@ async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAud
     if (error) {
       return createApiResponse({
         success: false,
-        globalError: error.message,
+        globalError: t('error'),
         message: t('getError')
       });
     }
@@ -128,7 +128,7 @@ async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
     if (error) {
       return createApiResponse({
         success: false,
-        globalError: error.message,
+        globalError: t('error'),
         message: t('getError')
       });
     }
@@ -201,7 +201,7 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     if (insertError) {
       return createApiResponse({
         success: false,
-        globalError: insertError.message,
+        globalError: t('error'),
         message: t('error')
       });
     }
@@ -260,7 +260,7 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
     if (error) {
       return createApiResponse({
         success: false,
-        globalError: error.message,
+        globalError: t('error'),
         message: t('updateError')
       });
     }
@@ -312,7 +312,7 @@ export async function updateAuditResults(findings: AuditResult[], auditId: strin
     if (error) {
       return createApiResponse({
         success: false,
-        globalError: error.message,
+        globalError: t('error'),
         message: t('updateError')
       });
     }
@@ -356,7 +356,7 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
     if (error) {
       return createApiResponse({
         success: false,
-        globalError: error.message,
+        globalError: t('error'),
         message: t('deleteError')
       });
     }
