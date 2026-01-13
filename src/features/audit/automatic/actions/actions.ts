@@ -12,6 +12,8 @@ import { createServerSupabase } from "@/shared/supabase/server";
 import { revalidateCache, validateUser } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";
 import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
+import {SupabaseClient} from "@supabase/supabase-js";
+import {isRedirectError} from "next/dist/client/components/redirect-error";
 
 // ============================================
 // Constants
@@ -22,19 +24,13 @@ const TABLE_NAME = "automatic_audits" as const;
 /**
  * Fetches multiple reports from the database.
  *
+ * @param {SupabaseClient} supabase - Supabase client instance
  * @param {number} limit - Maximum number of reports to retrieve
  * @returns {Promise<ApiResponse<ManualAudit[]>>}
  */
-async function fetchMultipleReports(limit: number): Promise<ApiResponse<AutomaticAudit[]>> {
+async function fetchMultipleReports(supabase: SupabaseClient, limit: number): Promise<ApiResponse<AutomaticAudit[]>> {
   const t = await getTranslations('report.messageCodes');
   try {
-    const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
-
-    if (!validation.success) {
-      return validation.error!;
-    }
-
     const { data: audits, error } = await supabase
       .from(TABLE_NAME)
       .select('*')
@@ -66,19 +62,13 @@ async function fetchMultipleReports(limit: number): Promise<ApiResponse<Automati
 /**
  * Fetches a single report from the database by ID.
  *
+ * @param {SupabaseClient} supabase - Supabase client instance
  * @param {string} id - Report ID
  * @returns {Promise<ApiResponse<ManualAudit>>}
  */
-async function fetchSingleReport(id: string): Promise<ApiResponse<AutomaticAudit>> {
+async function fetchSingleReport(supabase: SupabaseClient, id: string): Promise<ApiResponse<AutomaticAudit>> {
   const t = await getTranslations('report.messageCodes');
   try {
-    const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
-
-    if (!validation.success) {
-      return validation.error!;
-    }
-
     const { data: audit, error } = await supabase
       .from(TABLE_NAME)
       .select('*')
@@ -141,15 +131,11 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
     }
 
     const supabase = await createServerSupabase();
-    const user = await validateUser(supabase);
-
-    if (!user.success) {
-      return user.error!;
-    }
+    const { userId } = await validateUser(supabase);
 
     const auditData = {
       ...values,
-      user_id: user.user.id
+      user_id: userId
     };
 
     const { error: insertError } = await supabase
@@ -164,7 +150,7 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,
@@ -172,6 +158,7 @@ export async function createReport(values: z.infer<typeof createReportSchema>): 
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('error')),
@@ -204,11 +191,8 @@ export async function updateReport(values: z.infer<typeof createReportSchema>, a
     }
 
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
 
-    if (!validation.success) {
-      return validation.error!;
-    }
+    await validateUser(supabase);
 
     const { error } = await supabase
       .from(TABLE_NAME)
@@ -223,7 +207,7 @@ export async function updateReport(values: z.infer<typeof createReportSchema>, a
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,
@@ -231,6 +215,7 @@ export async function updateReport(values: z.infer<typeof createReportSchema>, a
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('updateError')),
@@ -251,11 +236,8 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
   const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
 
-    if (!validation.success) {
-      return validation.error!;
-    }
+    await validateUser(supabase);
 
     const { error } = await supabase
       .from(TABLE_NAME)
@@ -270,7 +252,7 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,
@@ -278,6 +260,7 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('deleteError')),
@@ -305,12 +288,16 @@ export async function deleteReport(auditId: string): Promise<ApiResponse> {
 export async function getReport(id: string | null = null, limit: number = 5): Promise<ApiResponse<AutomaticAudit[] | AutomaticAudit>> {
   const t = await getTranslations('report.messageCodes');
   try {
+    const supabase = await createServerSupabase();
+    await validateUser(supabase);
+
     if (id) {
-      return await fetchSingleReport(id);
+      return await fetchSingleReport(supabase, id);
     }
-    return await fetchMultipleReports(limit);
+    return await fetchMultipleReports(supabase, limit);
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('getError')),
@@ -330,11 +317,8 @@ export async function runAxeReport(reportId: string): Promise<ApiResponse> {
   const t = await getTranslations('report.messageCodes');
   try {
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
 
-    if (!validation.success) {
-      return validation.error!;
-    }
+    await validateUser(supabase);
 
     // Fetch the report to get URLs
     const { data: report, error: fetchError } = await supabase
@@ -400,7 +384,7 @@ export async function runAxeReport(reportId: string): Promise<ApiResponse> {
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,

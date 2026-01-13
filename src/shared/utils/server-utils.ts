@@ -6,23 +6,39 @@ import { SupabaseClient } from "@supabase/supabase-js";
 
 import type {ApiResponse } from "@/shared/api/types/types";
 import { createApiResponse } from "@/shared/api/response";
-import { MessageCodes } from "@/shared/i18n/message-codes";
-import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
+import {redirect} from "next/navigation";
+import {headers} from "next/headers";
+import {isRedirectError} from "next/dist/client/components/redirect-error";
 
-const REVALIDATION_PATH = "/" as const;
-const REVALIDATION_TYPE = "layout" as const;
+const REVALIDATION_PATH: string = "/";
+const REVALIDATION_TYPE: "layout" | "page" = "layout";
 
 /**
- * Revalidates the application cache after data mutations.
+ * Revalidates the application server cache after data mutations.
  */
-export async function revalidateCache(): Promise<void> {
-  revalidatePath(REVALIDATION_PATH, REVALIDATION_TYPE);
-}
+export async function revalidateCache(path = REVALIDATION_PATH, type = REVALIDATION_TYPE): Promise<void> {
+  try {
+    let pathToRevalidate = path;
+
+    if (!pathToRevalidate) {
+      const headersList = await headers();
+      const referer = headersList.get('referer');
+      if (referer) {
+        pathToRevalidate = new URL(referer).pathname;
+      }
+    }
+
+    if (pathToRevalidate) {
+      revalidatePath(pathToRevalidate, type);
+    }
+  } catch (error) {
+    console.error("Failed to revalidate cache:", error);
+    revalidatePath('/', 'layout');
+  }}
 
 type ValidateUserParams = {
-  success: boolean;
-  user?: any;
-  error?: ApiResponse;
+  auth: boolean;
+  userId?: string;
 }
 
 export async function validateUser(client: SupabaseClient): Promise<ValidateUserParams> {
@@ -30,26 +46,13 @@ export async function validateUser(client: SupabaseClient): Promise<ValidateUser
     const { data: userData, error: userError } = await client.auth.getUser();
 
     if (userError || !userData.user) {
-      return {
-        success: false,
-        error: createApiResponse({
-          success: false,
-          globalError: userError?.message,
-          message: MessageCodes.AUTH_USER_VERIFY_ERROR
-        })
-      };
+      redirect("/auth/invalid?message=session_expired");
     }
 
-    return { success: true, user: userData.user };
+    return { auth: true, userId: userData.user.id };
   } catch (error) {
-    return {
-      success: false,
-      error: createApiResponse({
-        success: false,
-        globalError: getErrorOfUnknownError(error, MessageCodes.GENERIC_UNEXPECTED_ERROR),
-        message: MessageCodes.AUTH_USER_VERIFY_ERROR
-      })
-    };
+    if (isRedirectError(error)) throw error;
+    redirect("/auth/invalid?message=auth_error");
   }
 }
 

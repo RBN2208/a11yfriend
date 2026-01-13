@@ -13,6 +13,8 @@ import { createServerSupabase } from "@/shared/supabase/server";
 import { revalidateCache, validateUser } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";
 import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
+import { SupabaseClient } from "@supabase/supabase-js";
+import {isRedirectError} from "next/dist/client/components/redirect-error";
 
 // ============================================
 // Constants
@@ -62,19 +64,13 @@ function computeAuditStatus(findings: AuditResult[]): 'pending' | 'done' {
 /**
  * Fetches multiple audits from the database.
  *
+ * @param supabase
  * @param {number} limit - Maximum number of audits to retrieve
  * @returns {Promise<ApiResponse<ManualAudit[]>>}
  */
-async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAudit[]>> {
+async function fetchMultipleAudits(supabase: SupabaseClient, limit: number): Promise<ApiResponse<ManualAudit[]>> {
   const t = await getTranslations('audit.messageCodes');
   try {
-    const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
-
-    if (!validation.success) {
-      return validation.error!;
-    }
-
     const { data: audits, error } = await supabase
       .from(TABLE_NAME)
       .select('*')
@@ -107,18 +103,12 @@ async function fetchMultipleAudits(limit: number): Promise<ApiResponse<ManualAud
  * Fetches a single audit from the database by ID.
  *
  * @param {string} id - Audit ID
+ * @param {SupabaseClient} supabase - Supabase client instance
  * @returns {Promise<ApiResponse<ManualAudit>>}
  */
-async function fetchSingleAudit(id: string): Promise<ApiResponse<ManualAudit>> {
+async function fetchSingleAudit(supabase: SupabaseClient, id: string): Promise<ApiResponse<ManualAudit>> {
   const t = await getTranslations('audit.messageCodes');
   try {
-    const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
-
-    if (!validation.success) {
-      return validation.error!;
-    }
-
     const { data: audit, error } = await supabase
       .from(TABLE_NAME)
       .select('*')
@@ -181,15 +171,11 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     }
 
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
-
-    if (!validation.success) {
-      return validation.error!;
-    }
+    const { userId } = await validateUser(supabase);
 
     const auditData = {
       ...values,
-      user_id: validation.user.id,
+      user_id: userId,
       status: "pending" as const,
       findings: createDefaultAuditResults()
     };
@@ -206,7 +192,7 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,
@@ -214,6 +200,7 @@ export async function createAudit(values: z.infer<typeof createAuditSchema>): Pr
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('error')),
@@ -246,11 +233,7 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
     }
 
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
-
-    if (!validation.success) {
-      return validation.error!;
-    }
+    await validateUser(supabase);
 
     const { error } = await supabase
       .from(TABLE_NAME)
@@ -265,7 +248,7 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,
@@ -273,6 +256,7 @@ export async function updateAudit(values: z.infer<typeof createAuditSchema>, aud
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('error')),
@@ -295,11 +279,8 @@ export async function updateAuditResults(findings: AuditResult[], auditId: strin
     const status = computeAuditStatus(findings);
 
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
 
-    if (!validation.success) {
-      return validation.error!;
-    }
+    await validateUser(supabase);
 
     const { error } = await supabase
       .from(TABLE_NAME)
@@ -323,6 +304,7 @@ export async function updateAuditResults(findings: AuditResult[], auditId: strin
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('updateError')),
@@ -342,11 +324,8 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
   const t = await getTranslations('audit.messageCodes');
   try {
     const supabase = await createServerSupabase();
-    const validation = await validateUser(supabase);
 
-    if (!validation.success) {
-      return validation.error!;
-    }
+    await validateUser(supabase);
 
     const { error } = await supabase
       .from(TABLE_NAME)
@@ -361,7 +340,7 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
       });
     }
 
-    revalidateCache();
+    await revalidateCache();
 
     return createApiResponse({
       success: true,
@@ -369,6 +348,7 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
     });
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('deleteError')),
@@ -396,12 +376,17 @@ export async function deleteAudit(auditId: string): Promise<ApiResponse> {
 export async function getAudit(id: string | null = null, limit: number = 5): Promise<ApiResponse<ManualAudit[] | ManualAudit>> {
   const t = await getTranslations('audit.messageCodes');
   try {
+    const supabase = await createServerSupabase();
+
+    await validateUser(supabase);
+
     if (id) {
-      return await fetchSingleAudit(id);
+      return await fetchSingleAudit(supabase, id);
     }
-    return await fetchMultipleAudits(limit);
+    return await fetchMultipleAudits(supabase, limit);
 
   } catch (error: unknown) {
+    if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('getError')),
