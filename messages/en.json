@@ -458,7 +458,10 @@
     "info": "The URL might be incorrect or the page may have been moved.",
     "backHome": "Back to Home"
   },
-  "error": {},
+  "error": {
+    "session_expired": "Your session has expired. Please log in again.",
+    "auth_error": "Authentication error. Please log in again."
+  },
   "auth": {
     "logout": "Log Out",
     "login": "Log In",

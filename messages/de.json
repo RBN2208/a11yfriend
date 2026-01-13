@@ -458,7 +458,10 @@
     "info": "Die URL ist möglicherweise falsch oder die Seite wurde verschoben.",
     "backHome": "Zur Startseite"
   },
-  "error": {},
+  "error": {
+    "session_expired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "auth_error": "Authentifizierung fehlgeschlagen. Bitte melden Sie sich erneut an."
+  },
   "auth": {
     "logout": "Abmelden",
     "login": "Anmelden",
