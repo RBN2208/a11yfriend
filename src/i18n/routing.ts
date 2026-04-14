@@ -1,5 +1,11 @@
 import {defineRouting} from 'next-intl/routing';
 
+/** All supported locales – single source of truth */
+export const locales = ['en', 'de'] as const;
+export type Locale = (typeof locales)[number];
+
+export const defaultLocale: Locale = 'en';
+
 export const alternateLinks: { [key: string]: string } = {
     "en-US": '/en',
     "de-DE": '/de',
@@ -8,12 +14,12 @@ export const alternateLinks: { [key: string]: string } = {
     "x-default": '/en',
 }
 
-export const routing = defineRouting({
-    // A list of all locales that are supported
-    locales: ['en', 'de'],
+/** Regex pattern matching any supported locale prefix (e.g. /en or /de) */
+export const localePattern = locales.join('|');
 
-    // Used when no locale matches
-    defaultLocale: 'en',
+export const routing = defineRouting({
+    locales,
+    defaultLocale,
     localePrefix: "always",
     localeDetection: true,
     alternateLinks: true

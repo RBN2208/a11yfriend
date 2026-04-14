@@ -459,8 +459,9 @@
     "backHome": "Zur Startseite"
   },
   "error": {
-    "session_expired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
-    "auth_error": "Authentifizierung fehlgeschlagen. Bitte melden Sie sich erneut an."
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.",
+    "backToHome": "Zurück zur Startseite"
   },
   "auth": {
     "logout": "Abmelden",
@@ -597,5 +598,11 @@
   "home": {
     "title": "Warum a11yfriend?",
     "intro": "Dieses Projekt ist aus Barrierefreiheitsaudits entstanden und den Learnings aus diesen Audits. Es ist ein privates Projekt und Work in progress"
+  },
+  "a11y": {
+    "skipToContent": "Zum Hauptinhalt springen",
+    "mainNavigation": "Hauptnavigation",
+    "editorToolbar": "Textformatierung-Werkzeugleiste",
+    "richTextEditor": "Rich-Text-Editor"
   }
 }

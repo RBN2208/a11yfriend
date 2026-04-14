@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/shared/supabase/middleware'
 import createMiddleware from 'next-intl/middleware';
-import { routing } from "@/i18n/routing";
+import { routing, localePattern } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -52,12 +52,14 @@ export async function proxy(request: NextRequest) {
   const intlResponse = intlMiddleware(request);
 
   const pathname = request.nextUrl.pathname;
-  const localeMatch = pathname.match(/^\/(en|de)(\/|$)/);
+  const localeRegex = new RegExp(`^\\/(${localePattern})(\\/|$)`);
+  const localeMatch = pathname.match(localeRegex);
   const locale = localeMatch ? localeMatch[1] : routing.defaultLocale;
 
   const protectedRoutes = ['/account'];
 
-  const pathWithoutLocale = pathname.replace(/^\/(en|de)/, '') || '/';
+  const localeStripRegex = new RegExp(`^\\/(${localePattern})`);
+  const pathWithoutLocale = pathname.replace(localeStripRegex, '') || '/';
   const isProtectedRoute = protectedRoutes.some(route =>
     pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
   );

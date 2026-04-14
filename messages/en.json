@@ -459,8 +459,9 @@
     "backHome": "Back to Home"
   },
   "error": {
-    "session_expired": "Your session has expired. Please log in again.",
-    "auth_error": "Authentication error. Please log in again."
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again later.",
+    "backToHome": "Back to home"
   },
   "auth": {
     "logout": "Log Out",
@@ -602,5 +603,11 @@
   "home": {
     "title": "Why a11yfriend?",
     "intro": "This project originated from accessibility audits and the learnings derived from them. It is a private project and a work in progress."
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "mainNavigation": "Main navigation",
+    "editorToolbar": "Text formatting toolbar",
+    "richTextEditor": "Rich text editor"
   }
 }

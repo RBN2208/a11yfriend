@@ -39,8 +39,8 @@ export function MenuBar({ editor }: { editor: Editor | null }) {
   const activeButtonClass = " bg-emerald-700 text-white hover:bg-emerald-900";
 
   return (
-      <div className="flex gap-10 border border-neutral-300 border-b-0 p-2">
-        <div className="button-group">
+      <div role="toolbar" aria-label="Text formatting" className="flex gap-10 border border-neutral-300 border-b-0 p-2">
+        <div className="button-group" role="group" aria-label="Inline formatting">
           <button onClick={() => editor.chain().focus().unsetAllMarks().run()}
                   disabled={!editorState.canClearMarks}
                   className={defaultButtonClass}
@@ -71,11 +71,12 @@ export function MenuBar({ editor }: { editor: Editor | null }) {
               disabled={!editorState.canStrike}
               className={editorState.isStrike ? defaultButtonClass + activeButtonClass : defaultButtonClass}
               style={{textDecoration: 'line-through'}}
+              title="Strikethrough"
           >
             Strike
           </button>
         </div>
-        <div className="button-group">
+        <div className="button-group" role="group" aria-label="Block formatting">
           <button onClick={() => editor.chain().focus().clearNodes().run()}
                   className={defaultButtonClass}
                   title="Clear formatting"
@@ -92,18 +93,21 @@ export function MenuBar({ editor }: { editor: Editor | null }) {
           <button
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
               className={editorState.isHeading2 ? defaultButtonClass + activeButtonClass : defaultButtonClass}
+              title="Heading 2"
           >
             H2
           </button>
           <button
               onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
               className={editorState.isHeading3 ? defaultButtonClass + activeButtonClass : defaultButtonClass}
+              title="Heading 3"
           >
             H3
           </button>
           <button
               onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
               className={editorState.isHeading4 ? defaultButtonClass + activeButtonClass : defaultButtonClass}
+              title="Heading 4"
           >
             H4
           </button>

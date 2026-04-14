@@ -8,13 +8,50 @@ import {Sheet} from '@/shared/components/shadcn-components/ui/sheet';
 import {createServerSupabase} from '@/shared/supabase/server';
 import {Toaster} from '@/shared/components/shadcn-components/ui/sonner';
 import {hasLocale, NextIntlClientProvider} from "next-intl";
-import {setRequestLocale} from "next-intl/server";
+import {getTranslations, setRequestLocale} from "next-intl/server";
 import {routing} from "@/i18n/routing";
 import {notFound} from "next/navigation";
+import {SkipLink} from "@/shared/components/common/SkipLink";
 
-export const metadata: Metadata = {
-    title: "A11y Friend"
-};
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://a11yfriend.dev';
+
+export async function generateMetadata({params}: {params: Promise<{locale: string}>}): Promise<Metadata> {
+    const {locale} = await params;
+    const alternateLanguages: Record<string, string> = {};
+    for (const loc of routing.locales) {
+        alternateLanguages[loc] = `${APP_URL}/${loc}`;
+    }
+
+    return {
+        title: {
+            default: 'A11y Friend – Accessibility Auditing Tool',
+            template: '%s | A11y Friend',
+        },
+        description: 'A11y Friend helps you audit websites for WCAG accessibility compliance with automated and manual testing tools.',
+        metadataBase: new URL(APP_URL),
+        alternates: {
+            canonical: `${APP_URL}/${locale}`,
+            languages: alternateLanguages,
+        },
+        openGraph: {
+            title: 'A11y Friend – Accessibility Auditing Tool',
+            description: 'Audit websites for WCAG accessibility compliance with automated and manual testing tools.',
+            url: `${APP_URL}/${locale}`,
+            siteName: 'A11y Friend',
+            locale: locale === 'de' ? 'de_DE' : 'en_US',
+            type: 'website',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: 'A11y Friend – Accessibility Auditing Tool',
+            description: 'Audit websites for WCAG accessibility compliance.',
+        },
+        robots: {
+            index: true,
+            follow: true,
+        },
+    };
+}
 
 type Props = {
     children: React.ReactNode;
@@ -34,8 +71,10 @@ export default async function RootLayout({children, params}: Props) {
     // Enable static rendering
     setRequestLocale(locale);
 
+    const t = await getTranslations('a11y');
+
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang={locale} suppressHydrationWarning>
             <body>
                 <ThemeProvider
                     defaultTheme="dark"
@@ -45,11 +84,12 @@ export default async function RootLayout({children, params}: Props) {
                 >
                     <NextIntlClientProvider>
                         <Sheet>
+                            <SkipLink label={t('skipToContent')} targetId="main-content" />
                             <MobileMenu user={user}/>
                             <Header user={user}/>
-                            <div className="p-4">
+                            <main id="main-content" className="p-4">
                                 {children}
-                            </div>
+                            </main>
                             <Footer/>
                         </Sheet>
                         <Toaster position="top-center" richColors/>

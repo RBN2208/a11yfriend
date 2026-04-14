@@ -110,11 +110,12 @@ export default function Tiptap({data, updateAction}: TiptapProps) {
   }, [data, editor]);
 
   return (
-      <>
+      <div role="group" aria-label="Rich text editor">
         {editor && <MenuBar editor={editor} /> }
         <EditorContent editor={editor}
                        className="tiptap-custom min-h-[300px] border p-2"
+                       aria-label="Rich text editor"
         />
-      </>
+      </div>
   )
 }
