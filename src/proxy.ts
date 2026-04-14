@@ -7,12 +7,14 @@ const intlMiddleware = createMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
   /**
-   * add basic auth for local development and for mvp
+   * Basic auth for non-production environments only (e.g. staging, preview).
+   * In production, authentication is handled entirely by Supabase Auth.
    */
+  const isProduction = process.env.NODE_ENV === 'production';
   const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER;
   const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD;
 
-  if (BASIC_AUTH_USER && BASIC_AUTH_PASSWORD) {
+  if (!isProduction && BASIC_AUTH_USER && BASIC_AUTH_PASSWORD) {
     const unauthorized = () =>
       new NextResponse('Authentication required', {
         status: 401,
