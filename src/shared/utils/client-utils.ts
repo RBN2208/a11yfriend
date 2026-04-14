@@ -12,6 +12,6 @@ export function cn(...inputs: ClassValue[]) {
  * @param {string} fallback - The fallback message to use if the provided value is not an Error object.
  * @return {string} The error message if the value is an Error object, otherwise the fallback message.
  */
-export function getErrorOfUnknownError(error: any, fallback: string): string {
+export function getErrorOfUnknownError(error: unknown, fallback: string): string {
     return error instanceof Error ? error.message : fallback;
 }

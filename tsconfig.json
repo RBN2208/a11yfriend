@@ -9,6 +9,9 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    // TODO: Enable after cleaning up unused imports across the codebase
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

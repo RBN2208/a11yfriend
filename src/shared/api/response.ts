@@ -2,9 +2,12 @@ import type { ApiResponse } from '@/shared/api/types/types';
 
 /**
  * Creates a standardized API response object.
- * @param config
+ *
+ * @template T - The type of the response data
+ * @param {ApiResponse<T>} config - The response configuration
+ * @returns {ApiResponse<T>} A normalized API response
  */
-export function createApiResponse<T>(config: ApiResponse<T>): ApiResponse<T> {
+export function createApiResponse<T = void>(config: ApiResponse<T>): ApiResponse<T> {
   return {
     ...config,
     success: !!config.success,
@@ -13,5 +16,3 @@ export function createApiResponse<T>(config: ApiResponse<T>): ApiResponse<T> {
 }
 
 export type { ApiResponse };
-
-

@@ -4,11 +4,11 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { SupabaseClient } from "@supabase/supabase-js";
 
-import type {ApiResponse } from "@/shared/api/types/types";
+import type { ApiResponse } from "@/shared/api/types/types";
 import { createApiResponse } from "@/shared/api/response";
-import {redirect} from "next/navigation";
-import {headers} from "next/headers";
-import {isRedirectError} from "next/dist/client/components/redirect-error";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const REVALIDATION_PATH: string = "/";
 const REVALIDATION_TYPE: "layout" | "page" = "layout";
@@ -34,14 +34,22 @@ export async function revalidateCache(path = REVALIDATION_PATH, type = REVALIDAT
   } catch (error) {
     console.error("Failed to revalidate cache:", error);
     revalidatePath('/', 'layout');
-  }}
-
-type ValidateUserParams = {
-  auth: boolean;
-  userId?: string;
+  }
 }
 
-export async function validateUser(client: SupabaseClient): Promise<ValidateUserParams> {
+type ValidateUserResult = {
+  auth: boolean;
+  userId: string;
+};
+
+/**
+ * Validates the current user session via Supabase auth.
+ * Redirects to the invalid auth page if the session is expired or invalid.
+ *
+ * @param {SupabaseClient} client - The Supabase client instance
+ * @returns {Promise<ValidateUserResult>} The validated user info
+ */
+export async function validateUser(client: SupabaseClient): Promise<ValidateUserResult> {
   try {
     const { data: userData, error: userError } = await client.auth.getUser();
 
@@ -50,43 +58,48 @@ export async function validateUser(client: SupabaseClient): Promise<ValidateUser
     }
 
     return { auth: true, userId: userData.user.id };
-  } catch (error) {
+  } catch (error: unknown) {
     if (isRedirectError(error)) throw error;
     redirect("/auth/invalid?message=auth_error");
   }
 }
 
 /**
- * Formats validation errors based on a schema and returns a structured API response.
+ * Validates form data against a Zod schema and returns a structured API response.
  *
- * @param {any} values - The form values that were validated.
- * @param {any} schema - The validation schema used to validate the form inputs.
- * @param {string} message - A custom message to include in the API response.
- * @param {string[]} keys - An array of field names to extract errors for.
- * @return {Promise<ApiResponse>} A promise resolving to an API response object containing success status, formatted errors, and the provided message.
+ * @template T - The inferred type of the Zod schema
+ * @param {unknown} values - The form values to validate
+ * @param {z.ZodSchema<T>} schema - The Zod schema to validate against
+ * @param {string} message - Error message to include in the response
+ * @param {string[]} keys - Field names to extract errors for
+ * @returns {Promise<ApiResponse>} Structured API response with validation result
  */
-export async function validateFormData(values: any, schema: any, message: string, keys: string[]): Promise<ApiResponse> {
+export async function validateFormData<T>(
+  values: unknown,
+  schema: z.ZodSchema<T>,
+  message: string,
+  keys: string[]
+): Promise<ApiResponse> {
   const validationResult = schema.safeParse(values);
 
   if (!validationResult.success) {
-    const formattedErrors: z.ZodFormattedError<z.infer<typeof schema>> = validationResult.error.format();
-    const fieldKeys: Array<keyof z.infer<typeof schema>> = keys;
+    const formattedErrors = validationResult.error.format();
 
-    const errors = fieldKeys
-        .map(field => {
-          const fieldError = (formattedErrors as any)[field]?._errors[0];
-          return fieldError ? { field: String(field), error: fieldError } : null;
-        })
-        .filter((error): error is { field: string; error: string } => error !== null);
+    const errors = keys
+      .map((field) => {
+        const fieldError = (formattedErrors as Record<string, { _errors?: string[] }>)[field]?._errors?.[0];
+        return fieldError ? { field: String(field), error: fieldError } : null;
+      })
+      .filter((err): err is { field: string; error: string } => err !== null);
 
     return createApiResponse({
       success: false,
       errors,
-      message: message
+      message,
     });
   }
 
   return createApiResponse({
-    success: true
+    success: true,
   });
 }
