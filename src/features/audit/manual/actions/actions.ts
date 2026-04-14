@@ -2,36 +2,48 @@
 
 import { z } from "zod";
 import { getTranslations } from "next-intl/server";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 import type { AuditResult, ManualAudit } from "@/features/audit/manual/types/types";
 import { getCriteriasForSelectedConformanceLevel } from "@/features/audit/utils";
 import { createAuditSchema } from "@/features/audit/manual/zod-schema";
 
 import type { ApiResponse } from "@/shared/api/types/types";
-import { validateFormData } from "@/shared/utils/server-utils";
 import { createServerSupabase } from "@/shared/supabase/server";
 import { revalidateCache, validateUser } from "@/shared/utils/server-utils";
 import { createApiResponse } from "@/shared/api/response";
 import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
-import { SupabaseClient } from "@supabase/supabase-js";
-import {isRedirectError} from "next/dist/client/components/redirect-error";
+
+import {
+  type AuditActionConfig,
+  createRecord,
+  updateRecord,
+  deleteRecord,
+  getRecord,
+} from "@/features/audit/shared/base-actions";
 
 // ============================================
-// Constants
+// Configuration
 // ============================================
 
 const TABLE_NAME = "manual_audits" as const;
+const TRANSLATION_NS = "audit.messageCodes" as const;
+
+const manualAuditConfig: AuditActionConfig<z.infer<typeof createAuditSchema>, ManualAudit> = {
+  tableName: TABLE_NAME,
+  translationNamespace: TRANSLATION_NS,
+  createSchema: createAuditSchema,
+  validationKeys: ['name', 'description', 'status', 'conformance'],
+  defaultValues: () => ({
+    status: "pending" as const,
+    findings: createDefaultAuditResults(),
+  }),
+};
 
 // ============================================
-// Helper Functions
+// Manual-specific helpers
 // ============================================
 
-/**
- * Creates a default set of audit results for all WCAG AAA criteria.
- * Initializes each result with 'not_checked' status and null findings.
- *
- * @returns {AuditResult[]} Array of default audit results
- */
 function createDefaultAuditResults(): AuditResult[] {
   const criteria = getCriteriasForSelectedConformanceLevel('AAA');
 
@@ -45,353 +57,66 @@ function createDefaultAuditResults(): AuditResult[] {
   }));
 }
 
-/**
- * Determines audit status based on findings.
- * Returns 'done' if all findings are checked, otherwise 'pending'.
- *
- * @param {AuditResult[]} findings - Array of audit results
- * @returns {'pending' | 'done'} Computed audit status
- */
 function computeAuditStatus(findings: AuditResult[]): 'pending' | 'done' {
   const hasUnchecked = findings.some(result => result.status === 'not_checked');
   return hasUnchecked ? 'pending' : 'done';
 }
 
 // ============================================
-// Database Operations
+// Public API - Server Actions (thin wrappers)
 // ============================================
 
-/**
- * Fetches multiple audits from the database.
- *
- * @param supabase
- * @param {number} limit - Maximum number of audits to retrieve
- * @returns {Promise<ApiResponse<ManualAudit[]>>}
- */
-async function fetchMultipleAudits(supabase: SupabaseClient, limit: number): Promise<ApiResponse<ManualAudit[]>> {
-  const t = await getTranslations('audit.messageCodes');
-  try {
-    const { data: audits, error } = await supabase
-      .from(TABLE_NAME)
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(limit);
-
-    if (error) {
-      return createApiResponse({
-        success: false,
-        globalError: t('error'),
-        message: t('getError')
-      });
-    }
-
-    return createApiResponse({
-      success: true,
-      message: t('getMultiSuccess'),
-      data: audits as ManualAudit[]
-    });
-  } catch (error: unknown) {
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, t('getError')),
-      message: t('getError')
-    });
-  }
-}
-
-/**
- * Fetches a single audit from the database by ID.
- *
- * @param {string} id - Audit ID
- * @param {SupabaseClient} supabase - Supabase client instance
- * @returns {Promise<ApiResponse<ManualAudit>>}
- */
-async function fetchSingleAudit(supabase: SupabaseClient, id: string): Promise<ApiResponse<ManualAudit>> {
-  const t = await getTranslations('audit.messageCodes');
-  try {
-    const { data: audit, error } = await supabase
-      .from(TABLE_NAME)
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      return createApiResponse({
-        success: false,
-        globalError: t('error'),
-        message: t('getError')
-      });
-    }
-
-    return createApiResponse({
-      success: true,
-      message: t('getSingleSuccess'),
-      data: audit as ManualAudit
-    });
-  } catch (error: unknown) {
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, t('getError')),
-      message: t('getError')
-    });
-  }
-}
-
-// ============================================
-// Public API - Server Actions
-// ============================================
-
-/**
- * Creates a new manual audit.
- * Validates input, authenticates user, and stores audit in database.
- *
- * @param {z.infer<typeof createAuditSchema>} values - Audit data from form
- * @returns {Promise<ApiResponse>} API response with success/error information
- *
- * @example
- * const result = await createAudit({
- *   name: "Homepage Audit",
- *   description: "Accessibility audit for homepage",
- *   status: "pending",
- *   conformance: "AA"
- * });
- */
 export async function createAudit(values: z.infer<typeof createAuditSchema>): Promise<ApiResponse> {
-  const t = await getTranslations('audit.messageCodes');
-  try {
-    const formValidation = await validateFormData(
-        values,
-        createAuditSchema,
-        t('validationError'),
-        ['name', 'description', 'status', 'conformance']
-    );
-
-    if (!formValidation.success) {
-      return formValidation
-    }
-
-    const supabase = await createServerSupabase();
-    const { userId } = await validateUser(supabase);
-
-    const auditData = {
-      ...values,
-      user_id: userId,
-      status: "pending" as const,
-      findings: createDefaultAuditResults()
-    };
-
-    const { error: insertError } = await supabase
-      .from(TABLE_NAME)
-      .insert([auditData]);
-
-    if (insertError) {
-      return createApiResponse({
-        success: false,
-        globalError: t('error'),
-        message: t('error')
-      });
-    }
-
-    await revalidateCache();
-
-    return createApiResponse({
-      success: true,
-      message: t('success')
-    });
-
-  } catch (error: unknown) {
-    if (isRedirectError(error)) throw error;
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, t('error')),
-      errors: [{ field: 'root', error: t('error') }],
-      message: t('error')
-    });
-  }
+  return createRecord(manualAuditConfig, values);
 }
 
-/**
- * Updates an existing manual audit.
- * Validates input and updates audit data in database.
- *
- * @param {z.infer<typeof createAuditSchema>} values - Updated audit data
- * @param {string} auditId - ID of audit to update
- * @returns {Promise<ApiResponse>} API response with success/error information
- */
 export async function updateAudit(values: z.infer<typeof createAuditSchema>, auditId: string): Promise<ApiResponse> {
-  const t = await getTranslations('audit.messageCodes');
-  try {
-    const formValidation = await validateFormData(
-        values,
-        createAuditSchema,
-        t('validationError'),
-        ['name', 'description', 'status', 'conformance']
-    );
-
-    if (!formValidation.success) {
-      return formValidation
-    }
-
-    const supabase = await createServerSupabase();
-    await validateUser(supabase);
-
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .update(values)
-      .eq('id', auditId);
-
-    if (error) {
-      return createApiResponse({
-        success: false,
-        globalError: t('error'),
-        message: t('updateError')
-      });
-    }
-
-    await revalidateCache();
-
-    return createApiResponse({
-      success: true,
-      message: t('updateSuccess')
-    });
-
-  } catch (error: unknown) {
-    if (isRedirectError(error)) throw error;
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, t('error')),
-      message: t('error')
-    });
-  }
+  return updateRecord(manualAuditConfig, values, auditId);
 }
 
-/**
- * Updates audit results/findings and automatically computes status.
- * Status is set to 'done' if all findings are checked, otherwise 'pending'.
- *
- * @param {AuditResult[]} findings - Updated audit findings
- * @param {string} auditId - ID of audit to update
- * @returns {Promise<ApiResponse>} API response with success/error information
- */
+export async function deleteAudit(auditId: string): Promise<ApiResponse> {
+  return deleteRecord(TABLE_NAME, TRANSLATION_NS, auditId);
+}
+
+export async function getAudit(id: string | null = null, limit: number = 5): Promise<ApiResponse<ManualAudit[] | ManualAudit>> {
+  return getRecord<ManualAudit>(TABLE_NAME, TRANSLATION_NS, id, limit);
+}
+
+// ============================================
+// Manual-specific: Update audit findings
+// ============================================
+
 export async function updateAuditResults(findings: AuditResult[], auditId: string): Promise<ApiResponse> {
-  const t = await getTranslations('audit.messageCodes');
+  const t = await getTranslations(TRANSLATION_NS);
   try {
     const status = computeAuditStatus(findings);
 
     const supabase = await createServerSupabase();
-
     await validateUser(supabase);
 
     const { error } = await supabase
       .from(TABLE_NAME)
-      .update({
-        findings,
-        status
-      })
+      .update({ findings, status })
       .eq('id', auditId);
 
     if (error) {
       return createApiResponse({
         success: false,
         globalError: t('error'),
-        message: t('updateError')
+        message: t('updateError'),
       });
     }
 
     return createApiResponse({
       success: true,
-      message: t('updateSuccess')
+      message: t('updateSuccess'),
     });
-
   } catch (error: unknown) {
     if (isRedirectError(error)) throw error;
     return createApiResponse({
       success: false,
       globalError: getErrorOfUnknownError(error, t('updateError')),
-      message: t('updateError')
+      message: t('updateError'),
     });
   }
 }
-
-/**
- * Deletes an audit from the database.
- * RLS policies ensure users can only delete their own audits.
- *
- * @param {string} auditId - ID of audit to delete
- * @returns {Promise<ApiResponse>} API response with success/error information
- */
-export async function deleteAudit(auditId: string): Promise<ApiResponse> {
-  const t = await getTranslations('audit.messageCodes');
-  try {
-    const supabase = await createServerSupabase();
-
-    await validateUser(supabase);
-
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .delete()
-      .eq('id', auditId);
-
-    if (error) {
-      return createApiResponse({
-        success: false,
-        globalError: t('error'),
-        message: t('deleteError')
-      });
-    }
-
-    await revalidateCache();
-
-    return createApiResponse({
-      success: true,
-      message: t('deleteSuccess')
-    });
-
-  } catch (error: unknown) {
-    if (isRedirectError(error)) throw error;
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, t('deleteError')),
-      errors: [{ field: 'root', error: t('deleteError') }],
-      message: t('deleteError')
-    });
-  }
-}
-
-/**
- * Retrieves audit(s) from the database.
- * If ID is provided, fetches a single audit. Otherwise, fetches multiple audits.
- *
- * @param {string | null} id - Optional audit ID for single fetch
- * @param {number} limit - Maximum number of audits to retrieve (default: 5)
- * @returns {Promise<ApiResponse<ManualAudit[] | ManualAudit>>}
- *
- * @example
- * // Fetch single audit
- * const audit = await getAudit('123-456-789');
- *
- * // Fetch multiple audits
- * const audits = await getAudit(null, 20);
- */
-export async function getAudit(id: string | null = null, limit: number = 5): Promise<ApiResponse<ManualAudit[] | ManualAudit>> {
-  const t = await getTranslations('audit.messageCodes');
-  try {
-    const supabase = await createServerSupabase();
-
-    await validateUser(supabase);
-
-    if (id) {
-      return await fetchSingleAudit(supabase, id);
-    }
-    return await fetchMultipleAudits(supabase, limit);
-
-  } catch (error: unknown) {
-    if (isRedirectError(error)) throw error;
-    return createApiResponse({
-      success: false,
-      globalError: getErrorOfUnknownError(error, t('getError')),
-      message: t('getError')
-    });
-  }
-}
-
