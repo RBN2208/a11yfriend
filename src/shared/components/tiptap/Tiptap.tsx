@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useEditor, EditorContent, Extension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { TableKit } from '@tiptap/extension-table'
+import DOMPurify from 'isomorphic-dompurify';
 
 import { MenuBar } from "@/shared/components/tiptap/MenuBar";
 import {AuditResult} from "@/features/audit/manual/types/types";
@@ -29,6 +30,23 @@ const CursorFix = Extension.create({
   },
 });
 
+/**
+ * Sanitizes HTML content to prevent XSS attacks.
+ * Allows common formatting tags used by the TipTap editor.
+ */
+function sanitizeHtml(dirty: string): string {
+  return DOMPurify.sanitize(dirty, {
+    ALLOWED_TAGS: [
+      'p', 'br', 'strong', 'em', 'u', 's', 'code', 'pre',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ul', 'ol', 'li', 'blockquote',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'a', 'span', 'div',
+    ],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'colspan', 'rowspan'],
+  });
+}
+
 type TiptapProps = {
   data: AuditResult['findings'],
   updateAction: (value: any) => void,
@@ -50,8 +68,28 @@ export default function Tiptap({data, updateAction}: TiptapProps) {
           return false;
         },
       },
+      // Sanitize any pasted HTML content
+      handlePaste: (view, event) => {
+        const html = event.clipboardData?.getData('text/html');
+        if (html) {
+          const clean = sanitizeHtml(html);
+          // Let TipTap handle the sanitized content
+          if (clean !== html) {
+            event.preventDefault();
+            editor?.commands.insertContent(clean);
+            return true;
+          }
+        }
+        return false;
+      },
     },
     onUpdate: ({editor}) => {
+      const html = editor.getHTML();
+      const sanitized = sanitizeHtml(html);
+      // If sanitization changed the content, update the editor
+      if (html !== sanitized) {
+        editor.commands.setContent(sanitized);
+      }
       const json = editor.getJSON();
       updateAction(json);
     }

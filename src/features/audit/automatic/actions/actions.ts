@@ -21,6 +21,52 @@ import {isRedirectError} from "next/dist/client/components/redirect-error";
 
 const TABLE_NAME = "automatic_audits" as const;
 
+// Private/reserved IP ranges that must not be accessed via Puppeteer (SSRF protection)
+const BLOCKED_HOSTNAMES = ['localhost', '0.0.0.0'];
+const BLOCKED_IP_PATTERNS = [
+  /^127\./,                   // 127.0.0.0/8 loopback
+  /^10\./,                    // 10.0.0.0/8 private
+  /^172\.(1[6-9]|2\d|3[01])\./, // 172.16.0.0/12 private
+  /^192\.168\./,              // 192.168.0.0/16 private
+  /^169\.254\./,              // 169.254.0.0/16 link-local
+  /^0\./,                     // 0.0.0.0/8
+  /^\[::1\]/,                 // IPv6 loopback
+  /^\[fd/i,                   // IPv6 unique local
+  /^\[fe80:/i,                // IPv6 link-local
+];
+
+/**
+ * Validates a URL to prevent SSRF attacks.
+ * Blocks private IPs, reserved ranges, and non-http(s) protocols.
+ *
+ * @param {string} urlString - The URL to validate
+ * @throws {Error} If the URL is invalid or targets a private/reserved address
+ */
+function validateUrlForSSRF(urlString: string): void {
+  let parsed: URL;
+  try {
+    parsed = new URL(urlString);
+  } catch {
+    throw new Error(`Invalid URL: ${urlString}`);
+  }
+
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new Error(`Only http and https protocols are allowed, got: ${parsed.protocol}`);
+  }
+
+  const hostname = parsed.hostname;
+
+  if (BLOCKED_HOSTNAMES.includes(hostname.toLowerCase())) {
+    throw new Error(`Access to ${hostname} is not allowed`);
+  }
+
+  for (const pattern of BLOCKED_IP_PATTERNS) {
+    if (pattern.test(hostname)) {
+      throw new Error(`Access to private/reserved IP range is not allowed: ${hostname}`);
+    }
+  }
+}
+
 /**
  * Fetches multiple reports from the database.
  *
@@ -343,6 +389,11 @@ export async function runAxeReport(reportId: string): Promise<ApiResponse> {
         globalError: 'No URLs found in report',
         message: t('error')
       });
+    }
+
+    // Validate all URLs before running analysis (SSRF protection)
+    for (const { url } of audit.urls) {
+      validateUrlForSSRF(url);
     }
 
     // Run Axe analysis for all URLs in parallel
