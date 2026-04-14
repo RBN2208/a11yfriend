@@ -33,7 +33,7 @@ export default function AccountNavigation() {
         {
           name: t('navigation.automatic'),
           href: '/account/audits/automatic',
-          active: false
+          active: true
         },
         {
           name: t('navigation.ai'),

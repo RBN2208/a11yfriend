@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { getTranslations } from "next-intl/server";
 
-import type { AutomaticAudit } from "@/features/audit/automatic/types/types";
+import {AuditResult, AutomaticAudit, AutomaticAuditAxeResults} from "@/features/audit/automatic/types/types";
 import { createReportSchema } from "@/features/audit/automatic/zod-schema";
 
 import type { ApiResponse } from "@/shared/api/types/types";
@@ -347,11 +347,7 @@ export async function runAxeReport(reportId: string): Promise<ApiResponse> {
 
     // Run Axe analysis for all URLs in parallel
     const axeResultsPromises = audit.urls.map(({ url }) =>
-      axeReport(url).catch(error => ({
-        url,
-        error: error.message,
-        timestamp: new Date().toISOString()
-      }))
+      axeReport(url)
     );
 
     const axeResults = await Promise.all(axeResultsPromises);
@@ -405,9 +401,9 @@ export async function runAxeReport(reportId: string): Promise<ApiResponse> {
  * Runs an Axe accessibility analysis on a given URL using Puppeteer.
  *
  * @param {string} url - The URL to analyze for accessibility issues
- * @returns {Promise<any>} Axe analysis results containing violations, passes, incomplete, and inapplicable tests
+ * @returns {Promise<AutomaticAuditAxeResults>} Axe analysis results containing violations, passes, incomplete, and inapplicable tests
  */
-async function axeReport(url: string) {
+async function axeReport(url: string): Promise<AutomaticAuditAxeResults> {
   const puppeteer = await import('puppeteer');
   const { AxePuppeteer } = await import('@axe-core/puppeteer');
 
@@ -445,6 +441,13 @@ async function axeReport(url: string) {
       timeout: 30000
     });
 
+    // Wait for page to be fully ready and all frames to load
+    await page.evaluate(() => document.readyState);
+    await page.waitForFunction(() => document.readyState === 'complete');
+
+    // Additional wait to ensure frames are ready
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const results = await new AxePuppeteer(page).analyze();
 
     return {
@@ -456,8 +459,7 @@ async function axeReport(url: string) {
       inapplicable: results.inapplicable,
       testEngine: results.testEngine,
       testRunner: results.testRunner,
-      testEnvironment: results.testEnvironment,
-      toolOptions: results.toolOptions
+      testEnvironment: results.testEnvironment
     };
   } finally {
     if (browser) {

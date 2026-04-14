@@ -183,11 +183,7 @@ export async function changePassword(password: string): Promise<ApiResponse> {
         }
 
         const supabase = await createServerSupabase();
-        const validation = await validateUser(supabase);
-
-        if (!validation.success) {
-            return validation.error!;
-        }
+        await validateUser(supabase);
 
         const {error} = await supabase.auth.updateUser({password: password});
         if (error) {
