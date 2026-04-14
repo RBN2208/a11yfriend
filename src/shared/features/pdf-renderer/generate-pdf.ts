@@ -1,19 +1,23 @@
-import { pdf } from '@react-pdf/renderer';
 import React from 'react';
-import { ManualAuditPDFDocument } from './manual-audit-pdf-renderer';
-import {getErrorOfUnknownError} from "@/shared/utils/client-utils";
-import {ManualAuditPDFExportProps, PDFGenerationResult} from "@/shared/features/pdf-renderer/types/types";
+import { getErrorOfUnknownError } from "@/shared/utils/client-utils";
+import { ManualAuditPDFExportProps, PDFGenerationResult } from "@/shared/features/pdf-renderer/types/types";
 
 /**
  * Generates a PDF for a ManualAudit.
- * The pdf() function from @react-pdf/renderer is already asynchronous.
+ * Dynamically imports @react-pdf/renderer to reduce initial bundle size.
+ *
  * @param audit The manual audit data to generate the PDF from
  * @param translations Translations for the PDF content
  * @returns Promise resolving to the generated PDF blob and filename, or an error
  */
-export async function generateAuditPDF({audit, translations}: ManualAuditPDFExportProps): Promise<PDFGenerationResult> {
+export async function generateAuditPDF({ audit, translations }: ManualAuditPDFExportProps): Promise<PDFGenerationResult> {
     try {
-        // Create the document element - cast to any to avoid type issues with @react-pdf/renderer
+        // Dynamic imports to avoid loading heavy PDF library upfront
+        const [{ pdf }, { ManualAuditPDFDocument }] = await Promise.all([
+            import('@react-pdf/renderer'),
+            import('./manual-audit-pdf-renderer'),
+        ]);
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const documentElement = React.createElement(ManualAuditPDFDocument, { audit, translations }) as any;
         const blob = await pdf(documentElement).toBlob();
@@ -29,7 +33,7 @@ export async function generateAuditPDF({audit, translations}: ManualAuditPDFExpo
     } catch (error) {
         return {
             success: false,
-            error: getErrorOfUnknownError(error, "Unknown error occurred")
+            error: getErrorOfUnknownError(error, "Unknown error occurred"),
         };
     }
 }
@@ -40,11 +44,10 @@ export async function generateAuditPDF({audit, translations}: ManualAuditPDFExpo
  * @param translations Translations for the PDF content
  * @returns Promise resolving to true if successful, false otherwise
  */
-export async function downloadAuditPDF({audit, translations}: ManualAuditPDFExportProps): Promise<boolean> {
-    const result = await generateAuditPDF({audit, translations});
+export async function downloadAuditPDF({ audit, translations }: ManualAuditPDFExportProps): Promise<boolean> {
+    const result = await generateAuditPDF({ audit, translations });
 
     if (result.success) {
-        // Create download link
         const url = URL.createObjectURL(result.blob);
         const link = document.createElement('a');
         link.href = url;

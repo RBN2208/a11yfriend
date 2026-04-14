@@ -4,6 +4,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 
@@ -15,19 +16,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/components/shadcn-components/ui/table"
+import { Button } from "@/shared/components/shadcn-components/ui/button"
 import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[],
+  data: TData[]
   children: React.ReactNode
+  pageSize?: number
 }
 
-export function TableWrapper<TData, TValue>({columns, data, children}: DataTableProps<TData, TValue>) {
+export function TableWrapper<TData, TValue>({
+  columns,
+  data,
+  children,
+  pageSize = 10,
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize,
+      },
+    },
   })
 
   return (
@@ -79,6 +93,31 @@ export function TableWrapper<TData, TValue>({columns, data, children}: DataTable
           </TableBody>
         </Table>
       </div>
+      {table.getPageCount() > 1 && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          </span>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

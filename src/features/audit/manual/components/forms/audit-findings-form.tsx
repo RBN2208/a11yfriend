@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import SelectWrapper from "@/shared/components/shadn-wrappers/SelectWrapper";
 import { SelectItem } from "@/shared/components/shadcn-components/ui/select";
 import { Label } from "@/shared/components/shadcn-components/ui/label";
-import Tiptap from "@/shared/components/tiptap/Tiptap";
+import Tiptap from "@/shared/components/tiptap/TiptapLazy";
 import {AuditResult} from "@/features/audit/manual/types/types";
 
 interface AuditFindingsFormProps {
